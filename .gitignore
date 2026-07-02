@@ -1,0 +1,60 @@
+# ─── Xcode ───────────────────────────────────────────────────────────────────
+*.xcodeproj/xcuserdata/
+*.xcworkspace/xcuserdata/
+*.xcworkspace/contents.xcworkspacedata
+xcuserdata/
+
+# Build output
+build/
+DerivedData/
+*.ipa
+*.dSYM.zip
+*.dSYM
+
+# Playground
+timeline.xctimeline
+playground.xcworkspace
+
+# Swift Package Manager
+.build/
+.swiftpm/
+Packages/
+Package.resolved
+
+# CocoaPods
+Pods/
+*.xcworkspace
+
+# Carthage
+Carthage/Build/
+Carthage/Checkouts/
+
+# Fastlane
+fastlane/report.xml
+fastlane/Preview.html
+fastlane/screenshots/**/*.png
+fastlane/test_output
+
+# ─── macOS ───────────────────────────────────────────────────────────────────
+.DS_Store
+.AppleDouble
+.LSOverride
+._*
+.Spotlight-V100
+.Trashes
+
+# ─── Environment & Secrets ───────────────────────────────────────────────────
+.env
+.env.*
+*.pem
+*.p8
+*.p12
+GoogleService-Info.plist
+Secrets.swift
+Config.xcconfig
+
+# ─── Editor ──────────────────────────────────────────────────────────────────
+.vscode/
+.idea/
+*.swp
+*~
