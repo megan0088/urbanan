@@ -70,6 +70,47 @@ git push origin feature/nama      # push ke branch, bukan langsung ke main
 
 ---
 
+## Setup Wajib untuk Semua Developer
+
+Jalankan perintah ini **satu kali** di laptop masing-masing agar `.DS_Store` tidak pernah masuk ke repo manapun:
+
+```bash
+echo ".DS_Store" >> ~/.gitignore_global
+echo "**/.DS_Store" >> ~/.gitignore_global
+echo "xcuserdata/" >> ~/.gitignore_global
+git config --global core.excludesfile ~/.gitignore_global
+```
+
+---
+
+## Menghindari Konflik `project.pbxproj`
+
+File `project.pbxproj` tidak bisa di-ignore karena Xcode membutuhkannya. Ikuti aturan berikut untuk menghindari konflik:
+
+| Aturan | Alasan |
+|--------|--------|
+| Satu fitur = satu branch | Tidak ada dua orang edit `pbxproj` bersamaan |
+| `git pull` sebelum mulai kerja | Selalu mulai dari kode terbaru |
+| Merge ke `main` satu per satu | Konflik terjadi saat merge paralel |
+| Koordinasi di grup jika mau tambah banyak file | Cegah konflik sebelum terjadi |
+
+**Jika sudah terlanjur konflik di `project.pbxproj`:**
+
+```bash
+# Buka file dan cari tanda konflik
+# Pastikan bagian ini tetap utuh saat resolve:
+# - /* Begin PBXFileReference section */
+# - /* Begin PBXGroup section */
+# - /* Begin PBXSourcesBuildPhase section */
+
+git add urbanan.xcodeproj/project.pbxproj
+git commit
+```
+
+> Jangan pilih salah satu sisi saja (accept ours/theirs) — harus di-merge manual agar tidak ada file yang hilang dari project.
+
+---
+
 ## Kontributor
 
 | Nama | GitHub |
