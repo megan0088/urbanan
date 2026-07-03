@@ -52,6 +52,11 @@ fastlane/test_output
 *.p12
 GoogleService-Info.plist
 Secrets.swift
+Docs/
+
+# Per-developer signing -- each teammate has their own personal Apple ID/team,
+# not a shared org account. Copy Config.xcconfig.example to Config.xcconfig
+# and fill in your own DEVELOPMENT_TEAM (never commit this file).
 Config.xcconfig
 
 # ─── Editor ──────────────────────────────────────────────────────────────────

@@ -1,0 +1,16 @@
+//
+//  Config.xcconfig.example
+//
+//  Copy this file to Config.xcconfig (gitignored, never committed) and fill
+//  in your own personal Apple Developer team ID so Xcode can sign locally
+//  without touching anything the rest of the team relies on.
+//
+//  Find your team ID in Xcode > Settings > Accounts > select your Apple ID > Team.
+//
+//  The bundle identifier (com.urbananTaggo.app) is NOT per-developer -- it's
+//  fixed and tracked in the project itself, because the iCloud container and
+//  App Clip parent-identifier entitlements must be one stable, literal string
+//  to register with Apple at all (custom xcconfig variables don't reliably
+//  resolve in that registration path). Only your own signing team is local.
+//
+DEVELOPMENT_TEAM = YOUR_TEAM_ID_HERE
