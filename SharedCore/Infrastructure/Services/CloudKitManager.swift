@@ -23,6 +23,48 @@ final class CloudKitManager: CloudKitManaging {
         }
     }
     
+    func fetchItem(id: UUID) async throws -> Item {
+        let recordID = CKRecord.ID(recordName: id.uuidString)
+        do {
+            let record = try await database.record(for: recordID)
+            return try ItemMapper.toItem(record: record)
+        } catch let error as CKError {
+            throw Self.map(error)
+        }
+    }
+    
+    func fetchItems(ownedBy ownerID: UUID) async throws -> [Item] {
+        let predicate = NSPredicate(format: "%K == %@", RecordSchema.Item.Field.ownerID, ownerID.uuidString)
+        let query = CKQuery(recordType: RecordSchema.Item.recordType, predicate: predicate)
+        query.sortDescriptors = [NSSortDescriptor(key: RecordSchema.Item.Field.createdAt, ascending: false)]
+        
+        do {
+            var items: [Item] = []
+            var cursor: CKQueryOperation.Cursor?
+            repeat {
+                let matchResults: [(CKRecord.ID, Result<CKRecord, Error>)]
+                let nextCursor: CKQueryOperation.Cursor?
+                if let cursor {
+                    (matchResults, nextCursor) = try await database.records(continuingMatchFrom: cursor)
+                }
+                else {
+                    (matchResults, nextCursor) = try await database.records(matching: query)
+                }
+                
+                for(_, result) in matchResults {
+                    if case .success(let record) = result {
+                        items.append(try ItemMapper.toItem(record: record))
+                    }
+                }
+                cursor = nextCursor
+            } while cursor != nil
+            
+            return items
+        } catch let error as CKError {
+            throw Self.map(error)
+        }
+    }
+    
     private static func map(_ error: CKError) -> TaggoError {
         switch error.code {
         case .networkUnavailable, .networkFailure:

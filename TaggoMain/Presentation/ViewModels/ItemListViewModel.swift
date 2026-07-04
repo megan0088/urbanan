@@ -1,52 +1,37 @@
 //
-//  RegisterViewModel.swift
+//  ItemListViewModel.swift
 //  TaggoMain
-//
 
 import Foundation
 
 @Observable
-final class RegisterViewModel {
- 
+final class ItemListViewModel {
     enum State: Equatable {
         case idle
         case loading
-        case success(qrCodeImageData: Data)
+        case loaded([Item])
         case failure(message: String)
     }
- 
-    var name = ""
-    var category = ""
-    var color = ""
-    var description = ""
-    var selectedImageData: Data?
+    
     private(set) var state: State = .idle
- 
-    private let registerItemUseCase: RegisterItemUseCase
- 
-    init(registerItemUseCase: RegisterItemUseCase) {
-        self.registerItemUseCase = registerItemUseCase
+    private let listItemsUseCase: ListItemsUseCase
+    
+    init(listItemsUseCase: ListItemsUseCase) {
+        self.listItemsUseCase = listItemsUseCase
     }
- 
-    func submit() async {
+    
+    func load() async {
         state = .loading
-        let input = RegisterItemUseCase.Input(
-            name: name,
-            category: category,
-            color: color,
-            description: description,
-            imageData: selectedImageData
-        )
-        do {
-            let output = try await registerItemUseCase.execute(input)
-            state = .success(qrCodeImageData: output.qrCodeImageData)
+        do  {
+            let items = try await listItemsUseCase.execute()
+            state = .loaded(items)
         } catch let error as TaggoError {
             state = .failure(message: userMessage(for: error))
         } catch {
             state = .failure(message: "Something went wrong. Please try again.")
         }
     }
- 
+    
     private func userMessage(for error: TaggoError) -> String {
         switch error {
         case .networkUnavailable:
