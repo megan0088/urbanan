@@ -7,7 +7,7 @@ import Foundation
 
 /// Pure domain model — no CloudKit types leak in here.
 /// `ItemMapper` is the only place that converts to/from `CKRecord`.
-struct Item: Identifiable, Equatable {
+struct Item: Identifiable, Codable, Equatable, Sendable {
     let id: UUID
     let ownerID: UUID
     var name: String

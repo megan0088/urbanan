@@ -6,5 +6,6 @@
 import Foundation
 import CloudKit
 
-protocol CloudKitManaging {
+protocol CloudKitManaging: Sendable {
+    func saveItem(_ item: Item) async throws -> Item
 }
