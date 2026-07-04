@@ -81,10 +81,6 @@ enum ItemMapper {
         record[RecordSchema.Item.Field.createdAt] = item.createdAt
         record[RecordSchema.Item.Field.updatedAt] = item.updatedAt
 
-        if let imageData = item.imageData, let asset = try? Self.makeAsset(from: imageData) {
-            record[RecordSchema.Item.Field.imageAsset] = asset
-        }
-
         return record
     }
 
