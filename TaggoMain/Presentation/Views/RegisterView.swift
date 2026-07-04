@@ -7,9 +7,11 @@ import SwiftUI
 
 struct RegisterView: View {
     @State private var viewModel: RegisterViewModel
+    var onFinished: (() -> Void)?
  
-    init(viewModel: RegisterViewModel) {
+    init(viewModel: RegisterViewModel, onFinished: (() -> Void)? = nil) {
         _viewModel = State(initialValue: viewModel)
+        self.onFinished = onFinished
     }
  
     var body: some View {

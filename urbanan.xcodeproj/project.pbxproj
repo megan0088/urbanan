@@ -114,15 +114,11 @@
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		03D110C22FF96CF300FA07EA /* SharedCore */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
-			exceptions = (
-			);
 			path = SharedCore;
 			sourceTree = "<group>";
 		};
 		03D111192FF96CFD00FA07EA /* TaggoMain */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
-			exceptions = (
-			);
 			path = TaggoMain;
 			sourceTree = "<group>";
 		};
@@ -183,7 +179,6 @@
 				68D275C831C717BDBB3B1B2B /* QRManagerTests.swift */,
 				B2B231C40F01254D1A098E5A /* UniversalLinkParserTests.swift */,
 			);
-			name = UnitTests;
 			path = UnitTests;
 			sourceTree = "<group>";
 		};
@@ -194,7 +189,6 @@
 				B633CEE43D468F2EF82BD2A1 /* UITests */,
 				7BCB2477C235CB8019D10CD9 /* UniversalLinkParser.swift (from TaggoClip) */,
 			);
-			name = TaggoTests;
 			path = TaggoTests;
 			sourceTree = "<group>";
 		};
@@ -205,7 +199,6 @@
 				2FE9CC5A12D309A4523A4B29 /* MockCurrentUserProvider.swift */,
 				B957CDC91B88C312550E3821 /* MockQRManager.swift */,
 			);
-			name = Mocks;
 			path = Mocks;
 			sourceTree = "<group>";
 		};
@@ -223,7 +216,6 @@
 			children = (
 				8825DEFF2A4B4D94E198D290 /* FlowEndToEndUITests.swift */,
 			);
-			name = UITests;
 			path = UITests;
 			sourceTree = "<group>";
 		};
@@ -270,7 +262,6 @@
 				8368CADB67AACFEE46138F1B /* RegisterItemUseCaseTests.swift */,
 				E8630703B50E2BBC93323DC4 /* ReportFoundItemUseCaseTests.swift */,
 			);
-			name = UseCaseTests;
 			path = UseCaseTests;
 			sourceTree = "<group>";
 		};
