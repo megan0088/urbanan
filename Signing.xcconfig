@@ -1,0 +1,11 @@
+//
+//  Signing.xcconfig
+//  Shared, tracked signing configuration.
+//
+//  Never put a personal DEVELOPMENT_TEAM value in this file — it's read by
+//  every developer. Each person's own team ID belongs in Config.xcconfig
+//  (already gitignored, never pushed). Copy Config.xcconfig.example to
+//  Config.xcconfig and fill in your own team ID from
+//  Xcode > Settings > Accounts > your Apple ID > Team.
+//
+#include? "Config.xcconfig"
