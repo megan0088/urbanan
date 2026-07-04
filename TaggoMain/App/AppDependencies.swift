@@ -12,19 +12,19 @@ struct AppDependencies {
     let cloudKitManager: CloudKitManaging
     let qrManager: QRManaging
     let currentUserProvider: CurrentUserProviding
- 
+    let imageCompressor: ImageCompressing
+    
     static let live = AppDependencies(
         cloudKitManager: CloudKitManager(),
         qrManager: QRManager(),
-        currentUserProvider: CurrentUserProvider()
+        currentUserProvider: CurrentUserProvider(),
+        imageCompressor: ImageCompressor(),
     )
  
     func makeRegisterViewModel() -> RegisterViewModel {
         RegisterViewModel(
             registerItemUseCase: RegisterItemUseCase(
-                cloudKitManager: cloudKitManager,
-                qrManager: qrManager,
-                currentUserProvider: currentUserProvider
+                cloudKitManager: cloudKitManager, qrManager: qrManager, currentUserProvider: currentUserProvider, imageCompressor: imageCompressor
             )
         )
     }

@@ -4,40 +4,49 @@
 //
 
 import Foundation
-import Observation
 
 @Observable
 final class RegisterViewModel {
+ 
     enum State: Equatable {
         case idle
         case loading
         case success(qrCodeImageData: Data)
         case failure(message: String)
     }
-    
+ 
     var name = ""
     var category = ""
-    var color = "";
+    var color = ""
     var description = ""
+    var selectedImageData: Data?
     private(set) var state: State = .idle
-    
+ 
     private let registerItemUseCase: RegisterItemUseCase
-    
+ 
     init(registerItemUseCase: RegisterItemUseCase) {
         self.registerItemUseCase = registerItemUseCase
     }
-    
+ 
     func submit() async {
         state = .loading
-        let input = RegisterItemUseCase.Input(name: name, category: category, color: color, description: description)
+        let input = RegisterItemUseCase.Input(
+            name: name,
+            category: category,
+            color: color,
+            description: description,
+            imageData: selectedImageData
+        )
         do {
             let output = try await registerItemUseCase.execute(input)
             state = .success(qrCodeImageData: output.qrCodeImageData)
+        } catch let error as TaggoError {
+            state = .failure(message: userMessage(for: error))
         } catch {
-            state = .failure(message: error.localizedDescription)
+            state = .failure(message: "Something went wrong. Please try again.")
         }
     }
-    
+ 
     private func userMessage(for error: TaggoError) -> String {
         switch error {
         case .networkUnavailable:
