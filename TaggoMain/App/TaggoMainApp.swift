@@ -9,7 +9,15 @@ import SwiftUI
 struct TaggoMainApp: App {
     var body: some Scene {
         WindowGroup {
-            RegisterView()
+            let cloudKitManager = CloudKitManager()
+            let qrManager = QRManager()
+            let currentUserProvider = CurrentUserProvider()
+            let useCase = RegisterItemUseCase(
+                cloudKitManager: cloudKitManager,
+                qrManager: qrManager,
+                currentUserProvider: currentUserProvider
+            )
+            RegisterView(viewModel: RegisterViewModel(registerItemUseCase: useCase))
         }
     }
 }

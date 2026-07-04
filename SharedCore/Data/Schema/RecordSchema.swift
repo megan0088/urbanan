@@ -17,10 +17,10 @@ enum RecordSchema {
             static let name = "name"
             static let category = "category"
             static let color = "color"
-            static let brand = "brand"
+//            static let brand = "brand"
             static let description = "description"
             static let imageAsset = "imageAsset"
-            static let status = "status"
+//            static let status = "status"
             static let createdAt = "createdAt"
             static let updatedAt = "updatedAt"
         }

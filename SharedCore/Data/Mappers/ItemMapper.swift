@@ -29,13 +29,13 @@ enum ItemMapper {
         guard let color = record[RecordSchema.Item.Field.color] as? String else {
             throw TaggoError.missingField(RecordSchema.Item.Field.color)
         }
-        guard let brand = record[RecordSchema.Item.Field.brand] as? String else {
-            throw TaggoError.missingField(RecordSchema.Item.Field.brand)
-        }
-        guard let statusRaw = record[RecordSchema.Item.Field.status] as? String,
-              let status = ItemStatus(rawValue: statusRaw) else {
-            throw TaggoError.missingField(RecordSchema.Item.Field.status)
-        }
+//        guard let brand = record[RecordSchema.Item.Field.brand] as? String else {
+//            throw TaggoError.missingField(RecordSchema.Item.Field.brand)
+//        }
+//        guard let statusRaw = record[RecordSchema.Item.Field.status] as? String,
+//              let status = ItemStatus(rawValue: statusRaw) else {
+//            throw TaggoError.missingField(RecordSchema.Item.Field.status)
+//        }
         guard let createdAt = record[RecordSchema.Item.Field.createdAt] as? Date else {
             throw TaggoError.missingField(RecordSchema.Item.Field.createdAt)
         }
@@ -56,10 +56,10 @@ enum ItemMapper {
             name: name,
             category: category,
             color: color,
-            brand: brand,
+//            brand: brand,
             description: description,
             imageData: imageData,
-            status: status,
+//            status: status,
             createdAt: createdAt,
             updatedAt: updatedAt
         )
@@ -75,9 +75,9 @@ enum ItemMapper {
         record[RecordSchema.Item.Field.name] = item.name
         record[RecordSchema.Item.Field.category] = item.category
         record[RecordSchema.Item.Field.color] = item.color
-        record[RecordSchema.Item.Field.brand] = item.brand
+//        record[RecordSchema.Item.Field.brand] = item.brand
         record[RecordSchema.Item.Field.description] = item.description
-        record[RecordSchema.Item.Field.status] = item.status.rawValue
+//        record[RecordSchema.Item.Field.status] = item.status.rawValue
         record[RecordSchema.Item.Field.createdAt] = item.createdAt
         record[RecordSchema.Item.Field.updatedAt] = item.updatedAt
 
