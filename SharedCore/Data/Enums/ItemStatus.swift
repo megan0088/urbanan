@@ -7,5 +7,4 @@ import Foundation
 
 enum ItemStatus: String, Codable, Equatable {
     case active
-    case archived
 }

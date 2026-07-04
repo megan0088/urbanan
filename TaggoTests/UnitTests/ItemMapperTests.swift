@@ -13,9 +13,7 @@ final class ItemMapperTests: XCTestCase {
         name: String = "Blue Backpack",
         category: String = "Bags",
         color: String = "Blue",
-        brand: String = "Fjallraven",
         description: String? = "Well-worn daypack",
-        status: ItemStatus = .active,
         createdAt: Date = Date(timeIntervalSince1970: 0),
         updatedAt: Date = Date(timeIntervalSince1970: 100)
     ) -> CKRecord {
@@ -24,9 +22,7 @@ final class ItemMapperTests: XCTestCase {
         record[RecordSchema.Item.Field.name] = name
         record[RecordSchema.Item.Field.category] = category
         record[RecordSchema.Item.Field.color] = color
-        record[RecordSchema.Item.Field.brand] = brand
         record[RecordSchema.Item.Field.description] = description
-        record[RecordSchema.Item.Field.status] = status.rawValue
         record[RecordSchema.Item.Field.createdAt] = createdAt
         record[RecordSchema.Item.Field.updatedAt] = updatedAt
         return record
@@ -44,9 +40,7 @@ final class ItemMapperTests: XCTestCase {
         XCTAssertEqual(item.name, "Blue Backpack")
         XCTAssertEqual(item.category, "Bags")
         XCTAssertEqual(item.color, "Blue")
-        XCTAssertEqual(item.brand, "Fjallraven")
         XCTAssertEqual(item.description, "Well-worn daypack")
-        XCTAssertEqual(item.status, .active)
         XCTAssertEqual(item.createdAt, Date(timeIntervalSince1970: 0))
         XCTAssertEqual(item.updatedAt, Date(timeIntervalSince1970: 100))
         XCTAssertNil(item.imageData)
@@ -87,10 +81,8 @@ final class ItemMapperTests: XCTestCase {
             name: "Red Umbrella",
             category: "Accessories",
             color: "Red",
-            brand: "Generic",
             description: nil,
             imageData: nil,
-            status: .archived,
             createdAt: Date(timeIntervalSince1970: 10),
             updatedAt: Date(timeIntervalSince1970: 20)
         )
@@ -101,7 +93,6 @@ final class ItemMapperTests: XCTestCase {
         XCTAssertEqual(record.recordID.recordName, item.id.uuidString)
         XCTAssertEqual(record[RecordSchema.Item.Field.ownerID] as? String, item.ownerID.uuidString)
         XCTAssertEqual(record[RecordSchema.Item.Field.name] as? String, "Red Umbrella")
-        XCTAssertEqual(record[RecordSchema.Item.Field.status] as? String, ItemStatus.archived.rawValue)
     }
 
     func test_roundTrip_recordToItemToRecordPreservesCoreFields() throws {
@@ -112,6 +103,5 @@ final class ItemMapperTests: XCTestCase {
 
         XCTAssertEqual(roundTripped.recordID.recordName, original.recordID.recordName)
         XCTAssertEqual(roundTripped[RecordSchema.Item.Field.name] as? String, original[RecordSchema.Item.Field.name] as? String)
-        XCTAssertEqual(roundTripped[RecordSchema.Item.Field.status] as? String, original[RecordSchema.Item.Field.status] as? String)
     }
 }

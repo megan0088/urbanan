@@ -6,7 +6,7 @@
 import Foundation
 import Security
 
-final class CurrentUserProvider {
+final class CurrentUserProvider: CurrentUserProviding {
     private static let service = "com.urbananTaggo.app.currentUser"
     private static let account = "currentUserID"
     

@@ -13,10 +13,8 @@ struct Item: Identifiable, Codable, Equatable, Sendable {
     var name: String
     var category: String
     var color: String
-    var brand: String
     var description: String?
     var imageData: Data?
-    var status: ItemStatus
     let createdAt: Date
     var updatedAt: Date
 }
