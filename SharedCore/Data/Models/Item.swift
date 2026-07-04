@@ -15,7 +15,7 @@ struct Item: Identifiable, Equatable {
     var color: String
     var brand: String
     var description: String?
-    var imageData: Data?
+    var imageAssetURL: URL?
     var status: ItemStatus
     let createdAt: Date
     var updatedAt: Date
