@@ -17,15 +17,16 @@ final class QRManager: QRManaging {
         self.baseURL = baseURL
     }
     
+    func link(for itemID: UUID) -> URL {
+        baseURL.appendingPathComponent("item")
+            .appendingPathComponent(itemID.uuidString)
+    }
+    
     func generateQRCode(for itemID: UUID) throws -> Data {
-        var components = URLComponents(url: baseURL.appendingPathComponent("item"), resolvingAgainstBaseURL: false)
-        components?.queryItems = [URLQueryItem(name: "id", value: itemID.uuidString)]
-        guard let link = components?.url else {
-            throw TaggoError.unknown("COuld not Build Universal Link for item \(itemID)")
-        }
+        let l = link(for: itemID)
         
         let filter = CIFilter.qrCodeGenerator()
-        filter.message = Data(link.absoluteString.utf8)
+        filter.message = Data(l.absoluteString.utf8)
         guard let outputImage = filter.outputImage else {
             throw TaggoError.unknown("Could not generate QR Code for item \(itemID)")
         }

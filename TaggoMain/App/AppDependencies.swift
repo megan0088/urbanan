@@ -38,9 +38,13 @@ struct AppDependencies {
         )
     }
  
-//    func makeScanViewModel() -> ScanViewModel {
-//        ScanViewModel(
-//            resolveScannedItemUseCase: ResolveScannedItemUseCase(cloudKitManager: cloudKitManager)
-//        )
-//    }
+    func makeScanViewModel() -> ScanViewModel {
+        ScanViewModel(
+            resolveScannedItemUC: ResolveScannedItemUseCase(cloudKitManager: cloudKitManager)
+        )
+    }
+    
+    func makeResolveScannedItemUseCase() -> ResolveScannedItemUseCase {
+        ResolveScannedItemUseCase(cloudKitManager: cloudKitManager)
+    }
 }
