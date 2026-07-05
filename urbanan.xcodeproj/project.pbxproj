@@ -17,7 +17,6 @@
 		5B7B56331C0C3BB508229D73 /* ItemMapperTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6ED59007FF426BD8A5A5FD19 /* ItemMapperTests.swift */; };
 		5F68D51C4A650C395BD02F7D /* FlowEndToEndUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8825DEFF2A4B4D94E198D290 /* FlowEndToEndUITests.swift */; };
 		622702306EC9F7456FCE5E68 /* FetchInboxUseCaseTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CC2B2B850C874E8E06913C8 /* FetchInboxUseCaseTests.swift */; };
-		6517100582C533BCD63A8D9A /* UniversalLinkParser.swift (from TaggoClip) in Sources */ = {isa = PBXBuildFile; fileRef = 7BCB2477C235CB8019D10CD9 /* UniversalLinkParser.swift (from TaggoClip) */; };
 		727E5876D7FE69F9E1FDF9E3 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B6282C7111F6B852E87C6FCA /* Foundation.framework */; };
 		8178BE75F944338B77393333 /* TaggoClip.app in Embed App Clips */ = {isa = PBXBuildFile; fileRef = 3E76687E69FFF2581638DE4F /* TaggoClip.app */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		9162679FEEC1AA83CA550E46 /* FoundReportMapperTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD33525642DC4B67E53E436C /* FoundReportMapperTests.swift */; };
@@ -69,6 +68,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		03D115DB2FFAE14E00FA07EA /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		0CC2B2B850C874E8E06913C8 /* FetchInboxUseCaseTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = FetchInboxUseCaseTests.swift; sourceTree = "<group>"; };
 		13DC7851A637F0CB51948406 /* TaggoUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TaggoUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		20EA5F7AC99692D57A4F41F3 /* DeleteItemUseCaseTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = DeleteItemUseCaseTests.swift; sourceTree = "<group>"; };
@@ -78,7 +78,6 @@
 		3E76687E69FFF2581638DE4F /* TaggoClip.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TaggoClip.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		68D275C831C717BDBB3B1B2B /* QRManagerTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = QRManagerTests.swift; sourceTree = "<group>"; };
 		6ED59007FF426BD8A5A5FD19 /* ItemMapperTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = ItemMapperTests.swift; sourceTree = "<group>"; };
-		7BCB2477C235CB8019D10CD9 /* UniversalLinkParser.swift (from TaggoClip) */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = "UniversalLinkParser.swift (from TaggoClip)"; path = ../TaggoClip/Infrastructure/DeepLink/UniversalLinkParser.swift; sourceTree = "<group>"; };
 		8368CADB67AACFEE46138F1B /* RegisterItemUseCaseTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = RegisterItemUseCaseTests.swift; sourceTree = "<group>"; };
 		8825DEFF2A4B4D94E198D290 /* FlowEndToEndUITests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = FlowEndToEndUITests.swift; sourceTree = "<group>"; };
 		94D48D9B14977296944728CF /* Signing.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = Signing.xcconfig; sourceTree = "<group>"; };
@@ -95,19 +94,12 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
-		03D111632FF96D0800FA07EA /* Exceptions for "TaggoClip" folder in "TaggoClip" target */ = {
+		36618024A2737261A7EE9220 /* Exceptions for "TaggoClip" folder in "TaggoClip" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				Info.plist,
 			);
 			target = 4C72072F36E5CBF1D6FDD06E /* TaggoClip */;
-		};
-		03D111642FF96D0800FA07EA /* Exceptions for "TaggoClip" folder in "TaggoTests" target */ = {
-			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
-			membershipExceptions = (
-				Infrastructure/DeepLink/UniversalLinkParser.swift,
-			);
-			target = D310F783A0C5F642733F4B18 /* TaggoTests */;
 		};
 /* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
@@ -125,8 +117,7 @@
 		03D111342FF96D0600FA07EA /* TaggoClip */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			exceptions = (
-				03D111632FF96D0800FA07EA /* Exceptions for "TaggoClip" folder in "TaggoClip" target */,
-				03D111642FF96D0800FA07EA /* Exceptions for "TaggoClip" folder in "TaggoTests" target */,
+				36618024A2737261A7EE9220 /* Exceptions for "TaggoClip" folder in "TaggoClip" target */,
 			);
 			path = TaggoClip;
 			sourceTree = "<group>";
@@ -185,9 +176,9 @@
 		9F258F4C14AA1686156D81F9 /* TaggoTests */ = {
 			isa = PBXGroup;
 			children = (
+				03D115DB2FFAE14E00FA07EA /* Info.plist */,
 				65F98AB2C2C2CC70010AC03A /* UnitTests */,
 				B633CEE43D468F2EF82BD2A1 /* UITests */,
-				7BCB2477C235CB8019D10CD9 /* UniversalLinkParser.swift (from TaggoClip) */,
 			);
 			path = TaggoTests;
 			sourceTree = "<group>";
@@ -465,7 +456,6 @@
 				A447F7FB8C0820539878EB12 /* MarkReportClaimedUseCaseTests.swift in Sources */,
 				0E93166EFE7F112AA1E03AA9 /* RegisterItemUseCaseTests.swift in Sources */,
 				C45C3FC2729DE4EFA0872EB3 /* ReportFoundItemUseCaseTests.swift in Sources */,
-				6517100582C533BCD63A8D9A /* UniversalLinkParser.swift (from TaggoClip) in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -551,6 +541,8 @@
 				CLANG_ENABLE_OBJC_WEAK = NO;
 				CODE_SIGN_STYLE = Automatic;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = TaggoTests/Info.plist;
+				INFOPLIST_KEY_NSCameraUsageDescription = "\"Taggo uses your camera to scan item QR codes.\"";
 				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.urbananTaggo.app.Tests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -583,6 +575,8 @@
 				CLANG_ENABLE_OBJC_WEAK = NO;
 				CODE_SIGN_STYLE = Automatic;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = TaggoTests/Info.plist;
+				INFOPLIST_KEY_NSCameraUsageDescription = "\"Taggo uses your camera to scan item QR codes.\"";
 				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.urbananTaggo.app.Tests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -728,6 +722,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSCameraUsageDescription = "\"Taggo uses your camera to scan item QR codes.\"";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -761,6 +756,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSCameraUsageDescription = "\"Taggo uses your camera to scan item QR codes.\"";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;

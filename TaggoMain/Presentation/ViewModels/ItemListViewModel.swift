@@ -44,6 +44,8 @@ final class ItemListViewModel {
             return "iCloud storage is full."
         case .missingField, .invalidFieldValue, .invalidRecordType:
             return "Something about that item's data wasn't valid."
+        case .invalidLink:
+            return "Link is Invalid"
         case .unknown:
             return "Something went wrong. Please try again."
         }

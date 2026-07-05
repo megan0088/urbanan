@@ -11,7 +11,7 @@ final class RegisterViewModel {
     enum State: Equatable {
         case idle
         case loading
-        case success(qrCodeImageData: Data)
+        case success(qrCodeImageData: Data, itemLink: URL)
         case failure(message: String)
     }
  
@@ -39,7 +39,7 @@ final class RegisterViewModel {
         )
         do {
             let output = try await registerItemUseCase.execute(input)
-            state = .success(qrCodeImageData: output.qrCodeImageData)
+            state = .success(qrCodeImageData: output.qrCodeImageData, itemLink: output.itemLink)
         } catch let error as TaggoError {
             state = .failure(message: userMessage(for: error))
         } catch {
@@ -59,6 +59,8 @@ final class RegisterViewModel {
             return "iCloud storage is full."
         case .missingField, .invalidFieldValue, .invalidRecordType:
             return "Something about that item's data wasn't valid."
+        case .invalidLink:
+            return "Link is Invalid"
         case .unknown:
             return "Something went wrong. Please try again."
         }

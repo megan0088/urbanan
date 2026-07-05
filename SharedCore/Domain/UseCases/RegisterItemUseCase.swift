@@ -29,6 +29,7 @@ struct RegisterItemUseCase {
     struct Output {
         var item: Item
         var qrCodeImageData: Data
+        var itemLink: URL
     }
     
     func execute(_ input: Input) async throws -> Output {
@@ -43,6 +44,7 @@ struct RegisterItemUseCase {
                            imageData: compressedImageData, createdAt: now, updatedAt: now)
         let savedItem = try await cloudKitManager.saveItem(newItem)
         let qrData = try qrManager.generateQRCode(for: savedItem.id)
-        return Output(item: savedItem, qrCodeImageData: qrData)
+        let itemLink = qrManager.link(for: savedItem.id);
+        return Output(item: savedItem, qrCodeImageData: qrData, itemLink: itemLink)
     }
 }

@@ -62,7 +62,7 @@ struct RegisterView: View {
                     EmptyView()
                 case .loading:
                     ProgressView("Registering…")
-                case .success(let qrData):
+                case .success(let qrData, let itemLink):
                     VStack(spacing: 12) {
                         Text("Registered! Print this QR:")
                         if let uiImage = UIImage(data: qrData) {
@@ -70,6 +70,9 @@ struct RegisterView: View {
                                 .resizable()
                                 .frame(width: 200, height: 200)
                         }
+                        Text(itemLink.absoluteString).font(.footnote)
+                            .foregroundStyle(.secondary)
+                            .textSelection(.enabled)
                         Button("Done") { onFinished?() }
                     }
                 case .failure(let message):
