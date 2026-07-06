@@ -59,14 +59,27 @@ TaggoTests/
 
 ## Cara Pertama Kali Setup (Wajib Dibaca!)
 
-### Langkah 1 — Clone project
+### Langkah 1 — Clone project & ambil semua branch
 
 ```bash
 git clone https://github.com/megan0088/urbanan.git
 cd urbanan
+git fetch --all
 ```
 
-### Langkah 2 — Setup signing kamu sendiri (WAJIB, sebelum buka Xcode)
+`git fetch --all` mengambil semua branch yang ada di GitHub (`dev`, `feature/...`, dst) supaya kamu bisa lihat dan pindah ke branch mana pun secara lokal. Cek daftarnya dengan `git branch -a`.
+
+### Langkah 2 — Pindah ke branch `dev` (BUKAN `main`!)
+
+**Penting banget:** branch `main` di repo ini sudah lama tidak di-update — semua kerjaan aktif ada di branch **`dev`**. Kalau kamu clone lalu langsung buka Xcode tanpa pindah branch dulu, kamu akan buka kode yang sudah ketinggalan jauh (`main` bahkan belum punya struktur `TaggoMain`/`TaggoClip` yang terbaru).
+
+```bash
+git checkout dev
+```
+
+`dev` ini yang jadi dasar kerja kamu sehari-hari — setiap branch fitur baru dibuat dari `dev`, dan Pull Request juga diarahkan balik ke `dev`, bukan ke `main` (detail alurnya ada di bagian "Cara Kerja Sehari-hari dengan Git" di bawah).
+
+### Langkah 3 — Setup signing kamu sendiri (WAJIB, sebelum buka Xcode)
 
 Setiap orang di tim ini pakai **akun Apple pribadi masing-masing** (bukan satu akun organisasi bersama), jadi Team ID **tidak** boleh ditulis langsung di file project yang di-push — tiap orang isi punya sendiri secara lokal.
 
@@ -84,15 +97,21 @@ Cara cari Team ID kamu: buka Xcode → **Settings → Accounts** → pastikan Ap
 
 `Config.xcconfig` sudah otomatis di-ignore oleh git, jadi aman — tidak akan ke-push dan tidak akan menimpa punya orang lain.
 
-### Langkah 3 — Buka di Xcode
+**Supaya bisa build target `TaggoClip` dan fitur yang pakai iCloud/CloudKit sungguhan**, kamu perlu diundang jadi member di Apple Developer Program yang sama dengan pemilik project (minta diundang di grup). Dua hal yang wajib dipastikan saat diundang — banyak yang kejebak di sini:
+- Undangannya harus lewat **developer.apple.com/account** (bagian **People**), **bukan** cuma lewat App Store Connect "Users and Access". Dua sistem itu terlihat mirip tapi beda: undangan App Store Connect saja **tidak** memberi akses sertifikat/signing yang dibutuhkan Xcode.
+- Kalau pemilik project pakai akun **Individual** (bukan Organization), dia mungkin tidak akan menemukan menu "People" itu sama sekali — itu memang keterbatasan akun Individual di Apple, bukan kesalahan setting. Kalau kalian kena kasus ini, lihat solusi "Pakai Bundle Identifier sendiri" di bagian "Soal Bundle Identifier & Capabilities" di bawah.
+
+Kalau kamu **belum** diundang/belum jadi member: tetap bisa buka project dan build **TaggoMain** untuk kerja di logic/UI yang tidak butuh capability tersebut (banyak yang sudah pakai Mock, bukan CloudKit asli).
+
+### Langkah 4 — Buka di Xcode
 
 ```bash
 open urbanan.xcodeproj
 ```
 
-### Langkah 4 — Jalankan aplikasi
+### Langkah 5 — Jalankan aplikasi
 
-Di pojok kiri atas Xcode, pastikan scheme yang dipilih **TaggoMain** (bukan TaggoClip/TaggoTests), pilih simulator (contoh: iPhone 16), lalu tekan `Cmd + R`.
+Di pojok kiri atas Xcode, pastikan scheme yang dipilih **TaggoMain** (bukan TaggoClip/TaggoTests), pilih simulator, lalu tekan `Cmd + R`.
 
 ---
 
@@ -113,11 +132,16 @@ Kalau sudah, kamu tidak perlu lakukan ini lagi untuk selamanya.
 
 ## Soal Bundle Identifier & Capabilities (Baca Sebelum Ubah Apa-apa di Signing!)
 
-- Bundle identifier project ini **sudah ditentukan dan sama untuk semua orang**: `com.urbananTaggo.app` (Main), `.Clip`, `.Tests`, `.UITests`. **Jangan diubah sendiri-sendiri** — beda dengan Team ID, identifier ini memang harus sama persis untuk semua orang karena dipakai bareng oleh iCloud Container dan relasi App Clip ↔ App induk.
-- Yang **boleh dan wajib** beda per-orang cuma `DEVELOPMENT_TEAM` di `Config.xcconfig` kamu (lihat Langkah 2 di atas).
-- Capability seperti **iCloud/CloudKit, App Clip, dan Associated Domains hanya bisa diregistrasi oleh akun Apple Developer Program berbayar** ($99/tahun), bukan akun personal gratisan. Kalau kamu belum punya akun berbayar (atau belum jadi member di Program milik salah satu tim), kamu tetap bisa:
-  - Build & jalankan **TaggoMain** untuk kerja di UI/logic yang tidak butuh CloudKit sungguhan (banyak test pakai Mock, bukan CloudKit asli)
-  - Tapi belum bisa build **TaggoClip** sampai diundang jadi member di Program yang sama, atau sampai kita punya solusi lain.
+- Bundle identifier **default** project ini sama untuk semua orang: `com.urbananTaggo.app` (Main), `.Clip`, `.Tests`, `.UITests`. Kalau kamu sudah jadi member di Apple Developer Program yang sama (lihat Langkah 3), **tidak perlu ubah apa-apa** — pakai saja default-nya, jangan diedit langsung di Xcode/`project.pbxproj`.
+- Capability seperti **iCloud/CloudKit, App Clip, dan Associated Domains** hanya bisa dipegang oleh **satu** Apple Developer Team — bundle identifier itu unik secara global di seluruh Apple, jadi tim/akun lain (walau sama-sama berbayar) tidak bisa ikut memegang identifier yang sama tanpa jadi member di team yang sama persis.
+- **Kalau kamu tidak bisa/tidak diundang jadi member** (misal karena pemilik project pakai akun Individual yang tidak mendukung undang-mengundang di Developer Portal — lihat Langkah 3), kamu tetap bisa kerja mandiri pakai bundle identifier + iCloud container **milikmu sendiri**, tanpa perlu mengedit satu pun file yang ikut ter-push:
+  1. Daftarkan App ID + iCloud Container kamu sendiri secara manual di [developer.apple.com/account](https://developer.apple.com/account) → Identifiers, di bawah akun Apple Developer Program kamu sendiri, dengan capability iCloud/App Clip/Push yang dibutuhkan sudah dicentang — lakukan ini **sebelum** buka Xcode/coba build.
+  2. Di `Config.xcconfig` kamu (lihat Langkah 3), tambahkan baris:
+     ```
+     TAGGO_BUNDLE_ID_BASE = com.namakamu.taggo
+     ```
+  3. Semua target otomatis memakai identifier itu, dan entitlements (iCloud container, link App Clip ↔ App induk) otomatis ikut menyesuaikan sendiri — tidak perlu sentuh file `.entitlements` atau `project.pbxproj` sama sekali.
+  - **Catatan penting:** dengan cara ini, iCloud container kamu jadi **terpisah** dari container tim yang lain — data yang kamu simpan lokal tidak akan muncul di build orang lain, dan sebaliknya. Ini solusi supaya kamu bisa tetap kerja & test mandiri, bukan untuk lihat data yang sama dengan tim.
 - Associated Domains masih **placeholder** (`applinks:TODO-REPLACE-DOMAIN.example`) karena domain aslinya belum ada — ini **bukan** sesuatu yang perlu diperbaiki sendiri, memang belum jadi prioritas di tahap ini.
 
 ---
@@ -128,7 +152,7 @@ Kalau sudah, kamu tidak perlu lakukan ini lagi untuk selamanya.
 
 **Penyebab:** kamu belum bikin `Config.xcconfig`, atau isinya masih Team ID orang lain.
 
-**Solusi:** ikuti **Langkah 2** di atas — copy `Config.xcconfig.example` → `Config.xcconfig`, isi Team ID **kamu sendiri**.
+**Solusi:** ikuti **Langkah 3** di atas — copy `Config.xcconfig.example` → `Config.xcconfig`, isi Team ID **kamu sendiri**.
 
 ### "Failed Registering Parent Bundle Identifier... cannot be registered... not available"
 
@@ -158,21 +182,51 @@ Kalau sudah, kamu tidak perlu lakukan ini lagi untuk selamanya.
 
 **Solusi:** jangan bikin target baru manual lewat Xcode UI tanpa koordinasi — tanya dulu di grup kalau butuh target baru.
 
+### "Multiple commands produce '...XXX.stringsdata'" (atau nama file lain yang sama)
+
+**Penyebab:** beda dari error di atas — ini karena ada satu file Swift yang sama persis ke-compile dua kali ke target yang sama, biasanya gara-gara folder biru (synchronized folder) yang keanggotaan targetnya tumpang tindih, atau ada file yang "dibagi" ke lebih dari satu target dengan cara yang salah.
+
+**Solusi:** jangan asal ubah warna folder (biru/synchronized vs abu-abu/classic group) di Project Navigator kalau tidak yakin bedanya — khususnya folder `TaggoTests`, yang isinya harus terpisah presisi antara target `TaggoTests` dan `TaggoUITests`. Kalau ini muncul, tanya di grup dulu sebelum coba benerin sendiri lewat trial-and-error; beberapa kasus butuh edit `project.pbxproj` langsung yang berisiko kalau caranya salah.
+
+### `DEVELOPMENT_TEAM` balik lagi ke akun orang lain padahal `Config.xcconfig` sudah benar
+
+**Penyebab:** ada yang tanpa sadar memilih Team secara manual di dropdown tab **Signing & Capabilities** Xcode. Begitu itu terjadi, Xcode langsung menulis Team ID itu secara **literal** ke `project.pbxproj` — menimpa mekanisme `Config.xcconfig` untuk **semua orang** yang pull setelahnya, bukan cuma di laptop kamu.
+
+**Solusi:**
+1. Jangan pernah pilih Team secara manual di dropdown Signing & Capabilities. Kalau dropdown itu menunjukkan Team yang salah/basi, **jangan diklik untuk diganti** — justru itu penyebab masalahnya.
+2. Kalau Team yang tampil di situ salah, perbaiki dengan cara lain: quit Xcode sepenuhnya → **Xcode → Settings → Accounts** → hapus lalu tambahkan ulang Apple ID kamu → buka Xcode lagi, supaya Xcode mengambil ulang daftar Team dari server Apple.
+3. Sebelum commit perubahan apa pun yang menyentuh signing, cek dulu:
+   ```bash
+   grep DEVELOPMENT_TEAM urbanan.xcodeproj/project.pbxproj
+   ```
+   Kalau muncul baris dengan Team ID literal (bukan hasil kosong), itu tandanya kejadian di atas — hapus baris itu (jangan sampai ikut ter-commit) sebelum push.
+
+### Sudah diundang jadi member tim, tapi Xcode tetap tidak menampilkan Team itu
+
+**Penyebab paling umum:** diundang lewat App Store Connect "Users and Access", padahal yang dibutuhkan Xcode untuk signing adalah akses di level **Developer Portal** (developer.apple.com/account → People) — dua sistem itu beda walau namanya mirip (lihat juga Langkah 3 di atas).
+
+**Solusi, coba urut dari atas:**
+1. Pastikan kamu diundang lewat developer.apple.com/account, bukan cuma App Store Connect.
+2. Cek role yang diberikan minimal **Developer**, **App Manager**, atau **Admin** — role seperti Marketing/Sales/Finance/Customer Support tidak memberi akses signing.
+3. Setelah invite di-accept: **Xcode → Settings → Accounts** → hapus Apple ID kamu → quit Xcode sepenuhnya → buka lagi → tambahkan ulang Apple ID. Xcode sering menyimpan cache daftar Team lama dan tidak refresh otomatis.
+4. Kalau pemilik project pakai akun **Individual** (bukan Organization), ini kemungkinan besar memang tidak bisa dilakukan sama sekali — akun Individual di Apple tidak mendukung undang-mengundang member Developer Portal. Kalau ini kasusnya, pakai solusi "Pakai Bundle Identifier sendiri" di bagian "Soal Bundle Identifier & Capabilities" di atas.
+
 ---
 
 ## Cara Kerja Sehari-hari dengan Git
 
-Ini alur yang harus diikuti setiap kali mau mengerjakan sesuatu:
+Ini alur yang harus diikuti setiap kali mau mengerjakan sesuatu. **Branch dasar kita adalah `dev`, bukan `main`** — `main` sudah lama tidak dipakai aktif, jadi semua langkah di bawah ini selalu mengacu ke `dev`.
 
 ### 1. Sebelum mulai kerja — selalu pull dulu
 
 ```bash
-git pull origin main
+git checkout dev
+git pull origin dev
 ```
 
 Ini untuk mengambil perubahan terbaru dari teman tim. **Jangan skip langkah ini** atau nanti kode kamu ketinggalan zaman.
 
-### 2. Buat branch baru untuk fitur kamu
+### 2. Buat branch baru untuk fitur kamu (dari `dev`)
 
 ```bash
 git checkout -b feature/nama-fitur
@@ -197,7 +251,7 @@ git push origin feature/nama-fitur
 
 ### 5. Buat Pull Request di GitHub
 
-Buka GitHub, klik **"Compare & pull request"**, minta salah satu anggota tim untuk review sebelum di-merge ke `main`.
+Buka GitHub, klik **"Compare & pull request"**, **pastikan base branch-nya `dev`** (bukan `main`), lalu minta salah satu anggota tim untuk review sebelum di-merge.
 
 ---
 
@@ -234,7 +288,7 @@ File ini adalah "daftar isi" project Xcode — setiap kali kamu menambah atau me
 - Selalu `git pull` sebelum mulai kerja
 - Satu orang mengerjakan satu fitur di satu waktu
 - Kabari teman di grup kalau mau menambah banyak file baru atau target baru
-- Merge ke `main` bergantian, jangan bersamaan
+- Merge ke `dev` bergantian, jangan bersamaan
 - Setelah membuka project di Xcode, cek `git status` — kalau `project.pbxproj` berubah padahal kamu cuma buka & langsung tutup, itu biasanya Xcode nulis ulang signing settings; jangan ikut ter-commit kalau bukan perubahan yang kamu maksud
 
 **Kalau sudah terlanjur konflik:**
