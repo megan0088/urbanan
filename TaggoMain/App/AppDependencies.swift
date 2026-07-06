@@ -52,4 +52,24 @@ struct AppDependencies {
     func makeReportFoundItemUseCase() -> ReportFoundItemUseCase {
         ReportFoundItemUseCase(cloudKitManager: cloudKitManager, imageCompressor: imageCompressor)
     }
+    
+    func makeItemDetailViewModel(item: Item) -> ItemDetailViewModel {
+        ItemDetailViewModel(item: item, deleteItemUseCase: makeDeleteItemUseCase(), qrManager: qrManager)
+    }
+    
+    func makeEditItemViewModel(item: Item) -> EditItemViewModel {
+        EditItemViewModel(item: item, editItemUseCase: makeEditItemUseCase())
+    }
+    
+    func makeEditItemUseCase() -> EditItemUseCase {
+        EditItemUseCase(
+            cloudKitManager: cloudKitManager,
+            currentUserProvider: currentUserProvider,
+            imageCompressor: imageCompressor
+        )
+    }
+ 
+    func makeDeleteItemUseCase() -> DeleteItemUseCase {
+        DeleteItemUseCase(cloudKitManager: cloudKitManager, currentUserProvider: currentUserProvider)
+    }
 }

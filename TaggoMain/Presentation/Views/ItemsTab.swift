@@ -24,7 +24,7 @@ struct ItemsTab: View {
     
     var body: some View {
         NavigationStack(path: $path) {
-            ItemListView(viewModel: viewModel)
+            ItemListView(dependencies: dependencies,viewModel: viewModel)
                 .navigationTitle("My Items")
                 .toolbar {
                     ToolbarItem(placement: .primaryAction) {

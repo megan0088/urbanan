@@ -65,6 +65,27 @@ final class CloudKitManager: CloudKitManaging {
         }
     }
     
+    func deleteItem(id: UUID) async throws {
+        do {
+            let recordID = CKRecord.ID(recordName: id.uuidString)
+            _ = try await database.deleteRecord(withID: recordID)
+        } catch let error as CKError {
+            throw Self.map(error)
+        }
+    }
+    
+    func updateItem(_ item: Item) async throws -> Item {
+        do {
+            let recordID = CKRecord.ID(recordName: item.id.uuidString)
+            let existingRecord = try await database.record(for: recordID)
+            let updatedRecord = ItemMapper.toRecord(item: item, existingRecord: existingRecord)
+            let savedRecord = try await database.save(updatedRecord)
+            return try ItemMapper.toItem(record: savedRecord)
+        } catch let error as CKError {
+            throw Self.map(error)
+        }
+    }
+    
     func saveFoundReport(_ report: FoundReport) async throws -> FoundReport {
         let record = FoundReportMapper.toRecord(report: report)
         do {

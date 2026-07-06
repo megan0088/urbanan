@@ -46,7 +46,7 @@ final class ItemListViewModel {
             return "Something about that item's data wasn't valid."
         case .invalidLink:
             return "Link is Invalid"
-        case .unknown:
+        case .unknown, .notOwner:
             return "Something went wrong. Please try again."
         }
     }
