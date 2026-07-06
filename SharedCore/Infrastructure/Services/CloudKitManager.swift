@@ -9,7 +9,7 @@ import CloudKit
 final class CloudKitManager: CloudKitManaging {
     private let database: CKDatabase
     
-    init(database: CKDatabase = CKContainer.default().publicCloudDatabase) {
+    init(database: CKDatabase = CKContainer(identifier: AppConfiguration.cloudKitContainerIdentifier).publicCloudDatabase) {
         self.database = database
     }
     
