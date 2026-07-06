@@ -65,6 +65,17 @@ final class CloudKitManager: CloudKitManaging {
         }
     }
     
+    func saveFoundReport(_ report: FoundReport) async throws -> FoundReport {
+        let record = FoundReportMapper.toRecord(report: report)
+        do {
+            let savedRecord = try await database.save(record)
+            let report = try FoundReportMapper.toFoundReport(record: savedRecord)
+            return report
+        } catch let error as CKError {
+            throw Self.map(error)
+        }
+    }
+    
     private static func map(_ error: CKError) -> TaggoError {
         switch error.code {
         case .networkUnavailable, .networkFailure:

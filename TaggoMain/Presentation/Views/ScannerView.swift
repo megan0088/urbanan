@@ -37,14 +37,8 @@ struct ScannerView: View {
             case .loading:
                 ProgressView("Looking up item…")
             case .found(let item):
-                ItemDetailView(item: item)
-                    .overlay(alignment: .top) {
-                        Button("Scan Again") { viewModel.reset() }
-                            .padding()
-                            .background(.thinMaterial)
-                            .clipShape(Capsule())
-                            .padding(.top)
-                    }
+                ScannedItemFlowView(item: item, reportFoundItemUseCase: viewModel.reportFoundItemUseCase,
+                                    onDismiss: {viewModel.reset()} );
             case .failure(let message):
                 VStack(spacing: 16) {
                     Text(message).multilineTextAlignment(.center).padding()

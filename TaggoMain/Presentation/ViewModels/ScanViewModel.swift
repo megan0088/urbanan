@@ -19,9 +19,11 @@ final class ScanViewModel {
 
     private(set) var state: State = .scanning
     private let resolveScannedItemUC: ResolveScannedItemUseCase
+    let reportFoundItemUseCase: ReportFoundItemUseCase
 
-    init(resolveScannedItemUC: ResolveScannedItemUseCase) {
+    init(resolveScannedItemUC: ResolveScannedItemUseCase, reportFoundItemUseCase: ReportFoundItemUseCase) {
         self.resolveScannedItemUC = resolveScannedItemUC
+        self.reportFoundItemUseCase = reportFoundItemUseCase
     }
 
     func handleScannedCode(_ code: String) async {

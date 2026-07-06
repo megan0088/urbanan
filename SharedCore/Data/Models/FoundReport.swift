@@ -10,7 +10,6 @@ import Foundation
 struct FoundReport: Identifiable, Equatable {
     let id: UUID
     let itemID: UUID
-    var finderID: UUID?
     var station: String
     var note: String?
     var photoData: Data?

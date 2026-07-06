@@ -28,7 +28,8 @@ struct RootTabView: View {
             Task { await handleIncomingLink(url)};
         }
         .sheet(item: $deepLinkedItem) { item in
-            ItemDetailView(item: item)
+            ScannedItemFlowView(item: item, reportFoundItemUseCase: dependencies.makeReportFoundItemUseCase(),
+                                onDismiss: {deepLinkedItem = nil});
         }
         .alert(
             "Link Error",
