@@ -8,4 +8,11 @@
 //  Config.xcconfig and fill in your own team ID from
 //  Xcode > Settings > Accounts > your Apple ID > Team.
 //
+//  TAGGO_BUNDLE_ID_BASE defaults to the shared team identifier below. Only
+//  override it in your own Config.xcconfig if you cannot get Developer
+//  Portal-level signing access under that team (e.g. a second Individual
+//  Program account) — in that case set your own unique bundle ID base there
+//  and your own iCloud container will follow automatically.
+//
+TAGGO_BUNDLE_ID_BASE = com.urbananTaggo.app
 #include? "Config.xcconfig"
