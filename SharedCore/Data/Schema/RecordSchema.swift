@@ -31,7 +31,6 @@ enum RecordSchema {
 
         enum Field {
             static let itemID = "itemID"
-            static let finderID = "finderID"
             static let station = "station"
             static let note = "note"
             static let photoAsset = "photoAsset"

@@ -34,7 +34,6 @@ enum FoundReportMapper {
             throw TaggoError.missingField(RecordSchema.FoundReport.Field.reportedAt)
         }
 
-        let finderID = (record[RecordSchema.FoundReport.Field.finderID] as? String).flatMap(UUID.init(uuidString:))
         let note = record[RecordSchema.FoundReport.Field.note] as? String
         let claimedAt = record[RecordSchema.FoundReport.Field.claimedAt] as? Date
 
@@ -46,7 +45,6 @@ enum FoundReportMapper {
         return FoundReport(
             id: id,
             itemID: itemID,
-            finderID: finderID,
             station: station,
             note: note,
             photoData: photoData,
@@ -64,7 +62,6 @@ enum FoundReportMapper {
         )
 
         record[RecordSchema.FoundReport.Field.itemID] = report.itemID.uuidString
-        record[RecordSchema.FoundReport.Field.finderID] = report.finderID?.uuidString
         record[RecordSchema.FoundReport.Field.station] = report.station
         record[RecordSchema.FoundReport.Field.note] = report.note
         record[RecordSchema.FoundReport.Field.status] = report.status.rawValue
