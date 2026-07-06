@@ -63,7 +63,7 @@ final class ScanViewModel {
             return "That doesn't look like a valid Taggo QR code. \(message)"
         case .missingField, .invalidFieldValue, .invalidRecordType:
             return "Something about that item's data wasn't valid."
-        case .unknown:
+        case .unknown, .notOwner:
             return "Something went wrong. Please try again."
         }
     }

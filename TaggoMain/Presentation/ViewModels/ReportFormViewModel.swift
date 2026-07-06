@@ -56,7 +56,7 @@ final class ReportFormViewModel {
             return "Something about that report wasn't valid."
         case .invalidLink:
             return "Something went wrong. Please try again."
-        case .unknown:
+        case .unknown, .notOwner:
             return "Something went wrong. Please try again."
         }
     }

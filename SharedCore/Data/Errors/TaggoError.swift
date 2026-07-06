@@ -10,6 +10,7 @@ enum TaggoError: Error, Equatable {
     case notFound
     case unauthorized
     case quotaExceeded
+    case notOwner
     
     case missingField(String)
     case invalidFieldValue(String)

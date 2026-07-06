@@ -5,19 +5,20 @@
 //  Created by Xaviero Yamin Loganta on 05/07/26.
 //
 
-import Foundation
 import SwiftUI
 
 struct ItemListView: View {
+    let dependencies: AppDependencies
     @State private var viewModel: ItemListViewModel
     @State private var selectedItem: Item?
- 
-    init(viewModel: ItemListViewModel) {
+
+    init(dependencies: AppDependencies, viewModel: ItemListViewModel) {
+        self.dependencies = dependencies
         _viewModel = State(initialValue: viewModel)
     }
- 
+
     private let columns = [GridItem(.adaptive(minimum: 150), spacing: 12)]
- 
+
     var body: some View {
         ScrollView {
             switch viewModel.state {
@@ -52,15 +53,23 @@ struct ItemListView: View {
         .refreshable {
             await viewModel.load()
         }
-        .sheet(item: $selectedItem) { item in
-            ItemDetailView(item: item)
+        // onDismiss refetches regardless of what happened inside (viewed, edited,
+        // deleted) — simplest correct behavior; no need for granular state syncing
+        // between ItemDetailViewModel and ItemListViewModel.
+        .sheet(item: $selectedItem, onDismiss: {
+            Task { await viewModel.load() }
+        }) { item in
+            ItemDetailView(
+                viewModel: dependencies.makeItemDetailViewModel(item: item),
+                dependencies: dependencies
+            )
         }
     }
 }
- 
+
 private struct ItemCardView: View {
     let item: Item
- 
+
     var body: some View {
         VStack(alignment: .leading, spacing: 6) {
             if let imageData = item.imageData, let uiImage = UIImage(data: imageData) {
