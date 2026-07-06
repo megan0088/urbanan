@@ -6,3 +6,21 @@
 //
 
 import Foundation
+
+struct ClipDependencies {
+    let cloudKitManager: CloudKitManaging
+    let imageCompressor: ImageCompressing
+ 
+    static let live = ClipDependencies(
+        cloudKitManager: CloudKitManager(),
+        imageCompressor: ImageCompressor()
+    )
+ 
+    func makeResolveScannedItemUseCase() -> ResolveScannedItemUseCase {
+        ResolveScannedItemUseCase(cloudKitManager: cloudKitManager)
+    }
+ 
+    func makeReportFoundItemUseCase() -> ReportFoundItemUseCase {
+        ReportFoundItemUseCase(cloudKitManager: cloudKitManager, imageCompressor: imageCompressor)
+    }
+}

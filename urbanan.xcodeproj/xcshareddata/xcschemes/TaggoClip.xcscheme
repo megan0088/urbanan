@@ -41,6 +41,7 @@
    </TestAction>
    <LaunchAction
       buildConfiguration = "Debug"
+      appClipInvocationURLString = "https://urbanantaggo.netlify.app/item/C3A2ABFC-CBE2-4BA6-9B08-A8EC94634343"
       selectedDebuggerIdentifier = "Xcode.DebuggerFoundation.Debugger.LLDB"
       selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
       launchStyle = "0"
@@ -62,6 +63,7 @@
    </LaunchAction>
    <ProfileAction
       buildConfiguration = "Release"
+      appClipInvocationURLString = "https://urbanantaggo.netlify.app/item/C3A2ABFC-CBE2-4BA6-9B08-A8EC94634343"
       shouldUseLaunchSchemeArgsEnv = "YES"
       savedToolIdentifier = ""
       useCustomWorkingDirectory = "NO"
