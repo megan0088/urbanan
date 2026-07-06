@@ -40,11 +40,16 @@ struct AppDependencies {
  
     func makeScanViewModel() -> ScanViewModel {
         ScanViewModel(
-            resolveScannedItemUC: ResolveScannedItemUseCase(cloudKitManager: cloudKitManager)
+            resolveScannedItemUC: ResolveScannedItemUseCase(cloudKitManager: cloudKitManager),
+            reportFoundItemUseCase: makeReportFoundItemUseCase()
         )
     }
     
     func makeResolveScannedItemUseCase() -> ResolveScannedItemUseCase {
         ResolveScannedItemUseCase(cloudKitManager: cloudKitManager)
+    }
+    
+    func makeReportFoundItemUseCase() -> ReportFoundItemUseCase {
+        ReportFoundItemUseCase(cloudKitManager: cloudKitManager, imageCompressor: imageCompressor)
     }
 }
