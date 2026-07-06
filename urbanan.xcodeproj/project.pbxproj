@@ -25,6 +25,7 @@
 		A7819D0536CBD4CC2513B028 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B6282C7111F6B852E87C6FCA /* Foundation.framework */; };
 		BE0D8CFC42C494E875BB8D94 /* DeleteItemUseCaseTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20EA5F7AC99692D57A4F41F3 /* DeleteItemUseCaseTests.swift */; };
 		C45C3FC2729DE4EFA0872EB3 /* ReportFoundItemUseCaseTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E8630703B50E2BBC93323DC4 /* ReportFoundItemUseCaseTests.swift */; };
+		F4E0B68169CB9E50981B051D /* MockImageCompressor.swift in Sources */ = {isa = PBXBuildFile; fileRef = E15C127B0D09F40CAB278AC1 /* MockImageCompressor.swift */; };
 		FC07E38BA07141541D288575 /* CloudKitManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF38F476852050EEFBBD3450 /* CloudKitManagerTests.swift */; };
 		FF4A55E07F29E713D5843D57 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B6282C7111F6B852E87C6FCA /* Foundation.framework */; };
 /* End PBXBuildFile section */
@@ -89,6 +90,7 @@
 		B957CDC91B88C312550E3821 /* MockQRManager.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = MockQRManager.swift; sourceTree = "<group>"; };
 		C4C939842FF6BC0400E3C09C /* TaggoMain.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TaggoMain.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		CD33525642DC4B67E53E436C /* FoundReportMapperTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = FoundReportMapperTests.swift; sourceTree = "<group>"; };
+		E15C127B0D09F40CAB278AC1 /* MockImageCompressor.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = MockImageCompressor.swift; sourceTree = "<group>"; };
 		E8630703B50E2BBC93323DC4 /* ReportFoundItemUseCaseTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = ReportFoundItemUseCaseTests.swift; sourceTree = "<group>"; };
 		FA87FFDCCB51371517B38035 /* ListItemsUseCaseTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = ListItemsUseCaseTests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -193,6 +195,7 @@
 				B2F51D7405C016B324C2719E /* MockCloudKitManager.swift */,
 				2FE9CC5A12D309A4523A4B29 /* MockCurrentUserProvider.swift */,
 				B957CDC91B88C312550E3821 /* MockQRManager.swift */,
+				E15C127B0D09F40CAB278AC1 /* MockImageCompressor.swift */,
 			);
 			path = Mocks;
 			sourceTree = "<group>";
@@ -460,6 +463,7 @@
 				A447F7FB8C0820539878EB12 /* MarkReportClaimedUseCaseTests.swift in Sources */,
 				0E93166EFE7F112AA1E03AA9 /* RegisterItemUseCaseTests.swift in Sources */,
 				C45C3FC2729DE4EFA0872EB3 /* ReportFoundItemUseCaseTests.swift in Sources */,
+				F4E0B68169CB9E50981B051D /* MockImageCompressor.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
