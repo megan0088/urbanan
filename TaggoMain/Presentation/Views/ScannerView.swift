@@ -37,7 +37,7 @@ struct ScannerView: View {
             case .loading:
                 ProgressView("Looking up item…")
             case .found(let item):
-                ScannedItemFlowView(item: item, reportFoundItemUseCase: viewModel.reporFoundItemUseCase,
+                ScannedItemFlowView(item: item, reportFoundItemUseCase: viewModel.reportFoundItemUseCase,
                                     onDismiss: {viewModel.reset()} );
             case .failure(let message):
                 VStack(spacing: 16) {

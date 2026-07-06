@@ -9,7 +9,7 @@ import Foundation
 
 
 @Observable
-final class ReportFormViewModel: ObservableObject {
+final class ReportFormViewModel {
     enum State: Equatable {
         case idle
         case submitting
