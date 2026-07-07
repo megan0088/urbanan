@@ -13,4 +13,6 @@ protocol CloudKitManaging: Sendable {
     func updateItem(_ item: Item) async throws -> Item
     func deleteItem(id: UUID) async throws
     func saveFoundReport(_ report: FoundReport) async throws -> FoundReport
+    func fetchFoundReports(forItemIDs itemIDs: [UUID]) async throws -> [FoundReport]
+    func updateFoundReport(_ report: FoundReport) async throws -> FoundReport
 }

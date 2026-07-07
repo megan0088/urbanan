@@ -8,42 +8,43 @@
 import Foundation
 
 struct ReportFoundItemUseCase {
-    
-    private let cloudKitManager: CloudKitManaging
+
+    /// Depends on FoundReportSubmitting (narrow), not CloudKitManaging directly — this is
+    /// what lets Main App (direct CloudKit write) and the Clip (HTTP relay) share this
+    /// exact UseCase despite having fundamentally different ways of actually getting the
+    /// data saved.
+    private let foundReportSubmitting: FoundReportSubmitting
     private let imageCompressor: ImageCompressing
-    
-    init(cloudKitManager: CloudKitManaging, imageCompressor: ImageCompressing) {
-        self.cloudKitManager = cloudKitManager
+
+    init(foundReportSubmitting: FoundReportSubmitting, imageCompressor: ImageCompressing) {
+        self.foundReportSubmitting = foundReportSubmitting
         self.imageCompressor = imageCompressor
     }
-    
+
     struct Input {
         var itemID: UUID
         var station: String
         var note: String
         var photoData: Data?
     }
-    
-    struct Output {
-        var report: FoundReport
-    }
-    
-    func execute(_ input: Input) async throws -> Output {
+
+    func execute(_ input: Input) async throws {
         let compressedPhoto = try input.photoData.map {
             try imageCompressor.compress($0, maxDimensionPixels: 1200, jpegQUality: 0.6)
         }
-        
-        let now = Date()
-        let newReport = FoundReport(
-                id: UUID(),
-                itemID: input.itemID,
-                station: input.station,
-                photoData: compressedPhoto,
-                status: .pending,
-                isRead: false,
-                reportedAt: now,
-                claimedAt: nil);
-        let savedReport = try await cloudKitManager.saveFoundReport(newReport)
-        return Output(report: savedReport);
+
+        let report = FoundReport(
+            id: UUID(),
+            itemID: input.itemID,
+            station: input.station,
+            note: input.note.isEmpty ? nil : input.note,
+            photoData: compressedPhoto,
+            status: .pending,
+            isRead: false,
+            reportedAt: Date(),
+            claimedAt: nil
+        )
+
+        try await foundReportSubmitting.submit(report)
     }
 }

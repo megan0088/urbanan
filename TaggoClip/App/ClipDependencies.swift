@@ -21,6 +21,9 @@ struct ClipDependencies {
     }
  
     func makeReportFoundItemUseCase() -> ReportFoundItemUseCase {
-        ReportFoundItemUseCase(cloudKitManager: cloudKitManager, imageCompressor: imageCompressor)
+        ReportFoundItemUseCase(
+            foundReportSubmitting: HTTPFoundReportSubmitter(),
+            imageCompressor: imageCompressor
+        )
     }
 }
