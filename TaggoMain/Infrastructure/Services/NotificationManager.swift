@@ -49,21 +49,6 @@ final class NotificationManager: NSObject, NotificationManaging, @unchecked Send
         continuation.yield(())
     }
 
-    func debugListSubscriptions() async throws -> [String] {
-        do {
-            let subscriptions = try await database.allSubscriptions()
-            guard !subscriptions.isEmpty else { return [] }
-            return subscriptions.map { subscription in
-                guard let querySubscription = subscription as? CKQuerySubscription else {
-                    return subscription.subscriptionID
-                }
-                return "\(querySubscription.subscriptionID) — recordType: \(querySubscription.recordType), predicate: \(querySubscription.predicate)"
-            }
-        } catch let error as CKError {
-            throw Self.map(error)
-        }
-    }
-
     private static func map(_ error: CKError) -> TaggoError {
         switch error.code {
         case .networkUnavailable, .networkFailure:

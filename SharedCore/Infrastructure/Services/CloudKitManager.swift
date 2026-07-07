@@ -90,7 +90,7 @@ final class CloudKitManager: CloudKitManaging {
         let record = FoundReportMapper.toRecord(report: report)
         do {
             let savedRecord = try await database.save(record)
-            print("✅ Saved FoundReport record: \(savedRecord.recordID.recordName), itemID: \(report.itemID.uuidString) — this is the write that must match a subscription's predicate exactly")
+//            print("✅ Saved FoundReport record: \(savedRecord.recordID.recordName), itemID: \(report.itemID.uuidString) — this is the write that must match a subscription's predicate exactly")
             let report = try FoundReportMapper.toFoundReport(record: savedRecord)
             return report
         } catch let error as CKError {
