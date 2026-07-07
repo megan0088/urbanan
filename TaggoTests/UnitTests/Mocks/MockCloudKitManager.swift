@@ -25,6 +25,14 @@ final class MockCloudKitManager: CloudKitManaging, @unchecked Sendable {
     private(set) var saveFoundReportCallCount = 0
     private(set) var lastSavedFoundReport: FoundReport?
 
+    var fetchFoundReportsResult: Result<[FoundReport], Error> = .success([])
+    private(set) var fetchFoundReportsCallCount = 0
+    private(set) var lastFetchFoundReportsItemIDs: [UUID]?
+
+    var updateFoundReportResult: Result<FoundReport, Error>?
+    private(set) var updateFoundReportCallCount = 0
+    private(set) var lastUpdatedFoundReport: FoundReport?
+
     func saveItem(_ item: Item) async throws -> Item {
         saveItemCallCount += 1
         lastSavedItem = item
@@ -78,6 +86,25 @@ final class MockCloudKitManager: CloudKitManaging, @unchecked Sendable {
         saveFoundReportCallCount += 1
         lastSavedFoundReport = report
         switch saveFoundReportResult {
+        case .success(let overrideReport): return overrideReport
+        case .failure(let error): throw error
+        case .none: return report
+        }
+    }
+
+    func fetchFoundReports(forItemIDs itemIDs: [UUID]) async throws -> [FoundReport] {
+        fetchFoundReportsCallCount += 1
+        lastFetchFoundReportsItemIDs = itemIDs
+        switch fetchFoundReportsResult {
+        case .success(let reports): return reports
+        case .failure(let error): throw error
+        }
+    }
+
+    func updateFoundReport(_ report: FoundReport) async throws -> FoundReport {
+        updateFoundReportCallCount += 1
+        lastUpdatedFoundReport = report
+        switch updateFoundReportResult {
         case .success(let overrideReport): return overrideReport
         case .failure(let error): throw error
         case .none: return report

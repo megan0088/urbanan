@@ -10,13 +10,15 @@ final class RegisterItemUseCaseTests: XCTestCase {
         cloudKitManager: MockCloudKitManager = MockCloudKitManager(),
         qrManager: MockQRManager = MockQRManager(),
         currentUserProvider: MockCurrentUserProvider = MockCurrentUserProvider(),
-        imageCompressor: MockImageCompressor = MockImageCompressor()
+        imageCompressor: MockImageCompressor = MockImageCompressor(),
+        notificationManaging: MockNotificationManaging = MockNotificationManaging()
     ) -> RegisterItemUseCase {
         RegisterItemUseCase(
             cloudKitManager: cloudKitManager,
             qrManager: qrManager,
             currentUserProvider: currentUserProvider,
-            imageCompressor: imageCompressor
+            imageCompressor: imageCompressor,
+            notificationManaging: notificationManaging
         )
     }
 
@@ -28,7 +30,7 @@ final class RegisterItemUseCaseTests: XCTestCase {
         let input = RegisterItemUseCase.Input(name: "Blue Backpack", category: "Bags", color: "Blue", description: "Worn straps", imageData: nil)
         _ = try await sut.execute(input)
 
-        XCTAssertEqual(cloudKitManager.saveItemCount, 1)
+        XCTAssertEqual(cloudKitManager.saveItemCallCount, 1)
         XCTAssertEqual(cloudKitManager.lastSavedItem?.ownerID, currentUserProvider.currentUserID)
         XCTAssertEqual(cloudKitManager.lastSavedItem?.name, "Blue Backpack")
         XCTAssertEqual(cloudKitManager.lastSavedItem?.category, "Bags")
@@ -107,6 +109,28 @@ final class RegisterItemUseCaseTests: XCTestCase {
         } catch {
             XCTAssertEqual(error as? TaggoError, .invalidFieldValue("imageData"))
         }
-        XCTAssertEqual(cloudKitManager.saveItemCount, 0)
+        XCTAssertEqual(cloudKitManager.saveItemCallCount, 0)
+    }
+
+    func test_execute_subscribesToFoundReportsForSavedItem() async throws {
+        let notificationManaging = MockNotificationManaging()
+        let sut = makeSUT(notificationManaging: notificationManaging)
+
+        let input = RegisterItemUseCase.Input(name: "Item", category: "Cat", color: "Red", description: "", imageData: nil)
+        let output = try await sut.execute(input)
+
+        XCTAssertEqual(notificationManaging.subscribeCallCount, 1)
+        XCTAssertEqual(notificationManaging.lastSubscribedItemID, output.item.id)
+    }
+
+    func test_execute_whenSubscriptionFails_registrationStillSucceeds() async throws {
+        let notificationManaging = MockNotificationManaging()
+        notificationManaging.subscribeResult = .failure(TaggoError.networkUnavailable)
+        let sut = makeSUT(notificationManaging: notificationManaging)
+
+        let input = RegisterItemUseCase.Input(name: "Item", category: "Cat", color: "Red", description: "", imageData: nil)
+
+        // Should not throw even though the subscription failed.
+        _ = try await sut.execute(input)
     }
 }

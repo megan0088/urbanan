@@ -23,6 +23,10 @@ struct RootTabView: View {
                 .tabItem {
                     Label("Scan", systemImage: "qrcode.viewfinder")
                 }
+            InboxTab(dependencies: dependencies)
+                .tabItem {
+                    Label("Inbox", systemImage: "tray")
+                }
         }
         .onOpenURL { url  in
             Task { await handleIncomingLink(url)};
