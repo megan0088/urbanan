@@ -5,5 +5,7 @@
 
 import Foundation
 
-enum ReportStatus {
+enum ReportStatus: String, Codable, Equatable, CaseIterable {
+    case pending
+    case claimed
 }

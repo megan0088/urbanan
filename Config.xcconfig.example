@@ -7,10 +7,17 @@
 //
 //  Find your team ID in Xcode > Settings > Accounts > select your Apple ID > Team.
 //
-//  The bundle identifier (com.urbananTaggo.app) is NOT per-developer -- it's
-//  fixed and tracked in the project itself, because the iCloud container and
-//  App Clip parent-identifier entitlements must be one stable, literal string
-//  to register with Apple at all (custom xcconfig variables don't reliably
-//  resolve in that registration path). Only your own signing team is local.
-//
 DEVELOPMENT_TEAM = YOUR_TEAM_ID_HERE
+
+//  Almost everyone should leave the line below commented out -- the shared
+//  bundle ID (com.urbananTaggo.app) already works for anyone signing under
+//  the main Apple Developer Program team, and the iCloud container / App
+//  Clip link follow it automatically.
+//
+//  Only uncomment and set your own unique value here if you genuinely cannot
+//  get Developer Portal-level signing access under that team (e.g. you're
+//  on a separate Individual Program account). Doing so points your local
+//  build at your own bundle ID and your own, separate iCloud container --
+//  it will NOT share data with everyone else's builds.
+//
+// TAGGO_BUNDLE_ID_BASE = com.yourname.taggo

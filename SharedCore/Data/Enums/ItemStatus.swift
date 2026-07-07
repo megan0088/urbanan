@@ -5,5 +5,6 @@
 
 import Foundation
 
-enum ItemStatus {
+enum ItemStatus: String, Codable, Equatable {
+    case active
 }

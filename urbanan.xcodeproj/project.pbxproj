@@ -7,106 +7,28 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		00BA952B11FC3FD1D925A973 /* ScanReportView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D397ACFD8DD2DF51B6645DD2 /* ScanReportView.swift */; };
-		0163EBC5661714FEDB233259 /* RecordSchema.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45A6916DA9475DC696F14682 /* RecordSchema.swift */; };
-		03AA71C0894FC57127CF1636 /* UniversalLinkParserTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E63B57236D31C6FBAEC3C966 /* UniversalLinkParserTests.swift */; };
-		05AB4CD7A1E9213C2478245E /* NotificationManaging.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00BDA7D9554DBC4EFE194DD2 /* NotificationManaging.swift */; };
-		08D39AB3A9BD034E2B538A83 /* MockQRManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9856AF933580E9B7FABEEA2 /* MockQRManager.swift */; };
-		0AC46C844B4D7D1DA47A9A90 /* QRManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0C4CB1B3980A82D6A7CE2B5 /* QRManagerTests.swift */; };
-		0CD1FE92E363829FF744AE3B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 42FAE37AB1634F162AC62864 /* Assets.xcassets */; };
-		0FF03796DE9977271856ED1B /* FoundReportMapperTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 050A38F901243CFD0E5CBBFB /* FoundReportMapperTests.swift */; };
-		106A34197B210AF8CF90A214 /* CloudKitManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A69476BB725B5F522936198 /* CloudKitManager.swift */; };
-		10A1F22A350618418B13F408 /* ItemStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 865F15C47B2D5B6F7AD16397 /* ItemStatus.swift */; };
-		11C11913273E8ACC4EA1AEAB /* MarkReportClaimedUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CD2A0C4DB67698B590F45CE /* MarkReportClaimedUseCase.swift */; };
-		13AB212EF65879412F5D63CD /* UniversalLinkParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9CA989F52FC1ED382A116CE /* UniversalLinkParser.swift */; };
-		15B8A1C3845DC76683187DA5 /* DeleteItemUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4261D6A44B080A717E7331C6 /* DeleteItemUseCase.swift */; };
-		15DC3E5798169133F35267D9 /* EditItemUseCaseTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0302BF7A5198116D5B48C3BB /* EditItemUseCaseTests.swift */; };
-		1EEFFCAF8B358FB5BD6C2718 /* CloudKitManaging.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D94AEEAC1C8C6814872EE28 /* CloudKitManaging.swift */; };
-		1F93EC41C98A909354D18AEA /* FoundReport.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5678A243185AA3831D887BF3 /* FoundReport.swift */; };
-		2236B4B00986DE8F9CE68671 /* ItemMapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C8B0657F049E53FC949E49A /* ItemMapper.swift */; };
-		22433C67FB409BC80A56C35A /* CloudKitManaging.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D94AEEAC1C8C6814872EE28 /* CloudKitManaging.swift */; };
-		257474B9AED7035E46EF54F5 /* Item.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB2212C8744D3778A8EAE032 /* Item.swift */; };
-		25FF70ADFE04EEC8300D31A7 /* OwnedItemsStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6074783041082B6361F71F5A /* OwnedItemsStore.swift */; };
-		291B65F721659526759E42A9 /* ReportStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = B77ECF767FB5E79042ADA96E /* ReportStatus.swift */; };
-		299211090C1F2184644F78A9 /* RecordSchema.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45A6916DA9475DC696F14682 /* RecordSchema.swift */; };
-		2C66F046E552BAEE50598C1B /* RegisterItemUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2B4B7A8EA7E7CBC5F150A71 /* RegisterItemUseCase.swift */; };
-		2EF9E186F8552A6A8102E8DA /* FoundReportMapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = A62E7F3515C4F721D02F56DA /* FoundReportMapper.swift */; };
-		2F1C54A75087D53A4816882F /* RegisterItemUseCaseTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11243323B1C1CCD1B4769F98 /* RegisterItemUseCaseTests.swift */; };
-		3080AC1F8D0245470EE1BEA9 /* ItemMapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C8B0657F049E53FC949E49A /* ItemMapper.swift */; };
-		310797AC0E84104BE75EB23A /* ReportStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = B77ECF767FB5E79042ADA96E /* ReportStatus.swift */; };
-		32D8B2AE3076A34E4E6FACF6 /* RecordSchema.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45A6916DA9475DC696F14682 /* RecordSchema.swift */; };
-		35414D2C04CC606BBAC1C657 /* CloudKitManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A8EA2BD3C429F2058343B9B /* CloudKitManagerTests.swift */; };
-		35591D883B628A2F9828CB37 /* ListItemsUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B2C8D820E9A374F15B10F3A /* ListItemsUseCase.swift */; };
-		384041DDBA9D97BFEA9EFE99 /* TaggoError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F30BE02DA1EEF512F7C5714 /* TaggoError.swift */; };
-		3BA1C6514C7BC707F087B5ED /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 2F6F3F5F15349C1C6815754F /* Assets.xcassets */; };
-		4ABE0058BEB1E3CDF52DAF2E /* RegisterItemUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2B4B7A8EA7E7CBC5F150A71 /* RegisterItemUseCase.swift */; };
-		4AD638B949E4B2AC2A908E13 /* MarkReportClaimedUseCaseTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCE4196FC3905E19F5586A26 /* MarkReportClaimedUseCaseTests.swift */; };
-		508E61B2A9CFA34066B014C3 /* NotificationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58310DF001DAF9A69BE756F9 /* NotificationManager.swift */; };
-		5358EC557017F7391B084879 /* ReportFoundItemUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74B795CE9EF5B8969EA73F1E /* ReportFoundItemUseCase.swift */; };
-		539ADC642216A56F14F1914C /* ReportFoundItemUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74B795CE9EF5B8969EA73F1E /* ReportFoundItemUseCase.swift */; };
-		590279FEDA9CE5ADF9102351 /* AppConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF46DC28C1073F98A3BE8C6B /* AppConfiguration.swift */; };
-		5E0E79F4BE584CCF0B86A6FF /* ItemStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 865F15C47B2D5B6F7AD16397 /* ItemStatus.swift */; };
-		5FBDE9883E291B52B0A59649 /* MarkReportClaimedUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CD2A0C4DB67698B590F45CE /* MarkReportClaimedUseCase.swift */; };
-		66B41A245D76A4E04F146321 /* DeleteItemUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4261D6A44B080A717E7331C6 /* DeleteItemUseCase.swift */; };
-		6C461D6AE47F56F932B7EFDA /* ScanReportViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B12E7A78AE021722203C297 /* ScanReportViewModel.swift */; };
-		7129DBBB40C601F50C16A7C2 /* QRManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CA6D6132C84F4D253D66D5E /* QRManager.swift */; };
+		07BF4CCA1052B2D627A72543 /* MockNotificationManaging.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1F8A6AB1342346902821E86 /* MockNotificationManaging.swift */; };
+		0BF8C8D8DE55636AB9211894 /* EditItemUseCaseTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A5BD57DAC1851058DA39BA9 /* EditItemUseCaseTests.swift */; };
+		0E93166EFE7F112AA1E03AA9 /* RegisterItemUseCaseTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8368CADB67AACFEE46138F1B /* RegisterItemUseCaseTests.swift */; };
+		264A8109287725B90B4C42CB /* MockCloudKitManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2F51D7405C016B324C2719E /* MockCloudKitManager.swift */; };
+		26B713379FA6A8C4E1FE53EE /* UniversalLinkParserTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2B231C40F01254D1A098E5A /* UniversalLinkParserTests.swift */; };
+		2CE00F8EB75514A4B02A7795 /* QRManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68D275C831C717BDBB3B1B2B /* QRManagerTests.swift */; };
+		2E8B591604177D2264F33601 /* ListItemsUseCaseTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA87FFDCCB51371517B38035 /* ListItemsUseCaseTests.swift */; };
+		3A899836609505DEB5AF275C /* MockFoundReportSubmitting.swift in Sources */ = {isa = PBXBuildFile; fileRef = 068D4ACCCD2B83215494722B /* MockFoundReportSubmitting.swift */; };
+		5376686C78C292738E3ECDED /* MockQRManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B957CDC91B88C312550E3821 /* MockQRManager.swift */; };
+		5B7B56331C0C3BB508229D73 /* ItemMapperTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6ED59007FF426BD8A5A5FD19 /* ItemMapperTests.swift */; };
+		5F68D51C4A650C395BD02F7D /* FlowEndToEndUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8825DEFF2A4B4D94E198D290 /* FlowEndToEndUITests.swift */; };
+		622702306EC9F7456FCE5E68 /* FetchInboxUseCaseTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CC2B2B850C874E8E06913C8 /* FetchInboxUseCaseTests.swift */; };
 		727E5876D7FE69F9E1FDF9E3 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B6282C7111F6B852E87C6FCA /* Foundation.framework */; };
-		736B288E21447E8B1EDB03C1 /* MarkReportClaimedUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CD2A0C4DB67698B590F45CE /* MarkReportClaimedUseCase.swift */; };
-		73A064DBA47930A0337DB200 /* ReportViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE08CDED9D4C3EC7D4486D7D /* ReportViewModel.swift */; };
-		73D3163DFA6E0D3FE17AD5E7 /* ItemStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 865F15C47B2D5B6F7AD16397 /* ItemStatus.swift */; };
-		767096C4D803DD39BF088F91 /* Item.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB2212C8744D3778A8EAE032 /* Item.swift */; };
-		782C3D78951CB6508ACA294A /* FoundReportMapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = A62E7F3515C4F721D02F56DA /* FoundReportMapper.swift */; };
 		8178BE75F944338B77393333 /* TaggoClip.app in Embed App Clips */ = {isa = PBXBuildFile; fileRef = 3E76687E69FFF2581638DE4F /* TaggoClip.app */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
-		81C76BE6FE9D1F6B85AFC7AD /* CloudKitManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A69476BB725B5F522936198 /* CloudKitManager.swift */; };
-		824A6201029180BA86038124 /* FoundReportMapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = A62E7F3515C4F721D02F56DA /* FoundReportMapper.swift */; };
-		84007E039FBA11D18D83AA07 /* FetchInboxUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61426EE2EB98D304FED77B20 /* FetchInboxUseCase.swift */; };
-		84A296C3B72CDD491BD29085 /* EditItemUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF2D2D973DE368AE94C02844 /* EditItemUseCase.swift */; };
-		89F97C235A21F961A26346EA /* ListItemsUseCaseTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9895C175F64863C74F68C9C6 /* ListItemsUseCaseTests.swift */; };
-		8D6B66E51C7498C48B328963 /* RegisterItemUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2B4B7A8EA7E7CBC5F150A71 /* RegisterItemUseCase.swift */; };
-		8EF184BCE13B78B9BF3C7FC4 /* EditItemUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF2D2D973DE368AE94C02844 /* EditItemUseCase.swift */; };
-		8FC38FB9751E2F3340FE75E0 /* CloudKitManaging.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D94AEEAC1C8C6814872EE28 /* CloudKitManaging.swift */; };
-		903139E477CA12BE3C3F92C7 /* Item.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB2212C8744D3778A8EAE032 /* Item.swift */; };
-		90736184FE54E022EB6255A6 /* ScannerService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 700222C1C907A757799F4A72 /* ScannerService.swift */; };
-		95220A8159CCF936FC866802 /* FetchInboxUseCaseTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C1AB9CC71CAEF0C08799665D /* FetchInboxUseCaseTests.swift */; };
-		9627514DC7D4D54B361128FA /* RegisterViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36EB1AC8D8936178EAA8BDA6 /* RegisterViewModel.swift */; };
-		967B34258F2346BC7F762ABA /* TaggoMainApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB5416A72EC8FF3EB512F5AF /* TaggoMainApp.swift */; };
-		994B1B670E0F77FC6F688581 /* FlowEndToEndUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E35B203AAA0826DCD944A6F /* FlowEndToEndUITests.swift */; };
-		99CC9890A1D6E3AE0C9EFC41 /* ListItemsUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B2C8D820E9A374F15B10F3A /* ListItemsUseCase.swift */; };
-		9CB30492F7669C7E198474D2 /* UniversalLinkParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9CA989F52FC1ED382A116CE /* UniversalLinkParser.swift */; };
-		9D34C43C1296FD02B07D13D0 /* QRManaging.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50A61A4D64383C39D7B98EAA /* QRManaging.swift */; };
-		A5B5AAF8539BD4DB16C9147A /* ReportFoundItemUseCaseTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A932C427E1B693915A773583 /* ReportFoundItemUseCaseTests.swift */; };
-		A6DE24AD68A37BB1F7ACC26C /* ReportStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = B77ECF767FB5E79042ADA96E /* ReportStatus.swift */; };
-		A767EC9917D3560CA9513288 /* ScannerService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 700222C1C907A757799F4A72 /* ScannerService.swift */; };
+		9162679FEEC1AA83CA550E46 /* FoundReportMapperTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD33525642DC4B67E53E436C /* FoundReportMapperTests.swift */; };
+		A447F7FB8C0820539878EB12 /* MarkReportClaimedUseCaseTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A123A25EB3AC0740B430F81F /* MarkReportClaimedUseCaseTests.swift */; };
+		A522D6D20925562CFEA26D2C /* MockCurrentUserProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FE9CC5A12D309A4523A4B29 /* MockCurrentUserProvider.swift */; };
 		A7819D0536CBD4CC2513B028 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B6282C7111F6B852E87C6FCA /* Foundation.framework */; };
-		A7EFD5F01234254FBF2D0D5A /* CurrentUserProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = C1826EFFB16E75F17543C2EE /* CurrentUserProvider.swift */; };
-		A966F096AAD09AB3DDD99675 /* MockCloudKitManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A6D400E0E035AA4558AE7A2 /* MockCloudKitManager.swift */; };
-		AA3B468130E80A994C3F1B87 /* ItemMapperTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC4007BB795EFA41E8A2816A /* ItemMapperTests.swift */; };
-		AC58C95F3F44C56EAA1892B9 /* QRManaging.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50A61A4D64383C39D7B98EAA /* QRManaging.swift */; };
-		B4771580952F01206BBDAA91 /* TaggoError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F30BE02DA1EEF512F7C5714 /* TaggoError.swift */; };
-		B8949E940FF4EE8421DB1A5C /* CloudKitManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A69476BB725B5F522936198 /* CloudKitManager.swift */; };
-		B98311208B55050DB280019A /* FoundReport.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5678A243185AA3831D887BF3 /* FoundReport.swift */; };
-		C38BD1E31A9D37F7213C9449 /* ItemMapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C8B0657F049E53FC949E49A /* ItemMapper.swift */; };
-		C39386F1F881B546B241DDD2 /* AppConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF46DC28C1073F98A3BE8C6B /* AppConfiguration.swift */; };
-		C3C08D3F903CBE633B082781 /* TaggoClipApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B5A14B47FDC67C61A039092 /* TaggoClipApp.swift */; };
-		C5035A46899F830AA709598B /* AppConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF46DC28C1073F98A3BE8C6B /* AppConfiguration.swift */; };
-		C5B139043BFB612496EB55AD /* QRManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CA6D6132C84F4D253D66D5E /* QRManager.swift */; };
-		C61BE55E87EACB235AC0C771 /* QRManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CA6D6132C84F4D253D66D5E /* QRManager.swift */; };
-		CDA7F2A9A2169F8C0098D67C /* QRManaging.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50A61A4D64383C39D7B98EAA /* QRManaging.swift */; };
-		D22FFB9B1BDF61A742E09E89 /* TaggoError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F30BE02DA1EEF512F7C5714 /* TaggoError.swift */; };
-		D299F655AE634243CF267210 /* ScannerService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 700222C1C907A757799F4A72 /* ScannerService.swift */; };
-		D420B36EF2D709C0B57F73DD /* FoundReport.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5678A243185AA3831D887BF3 /* FoundReport.swift */; };
-		D4C56DAE9811D152CE8450D0 /* InboxViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 990B331BEECBF708EE3453CE /* InboxViewModel.swift */; };
-		D66BCC826E1B891FA2E2C21E /* ReportFoundItemUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74B795CE9EF5B8969EA73F1E /* ReportFoundItemUseCase.swift */; };
-		D7D84314D66BE397BFBBF83B /* InboxView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 596801327AC0ADBF9BD79665 /* InboxView.swift */; };
-		DFDF2DD3978052473970005D /* FetchInboxUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61426EE2EB98D304FED77B20 /* FetchInboxUseCase.swift */; };
-		EC6ACC9B8E73A7BB1A68F68B /* ReportView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52E0DCF107BF51565DD33B85 /* ReportView.swift */; };
-		EDA546DB6F5FE80F487109D8 /* EditItemUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF2D2D973DE368AE94C02844 /* EditItemUseCase.swift */; };
-		F01AD4386B6949A9CE46E1D2 /* DeleteItemUseCaseTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52F2773AE1521EEB3E08536B /* DeleteItemUseCaseTests.swift */; };
-		F4538E6FF865DACACB54D1EF /* FetchInboxUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61426EE2EB98D304FED77B20 /* FetchInboxUseCase.swift */; };
-		F9D0B8AFCD7181E3A02AF342 /* AppClipHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5A6B5A926F682583A1743F4 /* AppClipHandler.swift */; };
-		FA0A6726B8E1D3B1B9BB4C7B /* RegisterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DBEE6F54558EC6552D49D33 /* RegisterView.swift */; };
-		FAABCE40EFA3F8EEC8E9E2B6 /* ListItemsUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B2C8D820E9A374F15B10F3A /* ListItemsUseCase.swift */; };
-		FBAE31F8168D87A527F17C84 /* DeleteItemUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4261D6A44B080A717E7331C6 /* DeleteItemUseCase.swift */; };
+		BE0D8CFC42C494E875BB8D94 /* DeleteItemUseCaseTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20EA5F7AC99692D57A4F41F3 /* DeleteItemUseCaseTests.swift */; };
+		C45C3FC2729DE4EFA0872EB3 /* ReportFoundItemUseCaseTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E8630703B50E2BBC93323DC4 /* ReportFoundItemUseCaseTests.swift */; };
+		F4E0B68169CB9E50981B051D /* MockImageCompressor.swift in Sources */ = {isa = PBXBuildFile; fileRef = E15C127B0D09F40CAB278AC1 /* MockImageCompressor.swift */; };
+		FC07E38BA07141541D288575 /* CloudKitManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF38F476852050EEFBBD3450 /* CloudKitManagerTests.swift */; };
 		FF4A55E07F29E713D5843D57 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B6282C7111F6B852E87C6FCA /* Foundation.framework */; };
 /* End PBXBuildFile section */
 
@@ -149,70 +71,76 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		00BDA7D9554DBC4EFE194DD2 /* NotificationManaging.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = NotificationManaging.swift; sourceTree = "<group>"; };
-		0302BF7A5198116D5B48C3BB /* EditItemUseCaseTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = EditItemUseCaseTests.swift; sourceTree = "<group>"; };
-		050A38F901243CFD0E5CBBFB /* FoundReportMapperTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = FoundReportMapperTests.swift; sourceTree = "<group>"; };
-		0A69476BB725B5F522936198 /* CloudKitManager.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = CloudKitManager.swift; sourceTree = "<group>"; };
-		0D94AEEAC1C8C6814872EE28 /* CloudKitManaging.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = CloudKitManaging.swift; sourceTree = "<group>"; };
-		0DBEE6F54558EC6552D49D33 /* RegisterView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = RegisterView.swift; sourceTree = "<group>"; };
-		11243323B1C1CCD1B4769F98 /* RegisterItemUseCaseTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = RegisterItemUseCaseTests.swift; sourceTree = "<group>"; };
+		03D115DB2FFAE14E00FA07EA /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		068D4ACCCD2B83215494722B /* MockFoundReportSubmitting.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = MockFoundReportSubmitting.swift; sourceTree = "<group>"; };
+		0CC2B2B850C874E8E06913C8 /* FetchInboxUseCaseTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = FetchInboxUseCaseTests.swift; sourceTree = "<group>"; };
 		13DC7851A637F0CB51948406 /* TaggoUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TaggoUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		1B12E7A78AE021722203C297 /* ScanReportViewModel.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = ScanReportViewModel.swift; sourceTree = "<group>"; };
-		1B2C8D820E9A374F15B10F3A /* ListItemsUseCase.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = ListItemsUseCase.swift; sourceTree = "<group>"; };
-		1CA6D6132C84F4D253D66D5E /* QRManager.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = QRManager.swift; sourceTree = "<group>"; };
-		2B5A14B47FDC67C61A039092 /* TaggoClipApp.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = TaggoClipApp.swift; sourceTree = "<group>"; };
+		20EA5F7AC99692D57A4F41F3 /* DeleteItemUseCaseTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = DeleteItemUseCaseTests.swift; sourceTree = "<group>"; };
 		2EDB530FEC74B26BB3DBDBE4 /* TaggoTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TaggoTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		2F30BE02DA1EEF512F7C5714 /* TaggoError.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = TaggoError.swift; sourceTree = "<group>"; };
-		2F6F3F5F15349C1C6815754F /* Assets.xcassets */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
-		36EB1AC8D8936178EAA8BDA6 /* RegisterViewModel.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = RegisterViewModel.swift; sourceTree = "<group>"; };
-		3C8B0657F049E53FC949E49A /* ItemMapper.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = ItemMapper.swift; sourceTree = "<group>"; };
+		2FE9CC5A12D309A4523A4B29 /* MockCurrentUserProvider.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = MockCurrentUserProvider.swift; sourceTree = "<group>"; };
+		3A5BD57DAC1851058DA39BA9 /* EditItemUseCaseTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = EditItemUseCaseTests.swift; sourceTree = "<group>"; };
 		3E76687E69FFF2581638DE4F /* TaggoClip.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TaggoClip.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		4261D6A44B080A717E7331C6 /* DeleteItemUseCase.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = DeleteItemUseCase.swift; sourceTree = "<group>"; };
-		42FAE37AB1634F162AC62864 /* Assets.xcassets */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
-		45A6916DA9475DC696F14682 /* RecordSchema.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = RecordSchema.swift; sourceTree = "<group>"; };
-		4CD2A0C4DB67698B590F45CE /* MarkReportClaimedUseCase.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = MarkReportClaimedUseCase.swift; sourceTree = "<group>"; };
-		50A61A4D64383C39D7B98EAA /* QRManaging.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = QRManaging.swift; sourceTree = "<group>"; };
-		52E0DCF107BF51565DD33B85 /* ReportView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = ReportView.swift; sourceTree = "<group>"; };
-		52F2773AE1521EEB3E08536B /* DeleteItemUseCaseTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = DeleteItemUseCaseTests.swift; sourceTree = "<group>"; };
-		5678A243185AA3831D887BF3 /* FoundReport.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = FoundReport.swift; sourceTree = "<group>"; };
-		58310DF001DAF9A69BE756F9 /* NotificationManager.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = NotificationManager.swift; sourceTree = "<group>"; };
-		596801327AC0ADBF9BD79665 /* InboxView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = InboxView.swift; sourceTree = "<group>"; };
-		6074783041082B6361F71F5A /* OwnedItemsStore.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = OwnedItemsStore.swift; sourceTree = "<group>"; };
-		61426EE2EB98D304FED77B20 /* FetchInboxUseCase.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = FetchInboxUseCase.swift; sourceTree = "<group>"; };
-		6A8EA2BD3C429F2058343B9B /* CloudKitManagerTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = CloudKitManagerTests.swift; sourceTree = "<group>"; };
-		700222C1C907A757799F4A72 /* ScannerService.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = ScannerService.swift; sourceTree = "<group>"; };
-		7111E7796DD6F3317A3FD426 /* TaggoClip.entitlements */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.entitlements; path = TaggoClip.entitlements; sourceTree = "<group>"; };
-		74B795CE9EF5B8969EA73F1E /* ReportFoundItemUseCase.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = ReportFoundItemUseCase.swift; sourceTree = "<group>"; };
-		865F15C47B2D5B6F7AD16397 /* ItemStatus.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = ItemStatus.swift; sourceTree = "<group>"; };
-		8A6D400E0E035AA4558AE7A2 /* MockCloudKitManager.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = MockCloudKitManager.swift; sourceTree = "<group>"; };
+		68D275C831C717BDBB3B1B2B /* QRManagerTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = QRManagerTests.swift; sourceTree = "<group>"; };
+		6ED59007FF426BD8A5A5FD19 /* ItemMapperTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = ItemMapperTests.swift; sourceTree = "<group>"; };
+		8368CADB67AACFEE46138F1B /* RegisterItemUseCaseTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = RegisterItemUseCaseTests.swift; sourceTree = "<group>"; };
+		8825DEFF2A4B4D94E198D290 /* FlowEndToEndUITests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = FlowEndToEndUITests.swift; sourceTree = "<group>"; };
 		94D48D9B14977296944728CF /* Signing.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = Signing.xcconfig; sourceTree = "<group>"; };
-		9895C175F64863C74F68C9C6 /* ListItemsUseCaseTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = ListItemsUseCaseTests.swift; sourceTree = "<group>"; };
-		990B331BEECBF708EE3453CE /* InboxViewModel.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = InboxViewModel.swift; sourceTree = "<group>"; };
-		9E35B203AAA0826DCD944A6F /* FlowEndToEndUITests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = FlowEndToEndUITests.swift; sourceTree = "<group>"; };
-		A6218AE4DC3DDDB058C3C425 /* TaggoMain.entitlements */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.entitlements; path = TaggoMain.entitlements; sourceTree = "<group>"; };
-		A62E7F3515C4F721D02F56DA /* FoundReportMapper.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = FoundReportMapper.swift; sourceTree = "<group>"; };
-		A932C427E1B693915A773583 /* ReportFoundItemUseCaseTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = ReportFoundItemUseCaseTests.swift; sourceTree = "<group>"; };
-		A9CA989F52FC1ED382A116CE /* UniversalLinkParser.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = UniversalLinkParser.swift; sourceTree = "<group>"; };
-		AB2212C8744D3778A8EAE032 /* Item.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = Item.swift; sourceTree = "<group>"; };
-		AF46DC28C1073F98A3BE8C6B /* AppConfiguration.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = AppConfiguration.swift; sourceTree = "<group>"; };
-		B5A6B5A926F682583A1743F4 /* AppClipHandler.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = AppClipHandler.swift; sourceTree = "<group>"; };
+		A123A25EB3AC0740B430F81F /* MarkReportClaimedUseCaseTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = MarkReportClaimedUseCaseTests.swift; sourceTree = "<group>"; };
+		A1F8A6AB1342346902821E86 /* MockNotificationManaging.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = MockNotificationManaging.swift; sourceTree = "<group>"; };
+		AF38F476852050EEFBBD3450 /* CloudKitManagerTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = CloudKitManagerTests.swift; sourceTree = "<group>"; };
+		B2B231C40F01254D1A098E5A /* UniversalLinkParserTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = UniversalLinkParserTests.swift; sourceTree = "<group>"; };
+		B2F51D7405C016B324C2719E /* MockCloudKitManager.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = MockCloudKitManager.swift; sourceTree = "<group>"; };
 		B6282C7111F6B852E87C6FCA /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS18.0.sdk/System/Library/Frameworks/Foundation.framework; sourceTree = DEVELOPER_DIR; };
-		B77ECF767FB5E79042ADA96E /* ReportStatus.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = ReportStatus.swift; sourceTree = "<group>"; };
-		BB5416A72EC8FF3EB512F5AF /* TaggoMainApp.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = TaggoMainApp.swift; sourceTree = "<group>"; };
-		C1826EFFB16E75F17543C2EE /* CurrentUserProvider.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = CurrentUserProvider.swift; sourceTree = "<group>"; };
-		C1AB9CC71CAEF0C08799665D /* FetchInboxUseCaseTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = FetchInboxUseCaseTests.swift; sourceTree = "<group>"; };
+		B957CDC91B88C312550E3821 /* MockQRManager.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = MockQRManager.swift; sourceTree = "<group>"; };
 		C4C939842FF6BC0400E3C09C /* TaggoMain.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TaggoMain.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		D0C4CB1B3980A82D6A7CE2B5 /* QRManagerTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = QRManagerTests.swift; sourceTree = "<group>"; };
-		D2B4B7A8EA7E7CBC5F150A71 /* RegisterItemUseCase.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = RegisterItemUseCase.swift; sourceTree = "<group>"; };
-		D397ACFD8DD2DF51B6645DD2 /* ScanReportView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = ScanReportView.swift; sourceTree = "<group>"; };
-		DE08CDED9D4C3EC7D4486D7D /* ReportViewModel.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = ReportViewModel.swift; sourceTree = "<group>"; };
-		DF2D2D973DE368AE94C02844 /* EditItemUseCase.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = EditItemUseCase.swift; sourceTree = "<group>"; };
-		E63B57236D31C6FBAEC3C966 /* UniversalLinkParserTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = UniversalLinkParserTests.swift; sourceTree = "<group>"; };
-		E9856AF933580E9B7FABEEA2 /* MockQRManager.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = MockQRManager.swift; sourceTree = "<group>"; };
-		EC4007BB795EFA41E8A2816A /* ItemMapperTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = ItemMapperTests.swift; sourceTree = "<group>"; };
-		FBFB3650A1BDAA14DA32007E /* Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		FCE4196FC3905E19F5586A26 /* MarkReportClaimedUseCaseTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = MarkReportClaimedUseCaseTests.swift; sourceTree = "<group>"; };
+		CD33525642DC4B67E53E436C /* FoundReportMapperTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = FoundReportMapperTests.swift; sourceTree = "<group>"; };
+		E15C127B0D09F40CAB278AC1 /* MockImageCompressor.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = MockImageCompressor.swift; sourceTree = "<group>"; };
+		E8630703B50E2BBC93323DC4 /* ReportFoundItemUseCaseTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = ReportFoundItemUseCaseTests.swift; sourceTree = "<group>"; };
+		FA87FFDCCB51371517B38035 /* ListItemsUseCaseTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = ListItemsUseCaseTests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
+
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		36618024A2737261A7EE9220 /* Exceptions for "TaggoClip" folder in "TaggoClip" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+			);
+			target = 4C72072F36E5CBF1D6FDD06E /* TaggoClip */;
+		};
+		57BB2F7C67510BD4D18BE8A6 /* Exceptions for "TaggoMain" folder in "TaggoMain" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+			);
+			target = C4C939832FF6BC0400E3C09C /* TaggoMain */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
+
+/* Begin PBXFileSystemSynchronizedRootGroup section */
+		03D110C22FF96CF300FA07EA /* SharedCore */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+			);
+			path = SharedCore;
+			sourceTree = "<group>";
+		};
+		03D111192FF96CFD00FA07EA /* TaggoMain */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				57BB2F7C67510BD4D18BE8A6 /* Exceptions for "TaggoMain" folder in "TaggoMain" target */,
+			);
+			path = TaggoMain;
+			sourceTree = "<group>";
+		};
+		03D111342FF96D0600FA07EA /* TaggoClip */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				36618024A2737261A7EE9220 /* Exceptions for "TaggoClip" folder in "TaggoClip" target */,
+			);
+			path = TaggoClip;
+			sourceTree = "<group>";
+		};
+/* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
 		020B8B5AF484764E2B601E93 /* Frameworks */ = {
@@ -249,256 +177,41 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		04013DD94374F965E3013A7C /* Domain */ = {
+		65F98AB2C2C2CC70010AC03A /* UnitTests */ = {
 			isa = PBXGroup;
 			children = (
-				30B4F060543020544EB6F56E /* UseCases */,
-			);
-			path = Domain;
-			sourceTree = "<group>";
-		};
-		0E17E68263D6851EE242431A /* TaggoTests */ = {
-			isa = PBXGroup;
-			children = (
-				4B13D8B0DD1B676097ADC401 /* UITests */,
-				3687591D1C3C88C3D840E18F /* UnitTests */,
-			);
-			path = TaggoTests;
-			sourceTree = "<group>";
-		};
-		1B32EE087B412623197B772B /* Views */ = {
-			isa = PBXGroup;
-			children = (
-				52E0DCF107BF51565DD33B85 /* ReportView.swift */,
-			);
-			path = Views;
-			sourceTree = "<group>";
-		};
-		20A215E8E90CA2A9A2EBCE95 /* Presentation */ = {
-			isa = PBXGroup;
-			children = (
-				E4AE939907048BB04EAD1295 /* ViewModels */,
-				1B32EE087B412623197B772B /* Views */,
-			);
-			path = Presentation;
-			sourceTree = "<group>";
-		};
-		2C013D5DCF7DD398BDAE08F3 /* TaggoMain */ = {
-			isa = PBXGroup;
-			children = (
-				85CDF25561CAE0BD01F133CF /* App */,
-				2F6F3F5F15349C1C6815754F /* Assets.xcassets */,
-				B5444C55924CB8DE2E9D7B4B /* Infrastructure */,
-				71A47BBD663D008E94E9AEAC /* Presentation */,
-				A6218AE4DC3DDDB058C3C425 /* TaggoMain.entitlements */,
-			);
-			path = TaggoMain;
-			sourceTree = "<group>";
-		};
-		30B4F060543020544EB6F56E /* UseCases */ = {
-			isa = PBXGroup;
-			children = (
-				4261D6A44B080A717E7331C6 /* DeleteItemUseCase.swift */,
-				DF2D2D973DE368AE94C02844 /* EditItemUseCase.swift */,
-				61426EE2EB98D304FED77B20 /* FetchInboxUseCase.swift */,
-				1B2C8D820E9A374F15B10F3A /* ListItemsUseCase.swift */,
-				4CD2A0C4DB67698B590F45CE /* MarkReportClaimedUseCase.swift */,
-				D2B4B7A8EA7E7CBC5F150A71 /* RegisterItemUseCase.swift */,
-				74B795CE9EF5B8969EA73F1E /* ReportFoundItemUseCase.swift */,
-			);
-			path = UseCases;
-			sourceTree = "<group>";
-		};
-		32D80A109B5457AF241BFA53 /* Models */ = {
-			isa = PBXGroup;
-			children = (
-				5678A243185AA3831D887BF3 /* FoundReport.swift */,
-				AB2212C8744D3778A8EAE032 /* Item.swift */,
-			);
-			path = Models;
-			sourceTree = "<group>";
-		};
-		33EDC508CE30EACFD1AB7D3F /* DeepLink */ = {
-			isa = PBXGroup;
-			children = (
-				B5A6B5A926F682583A1743F4 /* AppClipHandler.swift */,
-				A9CA989F52FC1ED382A116CE /* UniversalLinkParser.swift */,
-			);
-			path = DeepLink;
-			sourceTree = "<group>";
-		};
-		3687591D1C3C88C3D840E18F /* UnitTests */ = {
-			isa = PBXGroup;
-			children = (
-				6A8EA2BD3C429F2058343B9B /* CloudKitManagerTests.swift */,
-				050A38F901243CFD0E5CBBFB /* FoundReportMapperTests.swift */,
-				EC4007BB795EFA41E8A2816A /* ItemMapperTests.swift */,
-				ECED5A6C23C5397D406A585B /* Mocks */,
-				D0C4CB1B3980A82D6A7CE2B5 /* QRManagerTests.swift */,
-				E63B57236D31C6FBAEC3C966 /* UniversalLinkParserTests.swift */,
-				B67612DCC02AF90F03B63EF2 /* UseCaseTests */,
+				9F7D1657E974C23A54550BF5 /* Mocks */,
+				D22CC315D514F15E6CBF8EE4 /* UseCaseTests */,
+				AF38F476852050EEFBBD3450 /* CloudKitManagerTests.swift */,
+				CD33525642DC4B67E53E436C /* FoundReportMapperTests.swift */,
+				6ED59007FF426BD8A5A5FD19 /* ItemMapperTests.swift */,
+				68D275C831C717BDBB3B1B2B /* QRManagerTests.swift */,
+				B2B231C40F01254D1A098E5A /* UniversalLinkParserTests.swift */,
 			);
 			path = UnitTests;
 			sourceTree = "<group>";
 		};
-		3D13A256AAC9B634FAB7740C /* ViewModels */ = {
+		9F258F4C14AA1686156D81F9 /* TaggoTests */ = {
 			isa = PBXGroup;
 			children = (
-				990B331BEECBF708EE3453CE /* InboxViewModel.swift */,
-				36EB1AC8D8936178EAA8BDA6 /* RegisterViewModel.swift */,
-				1B12E7A78AE021722203C297 /* ScanReportViewModel.swift */,
+				03D115DB2FFAE14E00FA07EA /* Info.plist */,
+				65F98AB2C2C2CC70010AC03A /* UnitTests */,
+				B633CEE43D468F2EF82BD2A1 /* UITests */,
 			);
-			path = ViewModels;
+			path = TaggoTests;
 			sourceTree = "<group>";
 		};
-		41F6821FB27C81E4BE63E66B /* Persistence */ = {
+		9F7D1657E974C23A54550BF5 /* Mocks */ = {
 			isa = PBXGroup;
 			children = (
-				C1826EFFB16E75F17543C2EE /* CurrentUserProvider.swift */,
-				6074783041082B6361F71F5A /* OwnedItemsStore.swift */,
+				B2F51D7405C016B324C2719E /* MockCloudKitManager.swift */,
+				2FE9CC5A12D309A4523A4B29 /* MockCurrentUserProvider.swift */,
+				B957CDC91B88C312550E3821 /* MockQRManager.swift */,
+				E15C127B0D09F40CAB278AC1 /* MockImageCompressor.swift */,
+				068D4ACCCD2B83215494722B /* MockFoundReportSubmitting.swift */,
+				A1F8A6AB1342346902821E86 /* MockNotificationManaging.swift */,
 			);
-			path = Persistence;
-			sourceTree = "<group>";
-		};
-		4B13D8B0DD1B676097ADC401 /* UITests */ = {
-			isa = PBXGroup;
-			children = (
-				9E35B203AAA0826DCD944A6F /* FlowEndToEndUITests.swift */,
-			);
-			path = UITests;
-			sourceTree = "<group>";
-		};
-		4E94D130E8F0A53B99B0AD53 /* Infrastructure */ = {
-			isa = PBXGroup;
-			children = (
-				C70D213F2587301D805161EE /* Configuration */,
-				4F4B5B42848126D69106AE90 /* Services */,
-			);
-			path = Infrastructure;
-			sourceTree = "<group>";
-		};
-		4F4B5B42848126D69106AE90 /* Services */ = {
-			isa = PBXGroup;
-			children = (
-				0A69476BB725B5F522936198 /* CloudKitManager.swift */,
-				0D94AEEAC1C8C6814872EE28 /* CloudKitManaging.swift */,
-				1CA6D6132C84F4D253D66D5E /* QRManager.swift */,
-				50A61A4D64383C39D7B98EAA /* QRManaging.swift */,
-				700222C1C907A757799F4A72 /* ScannerService.swift */,
-			);
-			path = Services;
-			sourceTree = "<group>";
-		};
-		548F1DCCEFF96B32B359D943 /* Infrastructure */ = {
-			isa = PBXGroup;
-			children = (
-				33EDC508CE30EACFD1AB7D3F /* DeepLink */,
-			);
-			path = Infrastructure;
-			sourceTree = "<group>";
-		};
-		5ABBBF9F2E588944858EA9C2 /* SharedCore */ = {
-			isa = PBXGroup;
-			children = (
-				AC1884F685F255CBCFAC3370 /* Data */,
-				04013DD94374F965E3013A7C /* Domain */,
-				4E94D130E8F0A53B99B0AD53 /* Infrastructure */,
-			);
-			path = SharedCore;
-			sourceTree = "<group>";
-		};
-		6351B0CC4A7003D4EBCE7BDD /* Services */ = {
-			isa = PBXGroup;
-			children = (
-				58310DF001DAF9A69BE756F9 /* NotificationManager.swift */,
-				00BDA7D9554DBC4EFE194DD2 /* NotificationManaging.swift */,
-			);
-			path = Services;
-			sourceTree = "<group>";
-		};
-		6DBC04043B50361E4F3C55EC /* Mappers */ = {
-			isa = PBXGroup;
-			children = (
-				A62E7F3515C4F721D02F56DA /* FoundReportMapper.swift */,
-				3C8B0657F049E53FC949E49A /* ItemMapper.swift */,
-			);
-			path = Mappers;
-			sourceTree = "<group>";
-		};
-		71A47BBD663D008E94E9AEAC /* Presentation */ = {
-			isa = PBXGroup;
-			children = (
-				3D13A256AAC9B634FAB7740C /* ViewModels */,
-				B71E14546D1DCA1EA488F924 /* Views */,
-			);
-			path = Presentation;
-			sourceTree = "<group>";
-		};
-		7AA066BE6AB9D64B051DE33F /* Enums */ = {
-			isa = PBXGroup;
-			children = (
-				865F15C47B2D5B6F7AD16397 /* ItemStatus.swift */,
-				B77ECF767FB5E79042ADA96E /* ReportStatus.swift */,
-			);
-			path = Enums;
-			sourceTree = "<group>";
-		};
-		83D4750977EE0911D9E554C2 /* App */ = {
-			isa = PBXGroup;
-			children = (
-				2B5A14B47FDC67C61A039092 /* TaggoClipApp.swift */,
-			);
-			path = App;
-			sourceTree = "<group>";
-		};
-		85CDF25561CAE0BD01F133CF /* App */ = {
-			isa = PBXGroup;
-			children = (
-				BB5416A72EC8FF3EB512F5AF /* TaggoMainApp.swift */,
-			);
-			path = App;
-			sourceTree = "<group>";
-		};
-		964F66E3B0DC7E6D9B2371FD /* TaggoClip */ = {
-			isa = PBXGroup;
-			children = (
-				83D4750977EE0911D9E554C2 /* App */,
-				42FAE37AB1634F162AC62864 /* Assets.xcassets */,
-				FBFB3650A1BDAA14DA32007E /* Info.plist */,
-				548F1DCCEFF96B32B359D943 /* Infrastructure */,
-				20A215E8E90CA2A9A2EBCE95 /* Presentation */,
-				7111E7796DD6F3317A3FD426 /* TaggoClip.entitlements */,
-			);
-			path = TaggoClip;
-			sourceTree = "<group>";
-		};
-		9C7989F9474C4CB13FAD5963 /* Schema */ = {
-			isa = PBXGroup;
-			children = (
-				45A6916DA9475DC696F14682 /* RecordSchema.swift */,
-			);
-			path = Schema;
-			sourceTree = "<group>";
-		};
-		AC1884F685F255CBCFAC3370 /* Data */ = {
-			isa = PBXGroup;
-			children = (
-				7AA066BE6AB9D64B051DE33F /* Enums */,
-				E019F64B6542FA0A3BD86E53 /* Errors */,
-				6DBC04043B50361E4F3C55EC /* Mappers */,
-				32D80A109B5457AF241BFA53 /* Models */,
-				9C7989F9474C4CB13FAD5963 /* Schema */,
-			);
-			path = Data;
-			sourceTree = "<group>";
-		};
-		B5444C55924CB8DE2E9D7B4B /* Infrastructure */ = {
-			isa = PBXGroup;
-			children = (
-				41F6821FB27C81E4BE63E66B /* Persistence */,
-				6351B0CC4A7003D4EBCE7BDD /* Services */,
-			);
-			path = Infrastructure;
+			path = Mocks;
 			sourceTree = "<group>";
 		};
 		B5CFFC01E87289F0CB04B255 /* Config */ = {
@@ -510,40 +223,24 @@
 			path = .;
 			sourceTree = "<group>";
 		};
-		B67612DCC02AF90F03B63EF2 /* UseCaseTests */ = {
+		B633CEE43D468F2EF82BD2A1 /* UITests */ = {
 			isa = PBXGroup;
 			children = (
-				52F2773AE1521EEB3E08536B /* DeleteItemUseCaseTests.swift */,
-				0302BF7A5198116D5B48C3BB /* EditItemUseCaseTests.swift */,
-				C1AB9CC71CAEF0C08799665D /* FetchInboxUseCaseTests.swift */,
-				9895C175F64863C74F68C9C6 /* ListItemsUseCaseTests.swift */,
-				FCE4196FC3905E19F5586A26 /* MarkReportClaimedUseCaseTests.swift */,
-				11243323B1C1CCD1B4769F98 /* RegisterItemUseCaseTests.swift */,
-				A932C427E1B693915A773583 /* ReportFoundItemUseCaseTests.swift */,
+				8825DEFF2A4B4D94E198D290 /* FlowEndToEndUITests.swift */,
 			);
-			path = UseCaseTests;
-			sourceTree = "<group>";
-		};
-		B71E14546D1DCA1EA488F924 /* Views */ = {
-			isa = PBXGroup;
-			children = (
-				596801327AC0ADBF9BD79665 /* InboxView.swift */,
-				0DBEE6F54558EC6552D49D33 /* RegisterView.swift */,
-				D397ACFD8DD2DF51B6645DD2 /* ScanReportView.swift */,
-			);
-			path = Views;
+			path = UITests;
 			sourceTree = "<group>";
 		};
 		C4C9397B2FF6BC0400E3C09C = {
 			isa = PBXGroup;
 			children = (
-				5ABBBF9F2E588944858EA9C2 /* SharedCore */,
-				2C013D5DCF7DD398BDAE08F3 /* TaggoMain */,
-				964F66E3B0DC7E6D9B2371FD /* TaggoClip */,
-				0E17E68263D6851EE242431A /* TaggoTests */,
+				03D110C22FF96CF300FA07EA /* SharedCore */,
+				03D111192FF96CFD00FA07EA /* TaggoMain */,
+				03D111342FF96D0600FA07EA /* TaggoClip */,
 				C4C939852FF6BC0400E3C09C /* Products */,
 				CD2483BE4C36E1A72254BC7A /* Frameworks */,
 				B5CFFC01E87289F0CB04B255 /* Config */,
+				9F258F4C14AA1686156D81F9 /* TaggoTests */,
 			);
 			sourceTree = "<group>";
 		};
@@ -558,14 +255,6 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
-		C70D213F2587301D805161EE /* Configuration */ = {
-			isa = PBXGroup;
-			children = (
-				AF46DC28C1073F98A3BE8C6B /* AppConfiguration.swift */,
-			);
-			path = Configuration;
-			sourceTree = "<group>";
-		};
 		CD2483BE4C36E1A72254BC7A /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
@@ -574,37 +263,26 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		D22CC315D514F15E6CBF8EE4 /* UseCaseTests */ = {
+			isa = PBXGroup;
+			children = (
+				20EA5F7AC99692D57A4F41F3 /* DeleteItemUseCaseTests.swift */,
+				3A5BD57DAC1851058DA39BA9 /* EditItemUseCaseTests.swift */,
+				0CC2B2B850C874E8E06913C8 /* FetchInboxUseCaseTests.swift */,
+				FA87FFDCCB51371517B38035 /* ListItemsUseCaseTests.swift */,
+				A123A25EB3AC0740B430F81F /* MarkReportClaimedUseCaseTests.swift */,
+				8368CADB67AACFEE46138F1B /* RegisterItemUseCaseTests.swift */,
+				E8630703B50E2BBC93323DC4 /* ReportFoundItemUseCaseTests.swift */,
+			);
+			path = UseCaseTests;
+			sourceTree = "<group>";
+		};
 		DDDE0B293DDE711DB36FD3DE /* iOS */ = {
 			isa = PBXGroup;
 			children = (
 				B6282C7111F6B852E87C6FCA /* Foundation.framework */,
 			);
 			name = iOS;
-			sourceTree = "<group>";
-		};
-		E019F64B6542FA0A3BD86E53 /* Errors */ = {
-			isa = PBXGroup;
-			children = (
-				2F30BE02DA1EEF512F7C5714 /* TaggoError.swift */,
-			);
-			path = Errors;
-			sourceTree = "<group>";
-		};
-		E4AE939907048BB04EAD1295 /* ViewModels */ = {
-			isa = PBXGroup;
-			children = (
-				DE08CDED9D4C3EC7D4486D7D /* ReportViewModel.swift */,
-			);
-			path = ViewModels;
-			sourceTree = "<group>";
-		};
-		ECED5A6C23C5397D406A585B /* Mocks */ = {
-			isa = PBXGroup;
-			children = (
-				8A6D400E0E035AA4558AE7A2 /* MockCloudKitManager.swift */,
-				E9856AF933580E9B7FABEEA2 /* MockQRManager.swift */,
-			);
-			path = Mocks;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -621,6 +299,10 @@
 			buildRules = (
 			);
 			dependencies = (
+			);
+			fileSystemSynchronizedGroups = (
+				03D110C22FF96CF300FA07EA /* SharedCore */,
+				03D111342FF96D0600FA07EA /* TaggoClip */,
 			);
 			name = TaggoClip;
 			productName = TaggoClip;
@@ -640,6 +322,10 @@
 			);
 			dependencies = (
 				639CF5AB4DF186709A0DCA55 /* PBXTargetDependency */,
+			);
+			fileSystemSynchronizedGroups = (
+				03D110C22FF96CF300FA07EA /* SharedCore */,
+				03D111192FF96CFD00FA07EA /* TaggoMain */,
 			);
 			name = TaggoMain;
 			productName = TaggoMain;
@@ -676,6 +362,9 @@
 			);
 			dependencies = (
 				F7FE7D0B0DFD237E9DF45799 /* PBXTargetDependency */,
+			);
+			fileSystemSynchronizedGroups = (
+				03D110C22FF96CF300FA07EA /* SharedCore */,
 			);
 			name = TaggoTests;
 			productName = TaggoTests;
@@ -727,7 +416,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				0CD1FE92E363829FF744AE3B /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -749,7 +437,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				3BA1C6514C7BC707F087B5ED /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -760,32 +447,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				10A1F22A350618418B13F408 /* ItemStatus.swift in Sources */,
-				A6DE24AD68A37BB1F7ACC26C /* ReportStatus.swift in Sources */,
-				384041DDBA9D97BFEA9EFE99 /* TaggoError.swift in Sources */,
-				2EF9E186F8552A6A8102E8DA /* FoundReportMapper.swift in Sources */,
-				C38BD1E31A9D37F7213C9449 /* ItemMapper.swift in Sources */,
-				1F93EC41C98A909354D18AEA /* FoundReport.swift in Sources */,
-				257474B9AED7035E46EF54F5 /* Item.swift in Sources */,
-				299211090C1F2184644F78A9 /* RecordSchema.swift in Sources */,
-				15B8A1C3845DC76683187DA5 /* DeleteItemUseCase.swift in Sources */,
-				8EF184BCE13B78B9BF3C7FC4 /* EditItemUseCase.swift in Sources */,
-				84007E039FBA11D18D83AA07 /* FetchInboxUseCase.swift in Sources */,
-				FAABCE40EFA3F8EEC8E9E2B6 /* ListItemsUseCase.swift in Sources */,
-				11C11913273E8ACC4EA1AEAB /* MarkReportClaimedUseCase.swift in Sources */,
-				2C66F046E552BAEE50598C1B /* RegisterItemUseCase.swift in Sources */,
-				5358EC557017F7391B084879 /* ReportFoundItemUseCase.swift in Sources */,
-				C39386F1F881B546B241DDD2 /* AppConfiguration.swift in Sources */,
-				81C76BE6FE9D1F6B85AFC7AD /* CloudKitManager.swift in Sources */,
-				22433C67FB409BC80A56C35A /* CloudKitManaging.swift in Sources */,
-				C5B139043BFB612496EB55AD /* QRManager.swift in Sources */,
-				CDA7F2A9A2169F8C0098D67C /* QRManaging.swift in Sources */,
-				A767EC9917D3560CA9513288 /* ScannerService.swift in Sources */,
-				C3C08D3F903CBE633B082781 /* TaggoClipApp.swift in Sources */,
-				F9D0B8AFCD7181E3A02AF342 /* AppClipHandler.swift in Sources */,
-				13AB212EF65879412F5D63CD /* UniversalLinkParser.swift in Sources */,
-				73A064DBA47930A0337DB200 /* ReportViewModel.swift in Sources */,
-				EC6ACC9B8E73A7BB1A68F68B /* ReportView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -793,7 +454,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				994B1B670E0F77FC6F688581 /* FlowEndToEndUITests.swift in Sources */,
+				5F68D51C4A650C395BD02F7D /* FlowEndToEndUITests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -801,42 +462,24 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				5E0E79F4BE584CCF0B86A6FF /* ItemStatus.swift in Sources */,
-				310797AC0E84104BE75EB23A /* ReportStatus.swift in Sources */,
-				B4771580952F01206BBDAA91 /* TaggoError.swift in Sources */,
-				824A6201029180BA86038124 /* FoundReportMapper.swift in Sources */,
-				2236B4B00986DE8F9CE68671 /* ItemMapper.swift in Sources */,
-				B98311208B55050DB280019A /* FoundReport.swift in Sources */,
-				767096C4D803DD39BF088F91 /* Item.swift in Sources */,
-				0163EBC5661714FEDB233259 /* RecordSchema.swift in Sources */,
-				66B41A245D76A4E04F146321 /* DeleteItemUseCase.swift in Sources */,
-				EDA546DB6F5FE80F487109D8 /* EditItemUseCase.swift in Sources */,
-				F4538E6FF865DACACB54D1EF /* FetchInboxUseCase.swift in Sources */,
-				35591D883B628A2F9828CB37 /* ListItemsUseCase.swift in Sources */,
-				5FBDE9883E291B52B0A59649 /* MarkReportClaimedUseCase.swift in Sources */,
-				4ABE0058BEB1E3CDF52DAF2E /* RegisterItemUseCase.swift in Sources */,
-				539ADC642216A56F14F1914C /* ReportFoundItemUseCase.swift in Sources */,
-				C5035A46899F830AA709598B /* AppConfiguration.swift in Sources */,
-				106A34197B210AF8CF90A214 /* CloudKitManager.swift in Sources */,
-				8FC38FB9751E2F3340FE75E0 /* CloudKitManaging.swift in Sources */,
-				C61BE55E87EACB235AC0C771 /* QRManager.swift in Sources */,
-				9D34C43C1296FD02B07D13D0 /* QRManaging.swift in Sources */,
-				90736184FE54E022EB6255A6 /* ScannerService.swift in Sources */,
-				9CB30492F7669C7E198474D2 /* UniversalLinkParser.swift in Sources */,
-				35414D2C04CC606BBAC1C657 /* CloudKitManagerTests.swift in Sources */,
-				0FF03796DE9977271856ED1B /* FoundReportMapperTests.swift in Sources */,
-				AA3B468130E80A994C3F1B87 /* ItemMapperTests.swift in Sources */,
-				A966F096AAD09AB3DDD99675 /* MockCloudKitManager.swift in Sources */,
-				08D39AB3A9BD034E2B538A83 /* MockQRManager.swift in Sources */,
-				0AC46C844B4D7D1DA47A9A90 /* QRManagerTests.swift in Sources */,
-				03AA71C0894FC57127CF1636 /* UniversalLinkParserTests.swift in Sources */,
-				F01AD4386B6949A9CE46E1D2 /* DeleteItemUseCaseTests.swift in Sources */,
-				15DC3E5798169133F35267D9 /* EditItemUseCaseTests.swift in Sources */,
-				95220A8159CCF936FC866802 /* FetchInboxUseCaseTests.swift in Sources */,
-				89F97C235A21F961A26346EA /* ListItemsUseCaseTests.swift in Sources */,
-				4AD638B949E4B2AC2A908E13 /* MarkReportClaimedUseCaseTests.swift in Sources */,
-				2F1C54A75087D53A4816882F /* RegisterItemUseCaseTests.swift in Sources */,
-				A5B5AAF8539BD4DB16C9147A /* ReportFoundItemUseCaseTests.swift in Sources */,
+				FC07E38BA07141541D288575 /* CloudKitManagerTests.swift in Sources */,
+				9162679FEEC1AA83CA550E46 /* FoundReportMapperTests.swift in Sources */,
+				5B7B56331C0C3BB508229D73 /* ItemMapperTests.swift in Sources */,
+				2CE00F8EB75514A4B02A7795 /* QRManagerTests.swift in Sources */,
+				26B713379FA6A8C4E1FE53EE /* UniversalLinkParserTests.swift in Sources */,
+				264A8109287725B90B4C42CB /* MockCloudKitManager.swift in Sources */,
+				A522D6D20925562CFEA26D2C /* MockCurrentUserProvider.swift in Sources */,
+				5376686C78C292738E3ECDED /* MockQRManager.swift in Sources */,
+				BE0D8CFC42C494E875BB8D94 /* DeleteItemUseCaseTests.swift in Sources */,
+				0BF8C8D8DE55636AB9211894 /* EditItemUseCaseTests.swift in Sources */,
+				622702306EC9F7456FCE5E68 /* FetchInboxUseCaseTests.swift in Sources */,
+				2E8B591604177D2264F33601 /* ListItemsUseCaseTests.swift in Sources */,
+				A447F7FB8C0820539878EB12 /* MarkReportClaimedUseCaseTests.swift in Sources */,
+				0E93166EFE7F112AA1E03AA9 /* RegisterItemUseCaseTests.swift in Sources */,
+				C45C3FC2729DE4EFA0872EB3 /* ReportFoundItemUseCaseTests.swift in Sources */,
+				F4E0B68169CB9E50981B051D /* MockImageCompressor.swift in Sources */,
+				3A899836609505DEB5AF275C /* MockFoundReportSubmitting.swift in Sources */,
+				07BF4CCA1052B2D627A72543 /* MockNotificationManaging.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -844,38 +487,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				73D3163DFA6E0D3FE17AD5E7 /* ItemStatus.swift in Sources */,
-				291B65F721659526759E42A9 /* ReportStatus.swift in Sources */,
-				D22FFB9B1BDF61A742E09E89 /* TaggoError.swift in Sources */,
-				782C3D78951CB6508ACA294A /* FoundReportMapper.swift in Sources */,
-				3080AC1F8D0245470EE1BEA9 /* ItemMapper.swift in Sources */,
-				D420B36EF2D709C0B57F73DD /* FoundReport.swift in Sources */,
-				903139E477CA12BE3C3F92C7 /* Item.swift in Sources */,
-				32D8B2AE3076A34E4E6FACF6 /* RecordSchema.swift in Sources */,
-				FBAE31F8168D87A527F17C84 /* DeleteItemUseCase.swift in Sources */,
-				84A296C3B72CDD491BD29085 /* EditItemUseCase.swift in Sources */,
-				DFDF2DD3978052473970005D /* FetchInboxUseCase.swift in Sources */,
-				99CC9890A1D6E3AE0C9EFC41 /* ListItemsUseCase.swift in Sources */,
-				736B288E21447E8B1EDB03C1 /* MarkReportClaimedUseCase.swift in Sources */,
-				8D6B66E51C7498C48B328963 /* RegisterItemUseCase.swift in Sources */,
-				D66BCC826E1B891FA2E2C21E /* ReportFoundItemUseCase.swift in Sources */,
-				590279FEDA9CE5ADF9102351 /* AppConfiguration.swift in Sources */,
-				B8949E940FF4EE8421DB1A5C /* CloudKitManager.swift in Sources */,
-				1EEFFCAF8B358FB5BD6C2718 /* CloudKitManaging.swift in Sources */,
-				7129DBBB40C601F50C16A7C2 /* QRManager.swift in Sources */,
-				AC58C95F3F44C56EAA1892B9 /* QRManaging.swift in Sources */,
-				D299F655AE634243CF267210 /* ScannerService.swift in Sources */,
-				967B34258F2346BC7F762ABA /* TaggoMainApp.swift in Sources */,
-				A7EFD5F01234254FBF2D0D5A /* CurrentUserProvider.swift in Sources */,
-				25FF70ADFE04EEC8300D31A7 /* OwnedItemsStore.swift in Sources */,
-				508E61B2A9CFA34066B014C3 /* NotificationManager.swift in Sources */,
-				05AB4CD7A1E9213C2478245E /* NotificationManaging.swift in Sources */,
-				D4C56DAE9811D152CE8450D0 /* InboxViewModel.swift in Sources */,
-				9627514DC7D4D54B361128FA /* RegisterViewModel.swift in Sources */,
-				6C461D6AE47F56F932B7EFDA /* ScanReportViewModel.swift in Sources */,
-				D7D84314D66BE397BFBBF83B /* InboxView.swift in Sources */,
-				FA0A6726B8E1D3B1B9BB4C7B /* RegisterView.swift in Sources */,
-				00BA952B11FC3FD1D925A973 /* ScanReportView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -913,7 +524,6 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = KH324MQR6L;
 				GENERATE_INFOPLIST_FILE = NO;
 				INFOPLIST_FILE = TaggoClip/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
@@ -922,7 +532,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.urbananTaggo.app.Clip;
+				PRODUCT_BUNDLE_IDENTIFIER = "$(TAGGO_BUNDLE_ID_BASE).Clip";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SDKROOT = iphoneos;
@@ -937,8 +547,9 @@
 			buildSettings = {
 				CLANG_ENABLE_OBJC_WEAK = NO;
 				CODE_SIGN_STYLE = Automatic;
+				GENERATE_INFOPLIST_FILE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.urbananTaggo.app.UITests;
+				PRODUCT_BUNDLE_IDENTIFIER = "$(TAGGO_BUNDLE_ID_BASE).UITests";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = iphoneos;
 				SWIFT_VERSION = 6.0;
@@ -952,8 +563,11 @@
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CLANG_ENABLE_OBJC_WEAK = NO;
 				CODE_SIGN_STYLE = Automatic;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = TaggoTests/Info.plist;
+				INFOPLIST_KEY_NSCameraUsageDescription = "\"Taggo uses your camera to scan item QR codes.\"";
 				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.urbananTaggo.app.Tests;
+				PRODUCT_BUNDLE_IDENTIFIER = "$(TAGGO_BUNDLE_ID_BASE).Tests";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = iphoneos;
 				SWIFT_VERSION = 6.0;
@@ -966,8 +580,9 @@
 			buildSettings = {
 				CLANG_ENABLE_OBJC_WEAK = NO;
 				CODE_SIGN_STYLE = Automatic;
+				GENERATE_INFOPLIST_FILE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.urbananTaggo.app.UITests;
+				PRODUCT_BUNDLE_IDENTIFIER = "$(TAGGO_BUNDLE_ID_BASE).UITests";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = iphoneos;
 				SWIFT_VERSION = 6.0;
@@ -982,8 +597,11 @@
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CLANG_ENABLE_OBJC_WEAK = NO;
 				CODE_SIGN_STYLE = Automatic;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = TaggoTests/Info.plist;
+				INFOPLIST_KEY_NSCameraUsageDescription = "\"Taggo uses your camera to scan item QR codes.\"";
 				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.urbananTaggo.app.Tests;
+				PRODUCT_BUNDLE_IDENTIFIER = "$(TAGGO_BUNDLE_ID_BASE).Tests";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = iphoneos;
 				SWIFT_VERSION = 6.0;
@@ -1028,7 +646,6 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = dwarf;
-				DEVELOPMENT_TEAM = KH324MQR6L;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
 				ENABLE_USER_SCRIPT_SANDBOXING = YES;
@@ -1094,7 +711,6 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				DEVELOPMENT_TEAM = KH324MQR6L;
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_USER_SCRIPT_SANDBOXING = YES;
@@ -1127,6 +743,8 @@
 				CURRENT_PROJECT_VERSION = 1;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = TaggoMain/Info.plist;
+				INFOPLIST_KEY_NSCameraUsageDescription = "\"Taggo uses your camera to scan item QR codes.\"";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -1138,7 +756,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.urbananTaggo.app;
+				PRODUCT_BUNDLE_IDENTIFIER = "$(TAGGO_BUNDLE_ID_BASE)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				STRING_CATALOG_GENERATE_SYMBOLS = YES;
 				SWIFT_APPROACHABLE_CONCURRENCY = YES;
@@ -1160,6 +778,8 @@
 				CURRENT_PROJECT_VERSION = 1;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = TaggoMain/Info.plist;
+				INFOPLIST_KEY_NSCameraUsageDescription = "\"Taggo uses your camera to scan item QR codes.\"";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -1171,7 +791,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.urbananTaggo.app;
+				PRODUCT_BUNDLE_IDENTIFIER = "$(TAGGO_BUNDLE_ID_BASE)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				STRING_CATALOG_GENERATE_SYMBOLS = YES;
 				SWIFT_APPROACHABLE_CONCURRENCY = YES;
@@ -1193,7 +813,6 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = KH324MQR6L;
 				GENERATE_INFOPLIST_FILE = NO;
 				INFOPLIST_FILE = TaggoClip/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
@@ -1202,7 +821,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.urbananTaggo.app.Clip;
+				PRODUCT_BUNDLE_IDENTIFIER = "$(TAGGO_BUNDLE_ID_BASE).Clip";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SDKROOT = iphoneos;
