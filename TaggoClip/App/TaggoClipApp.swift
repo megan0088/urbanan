@@ -19,12 +19,22 @@ struct TaggoClipApp: App {
                     resolveScannedItemUseCase: dependencies.makeResolveScannedItemUseCase(),
                     reportFoundItemUseCase: dependencies.makeReportFoundItemUseCase()
                 ),
-                invocationURL: URL(string: "https://urbanantaggo.netlify.app/item/C3A2ABFC-CBE2-4BA6-9B08-A8EC94634343")
+                invocationURL: invocationURL
             )
             .onOpenURL { url in
-                print(url)
-                invocationURL = url
+//                print("GRRRR \(url)")
+                invocationURL = url;
             }
+            #if DEBUG
+            .task {
+                if invocationURL == nil {
+                    try? await Task.sleep(for: .seconds(1))
+                    if invocationURL == nil {
+                        invocationURL = URL(string: "https://urbanantaggo.netlify.app/item/F4138F1B-7087-4628-99F0-20D467CF0B24")
+                    }
+                }
+            }
+            #endif
         }
     }
 }
