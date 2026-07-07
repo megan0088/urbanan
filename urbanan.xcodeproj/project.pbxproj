@@ -119,8 +119,6 @@
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		03D110C22FF96CF300FA07EA /* SharedCore */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
-			exceptions = (
-			);
 			path = SharedCore;
 			sourceTree = "<group>";
 		};
