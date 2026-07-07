@@ -60,7 +60,7 @@
 		3587EDD7838C9229341E990E /* Embed App Clips */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
-			dstPath = "";
+			dstPath = "$(CONTENTS_FOLDER_PATH)/AppClips";
 			dstSubfolderSpec = 16;
 			files = (
 				8178BE75F944338B77393333 /* TaggoClip.app in Embed App Clips */,
@@ -521,7 +521,7 @@
 				CODE_SIGN_ENTITLEMENTS = TaggoClip/TaggoClip.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 2;
 				GENERATE_INFOPLIST_FILE = NO;
 				INFOPLIST_FILE = TaggoClip/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
@@ -738,10 +738,11 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = TaggoMain/TaggoMain.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 2;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = TaggoMain/Info.plist;
+				INFOPLIST_KEY_ITSEncryptionExportComplianceCode = NO;
 				INFOPLIST_KEY_NSCameraUsageDescription = "\"Taggo uses your camera to scan item QR codes.\"";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -773,10 +774,11 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = TaggoMain/TaggoMain.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 2;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = TaggoMain/Info.plist;
+				INFOPLIST_KEY_ITSEncryptionExportComplianceCode = NO;
 				INFOPLIST_KEY_NSCameraUsageDescription = "\"Taggo uses your camera to scan item QR codes.\"";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -810,7 +812,7 @@
 				CODE_SIGN_ENTITLEMENTS = TaggoClip/TaggoClip.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 2;
 				GENERATE_INFOPLIST_FILE = NO;
 				INFOPLIST_FILE = TaggoClip/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 17.0;

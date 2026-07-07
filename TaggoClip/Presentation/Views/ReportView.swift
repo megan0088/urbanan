@@ -14,7 +14,7 @@ struct ReportView: View {
     init(viewModel: ReportViewModel, invocationURL: URL?) {
         _viewModel = State(initialValue: viewModel)
         self.invocationURL = invocationURL
-        print("invocationURL: \(invocationURL?.absoluteString ?? "nil")")
+//        print("invocationURL: \(invocationURL?.absoluteString ?? "nil")")
     }
 
     var body: some View {
@@ -75,8 +75,9 @@ struct ReportView: View {
             }
 
             Section("Photo (optional)") {
+                let data = viewModel.selectedPhotoData
                 PhotosPicker(selection: $photosPickerItem, matching: .images) {
-                    if let data = viewModel.selectedPhotoData, let uiImage = UIImage(data: data) {
+                    if let data = data, let uiImage = UIImage(data: data) {
                         Image(uiImage: uiImage)
                             .resizable()
                             .scaledToFit()

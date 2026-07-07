@@ -1,17 +1,11 @@
-//
-//  TaggoClipApp.swift
-//  TaggoClip
-//
-
 import SwiftUI
-
-import SwiftUI
-
+ 
 @main
 struct TaggoClipApp: App {
+    @UIApplicationDelegateAdaptor(ClipAppDelegate.self) private var appDelegate
     private let dependencies = ClipDependencies.live
-    @State private var invocationURL: URL?
-
+    @State private var invocationHolder = InvocationURLHolder()
+ 
     var body: some Scene {
         WindowGroup {
             ReportView(
@@ -19,18 +13,24 @@ struct TaggoClipApp: App {
                     resolveScannedItemUseCase: dependencies.makeResolveScannedItemUseCase(),
                     reportFoundItemUseCase: dependencies.makeReportFoundItemUseCase()
                 ),
-                invocationURL: invocationURL
+                invocationURL: invocationHolder.url
             )
             .onOpenURL { url in
-//                print("GRRRR \(url)")
-                invocationURL = url;
+                invocationHolder.url = url
+            }
+            .onAppear {
+                ClipInvocationBridge.shared.onURLReceived = { url in
+//                    print("invocation", url)
+                    invocationHolder.url = url
+                }
             }
             #if DEBUG
             .task {
-                if invocationURL == nil {
+                if invocationHolder.url == nil {
                     try? await Task.sleep(for: .seconds(1))
-                    if invocationURL == nil {
-                        invocationURL = URL(string: "https://urbanantaggo.netlify.app/item/F4138F1B-7087-4628-99F0-20D467CF0B24")
+                    if invocationHolder.url == nil {
+                        print("no")
+                        invocationHolder.url = URL(string: "https://urbanantaggo.netlify.app/item/F4138F1B-7087-4628-99F0-20D467CF0B24")
                     }
                 }
             }
