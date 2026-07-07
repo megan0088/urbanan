@@ -8,13 +8,15 @@
 import SwiftUI
 
 struct ScannerView: View {
+    let dependencies: AppDependencies
     @State private var viewModel: ScanViewModel
     #if targetEnvironment(simulator)
     @State private var debugLinkText = ""
     #endif
 
-    init(viewModel: ScanViewModel) {
+    init(viewModel: ScanViewModel, dependencies: AppDependencies) {
         _viewModel = State(initialValue: viewModel)
+        self.dependencies = dependencies
     }
 
     var body: some View {
@@ -36,6 +38,9 @@ struct ScannerView: View {
                 #endif
             case .loading:
                 ProgressView("Looking up item…")
+            case .owned:
+                // Own item — detail sheet is presented below; nothing to show behind it.
+                EmptyView()
             case .found(let item):
                 ScannedItemFlowView(item: item, reportFoundItemUseCase: viewModel.reportFoundItemUseCase,
                                     onDismiss: {viewModel.reset()} );
@@ -46,6 +51,26 @@ struct ScannerView: View {
                 }
             }
         }
+        .sheet(item: ownedItemBinding) { item in
+            ItemDetailView(
+                viewModel: dependencies.makeItemDetailViewModel(item: item),
+                dependencies: dependencies
+            )
+        }
+    }
+
+    /// Derives sheet presentation from `viewModel.state` rather than a separate `@State`,
+    /// so there's one source of truth. Dismissing the sheet resets the scanner.
+    private var ownedItemBinding: Binding<Item?> {
+        Binding(
+            get: {
+                if case .owned(let item) = viewModel.state { return item }
+                return nil
+            },
+            set: { newValue in
+                if newValue == nil { viewModel.reset() }
+            }
+        )
     }
 
     #if targetEnvironment(simulator)

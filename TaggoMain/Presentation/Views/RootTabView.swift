@@ -41,10 +41,13 @@ struct RootTabView: View {
                 }
         }
         .onOpenURL { url  in
+            print("🔗 RootTabView.onOpenURL fired with \(url.absoluteString)")
             Task { await handleIncomingLink(url)};
         }
         .onAppear {
+            print("🔗 RootTabView.onAppear: subscribing to MainInvocationBridge")
             MainInvocationBridge.shared.onURLReceived = { url in
+                print("🔗 RootTabView: onURLReceived fired with \(url.absoluteString)")
                 Task { await handleIncomingLink(url) }
             }
         }
@@ -74,15 +77,19 @@ struct RootTabView: View {
     }
 
     private func handleIncomingLink(_ url: URL) async {
+        print("🔗 handleIncomingLink: resolving \(url.absoluteString)")
         let useCase = dependencies.makeResolveScannedItemUseCase()
         do {
             let item = try await useCase.execute(scannedString: url.absoluteString)
             if item.ownerID == dependencies.currentUserProvider.currentUserID {
+                print("🔗 handleIncomingLink: resolved \(item.name) — owned by current user")
                 deepLinkPresentation = .owned(item)
             } else {
+                print("🔗 handleIncomingLink: resolved \(item.name) — owned by someone else")
                 deepLinkPresentation = .found(item)
             }
         } catch {
+            print("🔗 handleIncomingLink: failed to resolve — \(error)")
             deepLinkErrorMessage = "That link didn't resolve to a valid item."
         }
     }

@@ -21,6 +21,7 @@ final class MainInvocationBridge {
     }
 
     func receive(_ url: URL) {
+        print("🔗 MainInvocationBridge.receive: \(url.absoluteString), subscriber attached: \(onURLReceived != nil)")
         lastURL = url
         onURLReceived?(url)
     }

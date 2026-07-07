@@ -13,6 +13,15 @@ final class AppDelegate: NSObject, UIApplicationDelegate {
         _ application: UIApplication,
         didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]? = nil
     ) -> Bool {
+        // Earliest possible hook — fires before configurationForConnecting. If
+        // .userActivityDictionary shows up here but configurationForConnecting still logs
+        // an empty userActivities array, the activity is getting lost between these two
+        // calls rather than never being delivered at all.
+        print("🚀 didFinishLaunchingWithOptions fired. launchOptions: \(String(describing: launchOptions))")
+        if let activityDict = launchOptions?[.userActivityDictionary] {
+            print("🚀 launchOptions contains .userActivityDictionary: \(activityDict)")
+        }
+
         application.registerForRemoteNotifications()
         Task {
             do {
@@ -45,24 +54,13 @@ final class AppDelegate: NSObject, UIApplicationDelegate {
         configurationForConnecting connectingSceneSession: UISceneSession,
         options: UIScene.ConnectionOptions
     ) -> UISceneConfiguration {
-        if let userActivity = options.userActivities.first(where: { $0.activityType == NSUserActivityTypeBrowsingWeb }),
-           let url = userActivity.webpageURL {
-            MainInvocationBridge.shared.receive(url)
-        }
-        return UISceneConfiguration(name: nil, sessionRole: connectingSceneSession.role)
-    }
-
-    func application(
-        _ application: UIApplication,
-        continue userActivity: NSUserActivity,
-        restorationHandler: @escaping ([UIUserActivityRestoring]?) -> Void
-    ) -> Bool {
-        guard userActivity.activityType == NSUserActivityTypeBrowsingWeb,
-              let url = userActivity.webpageURL else {
-            return false
-        }
-        MainInvocationBridge.shared.receive(url)
-        return true
+        // Delegate class is the important part here — this is what actually gets scene-level
+        // continuation events (willConnectTo / continue userActivity) delivered reliably,
+        // instead of relying on SwiftUI's implicit scene delegate + .onOpenURL bridging,
+        // which testing showed never fires for warm-launch Universal Link taps.
+        let configuration = UISceneConfiguration(name: nil, sessionRole: connectingSceneSession.role)
+        configuration.delegateClass = MainSceneDelegate.self
+        return configuration
     }
 
     func application(
