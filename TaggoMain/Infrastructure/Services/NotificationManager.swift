@@ -20,7 +20,7 @@ final class NotificationManager: NSObject, NotificationManaging, @unchecked Send
         try await UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .badge, .sound])
     }
 
-    func subscribeToFoundReports(forItemID itemID: UUID) async throws {
+    func subscribeToFoundReports(forItemID itemID: UUID, itemName: String) async throws {
         let predicate = NSPredicate(format: "%K == %@", RecordSchema.FoundReport.Field.itemID, itemID.uuidString)
         let subscription = CKQuerySubscription(
             recordType: RecordSchema.FoundReport.recordType,
@@ -29,8 +29,8 @@ final class NotificationManager: NSObject, NotificationManaging, @unchecked Send
             options: [.firesOnRecordCreation]
         )
         let notificationInfo = CKSubscription.NotificationInfo()
-        notificationInfo.title = "Item Found"
-        notificationInfo.alertBody = "Someone reported \(itemID) as found. Check your Inbox for details."
+        notificationInfo.title = "Item Found!"
+        notificationInfo.alertBody = "\"\(itemName)\" was reported as found. Check your Inbox for details."
         notificationInfo.soundName = "default"
         notificationInfo.shouldBadge = true
         notificationInfo.shouldSendContentAvailable = true 

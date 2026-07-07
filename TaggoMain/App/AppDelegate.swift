@@ -42,6 +42,31 @@ final class AppDelegate: NSObject, UIApplicationDelegate {
 
     func application(
         _ application: UIApplication,
+        configurationForConnecting connectingSceneSession: UISceneSession,
+        options: UIScene.ConnectionOptions
+    ) -> UISceneConfiguration {
+        if let userActivity = options.userActivities.first(where: { $0.activityType == NSUserActivityTypeBrowsingWeb }),
+           let url = userActivity.webpageURL {
+            MainInvocationBridge.shared.receive(url)
+        }
+        return UISceneConfiguration(name: nil, sessionRole: connectingSceneSession.role)
+    }
+
+    func application(
+        _ application: UIApplication,
+        continue userActivity: NSUserActivity,
+        restorationHandler: @escaping ([UIUserActivityRestoring]?) -> Void
+    ) -> Bool {
+        guard userActivity.activityType == NSUserActivityTypeBrowsingWeb,
+              let url = userActivity.webpageURL else {
+            return false
+        }
+        MainInvocationBridge.shared.receive(url)
+        return true
+    }
+
+    func application(
+        _ application: UIApplication,
         didReceiveRemoteNotification userInfo: [AnyHashable : Any],
         fetchCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void
     ) {

@@ -12,6 +12,7 @@ final class MockNotificationManaging: NotificationManaging, @unchecked Sendable 
     var subscribeResult: Result<Void, Error> = .success(())
     private(set) var subscribeCallCount = 0
     private(set) var lastSubscribedItemID: UUID?
+    private(set) var lastSubscribedItemName: String?
 
     var debugListSubscriptionsResult: Result<[String], Error> = .success([])
     private(set) var debugListSubscriptionsCallCount = 0
@@ -33,9 +34,10 @@ final class MockNotificationManaging: NotificationManaging, @unchecked Sendable 
         }
     }
 
-    func subscribeToFoundReports(forItemID itemID: UUID) async throws {
+    func subscribeToFoundReports(forItemID itemID: UUID, itemName: String) async throws {
         subscribeCallCount += 1
         lastSubscribedItemID = itemID
+        lastSubscribedItemName = itemName
         if case .failure(let error) = subscribeResult {
             throw error
         }

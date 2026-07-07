@@ -116,11 +116,12 @@ final class RegisterItemUseCaseTests: XCTestCase {
         let notificationManaging = MockNotificationManaging()
         let sut = makeSUT(notificationManaging: notificationManaging)
 
-        let input = RegisterItemUseCase.Input(name: "Item", category: "Cat", color: "Red", description: "", imageData: nil)
+        let input = RegisterItemUseCase.Input(name: "Blue Backpack", category: "Cat", color: "Red", description: "", imageData: nil)
         let output = try await sut.execute(input)
 
         XCTAssertEqual(notificationManaging.subscribeCallCount, 1)
         XCTAssertEqual(notificationManaging.lastSubscribedItemID, output.item.id)
+        XCTAssertEqual(notificationManaging.lastSubscribedItemName, "Blue Backpack")
     }
 
     func test_execute_whenSubscriptionFails_registrationStillSucceeds() async throws {

@@ -53,7 +53,7 @@ struct RegisterItemUseCase {
         let savedItem = try await cloudKitManager.saveItem(newItem)
 
         do {
-            try await notificationManaging.subscribeToFoundReports(forItemID: savedItem.id)
+            try await notificationManaging.subscribeToFoundReports(forItemID: savedItem.id, itemName: savedItem.name)
         } catch {
             // Registration must still succeed even if the subscription fails (e.g. the
             // owner is offline), but a silent `try?` here means a real misconfiguration
