@@ -47,7 +47,7 @@ final class EditItemUseCaseTests: XCTestCase {
         mockCK.fetchItemResult = .success(existing)
         let useCase = EditItemUseCase(
             cloudKitManager: mockCK,
-            currentUserProvider: MockCurrentUserProvider(userID: UUID()), // different user
+            currentUserProvider: MockCurrentUserProvider(currentUserID:UUID()), // different user
             imageCompressor: MockImageCompressor()
         )
 
@@ -60,6 +60,8 @@ final class EditItemUseCaseTests: XCTestCase {
             XCTFail("Expected TaggoError.notOwner")
         } catch let error as TaggoError {
             XCTAssertEqual(error, .notOwner)
+        } catch {
+            XCTFail("Expected TaggoError, got \(error)")
         }
 
         XCTAssertEqual(mockCK.updateItemCallCount, 0)
@@ -73,7 +75,7 @@ final class EditItemUseCaseTests: XCTestCase {
         mockCK.fetchItemResult = .success(existing)
         let useCase = EditItemUseCase(
             cloudKitManager: mockCK,
-            currentUserProvider: MockCurrentUserProvider(userID: ownerID),
+            currentUserProvider: MockCurrentUserProvider(currentUserID:ownerID),
             imageCompressor: MockImageCompressor()
         )
 
@@ -104,6 +106,8 @@ final class EditItemUseCaseTests: XCTestCase {
             XCTFail("Expected error")
         } catch let error as TaggoError {
             XCTAssertEqual(error, .notFound)
+        } catch {
+            XCTFail("Expected TaggoError, got \(error)")
         }
     }
 }

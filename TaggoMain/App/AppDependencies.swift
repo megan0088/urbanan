@@ -13,19 +13,33 @@ struct AppDependencies {
     let qrManager: QRManaging
     let currentUserProvider: CurrentUserProviding
     let imageCompressor: ImageCompressing
-    
+    let notificationManaging: NotificationManaging
+
     static let live = AppDependencies(
         cloudKitManager: CloudKitManager(),
         qrManager: QRManager(),
         currentUserProvider: CurrentUserProvider(),
         imageCompressor: ImageCompressor(),
+        notificationManaging: NotificationManager()
     )
- 
+
     func makeRegisterViewModel() -> RegisterViewModel {
         RegisterViewModel(
             registerItemUseCase: RegisterItemUseCase(
-                cloudKitManager: cloudKitManager, qrManager: qrManager, currentUserProvider: currentUserProvider, imageCompressor: imageCompressor
+                cloudKitManager: cloudKitManager,
+                qrManager: qrManager,
+                currentUserProvider: currentUserProvider,
+                imageCompressor: imageCompressor,
+                notificationManaging: notificationManaging
             )
+        )
+    }
+
+    func makeInboxViewModel() -> InboxViewModel {
+        InboxViewModel(
+            fetchInboxUseCase: FetchInboxUseCase(cloudKitManager: cloudKitManager, currentUserProvider: currentUserProvider),
+            markReportClaimedUseCase: MarkReportClaimedUseCase(cloudKitManager: cloudKitManager),
+            foundReportEvents: notificationManaging.foundReportEvents
         )
     }
  
@@ -50,7 +64,10 @@ struct AppDependencies {
     }
     
     func makeReportFoundItemUseCase() -> ReportFoundItemUseCase {
-        ReportFoundItemUseCase(cloudKitManager: cloudKitManager, imageCompressor: imageCompressor)
+        ReportFoundItemUseCase(
+            foundReportSubmitting: CloudKitFoundReportSubmitter(cloudKitManager: cloudKitManager),
+            imageCompressor: imageCompressor
+        )
     }
     
     func makeItemDetailViewModel(item: Item) -> ItemDetailViewModel {

@@ -10,12 +10,20 @@ struct RegisterItemUseCase {
     private let qrManager: QRManaging;
     private let currentUserProvider: CurrentUserProviding
     private let imageCompressor: ImageCompressing
-    
-    init(cloudKitManager: CloudKitManaging, qrManager: QRManaging, currentUserProvider: CurrentUserProviding, imageCompressor: ImageCompressing) {
+    private let notificationManaging: NotificationManaging
+
+    init(
+        cloudKitManager: CloudKitManaging,
+        qrManager: QRManaging,
+        currentUserProvider: CurrentUserProviding,
+        imageCompressor: ImageCompressing,
+        notificationManaging: NotificationManaging
+    ) {
         self.cloudKitManager = cloudKitManager
         self.qrManager = qrManager
         self.currentUserProvider = currentUserProvider
         self.imageCompressor = imageCompressor
+        self.notificationManaging = notificationManaging
     }
     
     struct Input {
@@ -43,6 +51,17 @@ struct RegisterItemUseCase {
                            name: input.name, category: input.category, color: input.color, description: input.description,
                            imageData: compressedImageData, createdAt: now, updatedAt: now)
         let savedItem = try await cloudKitManager.saveItem(newItem)
+
+        do {
+            try await notificationManaging.subscribeToFoundReports(forItemID: savedItem.id)
+        } catch {
+            // Registration must still succeed even if the subscription fails (e.g. the
+            // owner is offline), but a silent `try?` here means a real misconfiguration
+            // (like a non-queryable predicate field in the CloudKit schema) is invisible
+            // forever. Log so it shows up in the console during development.
+            print("⚠️ RegisterItemUseCase: failed to subscribe to found reports for item \(savedItem.id): \(error)")
+        }
+
         let qrData = try qrManager.generateQRCode(for: savedItem.id)
         let itemLink = qrManager.link(for: savedItem.id);
         return Output(item: savedItem, qrCodeImageData: qrData, itemLink: itemLink)

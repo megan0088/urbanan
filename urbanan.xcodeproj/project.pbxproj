@@ -7,12 +7,14 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		07BF4CCA1052B2D627A72543 /* MockNotificationManaging.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1F8A6AB1342346902821E86 /* MockNotificationManaging.swift */; };
 		0BF8C8D8DE55636AB9211894 /* EditItemUseCaseTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A5BD57DAC1851058DA39BA9 /* EditItemUseCaseTests.swift */; };
 		0E93166EFE7F112AA1E03AA9 /* RegisterItemUseCaseTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8368CADB67AACFEE46138F1B /* RegisterItemUseCaseTests.swift */; };
 		264A8109287725B90B4C42CB /* MockCloudKitManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2F51D7405C016B324C2719E /* MockCloudKitManager.swift */; };
 		26B713379FA6A8C4E1FE53EE /* UniversalLinkParserTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2B231C40F01254D1A098E5A /* UniversalLinkParserTests.swift */; };
 		2CE00F8EB75514A4B02A7795 /* QRManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68D275C831C717BDBB3B1B2B /* QRManagerTests.swift */; };
 		2E8B591604177D2264F33601 /* ListItemsUseCaseTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA87FFDCCB51371517B38035 /* ListItemsUseCaseTests.swift */; };
+		3A899836609505DEB5AF275C /* MockFoundReportSubmitting.swift in Sources */ = {isa = PBXBuildFile; fileRef = 068D4ACCCD2B83215494722B /* MockFoundReportSubmitting.swift */; };
 		5376686C78C292738E3ECDED /* MockQRManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B957CDC91B88C312550E3821 /* MockQRManager.swift */; };
 		5B7B56331C0C3BB508229D73 /* ItemMapperTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6ED59007FF426BD8A5A5FD19 /* ItemMapperTests.swift */; };
 		5F68D51C4A650C395BD02F7D /* FlowEndToEndUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8825DEFF2A4B4D94E198D290 /* FlowEndToEndUITests.swift */; };
@@ -70,6 +72,7 @@
 
 /* Begin PBXFileReference section */
 		03D115DB2FFAE14E00FA07EA /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		068D4ACCCD2B83215494722B /* MockFoundReportSubmitting.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = MockFoundReportSubmitting.swift; sourceTree = "<group>"; };
 		0CC2B2B850C874E8E06913C8 /* FetchInboxUseCaseTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = FetchInboxUseCaseTests.swift; sourceTree = "<group>"; };
 		13DC7851A637F0CB51948406 /* TaggoUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TaggoUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		20EA5F7AC99692D57A4F41F3 /* DeleteItemUseCaseTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = DeleteItemUseCaseTests.swift; sourceTree = "<group>"; };
@@ -83,6 +86,7 @@
 		8825DEFF2A4B4D94E198D290 /* FlowEndToEndUITests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = FlowEndToEndUITests.swift; sourceTree = "<group>"; };
 		94D48D9B14977296944728CF /* Signing.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = Signing.xcconfig; sourceTree = "<group>"; };
 		A123A25EB3AC0740B430F81F /* MarkReportClaimedUseCaseTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = MarkReportClaimedUseCaseTests.swift; sourceTree = "<group>"; };
+		A1F8A6AB1342346902821E86 /* MockNotificationManaging.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = MockNotificationManaging.swift; sourceTree = "<group>"; };
 		AF38F476852050EEFBBD3450 /* CloudKitManagerTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = CloudKitManagerTests.swift; sourceTree = "<group>"; };
 		B2B231C40F01254D1A098E5A /* UniversalLinkParserTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = UniversalLinkParserTests.swift; sourceTree = "<group>"; };
 		B2F51D7405C016B324C2719E /* MockCloudKitManager.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = MockCloudKitManager.swift; sourceTree = "<group>"; };
@@ -103,16 +107,28 @@
 			);
 			target = 4C72072F36E5CBF1D6FDD06E /* TaggoClip */;
 		};
+		57BB2F7C67510BD4D18BE8A6 /* Exceptions for "TaggoMain" folder in "TaggoMain" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+			);
+			target = C4C939832FF6BC0400E3C09C /* TaggoMain */;
+		};
 /* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		03D110C22FF96CF300FA07EA /* SharedCore */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+			);
 			path = SharedCore;
 			sourceTree = "<group>";
 		};
 		03D111192FF96CFD00FA07EA /* TaggoMain */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				57BB2F7C67510BD4D18BE8A6 /* Exceptions for "TaggoMain" folder in "TaggoMain" target */,
+			);
 			path = TaggoMain;
 			sourceTree = "<group>";
 		};
@@ -192,6 +208,8 @@
 				2FE9CC5A12D309A4523A4B29 /* MockCurrentUserProvider.swift */,
 				B957CDC91B88C312550E3821 /* MockQRManager.swift */,
 				E15C127B0D09F40CAB278AC1 /* MockImageCompressor.swift */,
+				068D4ACCCD2B83215494722B /* MockFoundReportSubmitting.swift */,
+				A1F8A6AB1342346902821E86 /* MockNotificationManaging.swift */,
 			);
 			path = Mocks;
 			sourceTree = "<group>";
@@ -460,6 +478,8 @@
 				0E93166EFE7F112AA1E03AA9 /* RegisterItemUseCaseTests.swift in Sources */,
 				C45C3FC2729DE4EFA0872EB3 /* ReportFoundItemUseCaseTests.swift in Sources */,
 				F4E0B68169CB9E50981B051D /* MockImageCompressor.swift in Sources */,
+				3A899836609505DEB5AF275C /* MockFoundReportSubmitting.swift in Sources */,
+				07BF4CCA1052B2D627A72543 /* MockNotificationManaging.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -723,6 +743,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = TaggoMain/Info.plist;
 				INFOPLIST_KEY_NSCameraUsageDescription = "\"Taggo uses your camera to scan item QR codes.\"";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -757,6 +778,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = TaggoMain/Info.plist;
 				INFOPLIST_KEY_NSCameraUsageDescription = "\"Taggo uses your camera to scan item QR codes.\"";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;

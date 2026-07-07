@@ -7,10 +7,10 @@ import XCTest
 
 final class ReportFoundItemUseCaseTests: XCTestCase {
 
-    func test_execute_savesReportWithPendingStatusAndUnread() async throws {
-        let mockCK = MockCloudKitManager()
+    func test_execute_submitsReportWithGivenFields() async throws {
+        let mockSubmitter = MockFoundReportSubmitting()
         let useCase = ReportFoundItemUseCase(
-            cloudKitManager: mockCK,
+            foundReportSubmitting: mockSubmitter,
             imageCompressor: MockImageCompressor()
         )
 
@@ -19,37 +19,36 @@ final class ReportFoundItemUseCaseTests: XCTestCase {
             itemID: itemID, station: "Central Station", note: "By the ticket gate", photoData: nil
         )
 
-        let output = try await useCase.execute(input)
+        try await useCase.execute(input)
 
-        XCTAssertEqual(mockCK.saveFoundReportCallCount, 1)
-        XCTAssertEqual(output.report.itemID, itemID)
-        XCTAssertEqual(output.report.station, "Central Station")
-        XCTAssertEqual(output.report.status, .pending)
-        XCTAssertFalse(output.report.isRead)
+        XCTAssertEqual(mockSubmitter.submitCallCount, 1)
+        XCTAssertEqual(mockSubmitter.lastSubmittedReport?.itemID, itemID)
+        XCTAssertEqual(mockSubmitter.lastSubmittedReport?.station, "Central Station")
+        XCTAssertEqual(mockSubmitter.lastSubmittedReport?.status, .pending)
+        XCTAssertFalse(mockSubmitter.lastSubmittedReport?.isRead ?? true)
     }
 
     func test_execute_compressesPhoto_whenProvided() async throws {
-        let mockCK = MockCloudKitManager()
+        let mockSubmitter = MockFoundReportSubmitting()
         let mockCompressor = MockImageCompressor()
         let compressedData = Data("compressed-photo".utf8)
         mockCompressor.compressResult = .success(compressedData)
-        let useCase = ReportFoundItemUseCase(cloudKitManager: mockCK, imageCompressor: mockCompressor)
+        let useCase = ReportFoundItemUseCase(foundReportSubmitting: mockSubmitter, imageCompressor: mockCompressor)
 
         let input = ReportFoundItemUseCase.Input(
             itemID: UUID(), station: "Station", note: "", photoData: Data("raw-photo".utf8)
         )
 
-        let output = try await useCase.execute(input)
+        try await useCase.execute(input)
 
         XCTAssertEqual(mockCompressor.compressCallCount, 1)
-        XCTAssertEqual(output.report.photoData, compressedData)
-        XCTAssertEqual(mockCK.lastSavedFoundReport?.photoData, compressedData)
+        XCTAssertEqual(mockSubmitter.lastSubmittedReport?.photoData, compressedData)
     }
 
     func test_execute_doesNotCallCompressor_whenNoPhotoProvided() async throws {
         let mockCompressor = MockImageCompressor()
         let useCase = ReportFoundItemUseCase(
-            cloudKitManager: MockCloudKitManager(),
+            foundReportSubmitting: MockFoundReportSubmitting(),
             imageCompressor: mockCompressor
         )
 
@@ -57,40 +56,56 @@ final class ReportFoundItemUseCaseTests: XCTestCase {
             itemID: UUID(), station: "Station", note: "", photoData: nil
         )
 
-        _ = try await useCase.execute(input)
+        try await useCase.execute(input)
 
         XCTAssertEqual(mockCompressor.compressCallCount, 0)
     }
 
-    func test_execute_propagatesCloudKitError() async {
-        let mockCK = MockCloudKitManager()
-        mockCK.saveFoundReportResult = .failure(TaggoError.networkUnavailable)
-        let useCase = ReportFoundItemUseCase(cloudKitManager: mockCK, imageCompressor: MockImageCompressor())
+    func test_execute_propagatesSubmissionError() async {
+        let mockSubmitter = MockFoundReportSubmitting()
+        mockSubmitter.submitResult = .failure(TaggoError.networkUnavailable)
+        let useCase = ReportFoundItemUseCase(
+            foundReportSubmitting: mockSubmitter,
+            imageCompressor: MockImageCompressor()
+        )
 
         let input = ReportFoundItemUseCase.Input(
             itemID: UUID(), station: "Station", note: "", photoData: nil
         )
 
         do {
-            _ = try await useCase.execute(input)
+            try await useCase.execute(input)
             XCTFail("Expected error")
         } catch let error as TaggoError {
             XCTAssertEqual(error, .networkUnavailable)
         } catch {
-            
+            XCTFail("Expected TaggoError, got \(error)")
         }
     }
 
     func test_execute_convertsEmptyNoteToNil() async throws {
-        let mockCK = MockCloudKitManager()
-        let useCase = ReportFoundItemUseCase(cloudKitManager: mockCK, imageCompressor: MockImageCompressor())
+        let mockSubmitter = MockFoundReportSubmitting()
+        let useCase = ReportFoundItemUseCase(foundReportSubmitting: mockSubmitter, imageCompressor: MockImageCompressor())
 
         let input = ReportFoundItemUseCase.Input(
             itemID: UUID(), station: "Station", note: "", photoData: nil
         )
 
-        let output = try await useCase.execute(input)
+        try await useCase.execute(input)
 
-        XCTAssertNil(output.report.note)
+        XCTAssertNil(mockSubmitter.lastSubmittedReport?.note)
+    }
+
+    func test_execute_keepsNonEmptyNote() async throws {
+        let mockSubmitter = MockFoundReportSubmitting()
+        let useCase = ReportFoundItemUseCase(foundReportSubmitting: mockSubmitter, imageCompressor: MockImageCompressor())
+
+        let input = ReportFoundItemUseCase.Input(
+            itemID: UUID(), station: "Station", note: "By the ticket gate", photoData: nil
+        )
+
+        try await useCase.execute(input)
+
+        XCTAssertEqual(mockSubmitter.lastSubmittedReport?.note, "By the ticket gate")
     }
 }

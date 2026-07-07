@@ -90,13 +90,61 @@ final class CloudKitManager: CloudKitManaging {
         let record = FoundReportMapper.toRecord(report: report)
         do {
             let savedRecord = try await database.save(record)
+//            print("✅ Saved FoundReport record: \(savedRecord.recordID.recordName), itemID: \(report.itemID.uuidString) — this is the write that must match a subscription's predicate exactly")
             let report = try FoundReportMapper.toFoundReport(record: savedRecord)
             return report
+        } catch let error as CKError {
+            print("❌ saveFoundReport failed for itemID \(report.itemID.uuidString): \(error)")
+            throw Self.map(error)
+        }
+    }
+
+    func fetchFoundReports(forItemIDs itemIDs: [UUID]) async throws -> [FoundReport] {
+        guard !itemIDs.isEmpty else { return [] }
+
+        let predicate = NSPredicate(format: "%K IN %@", RecordSchema.FoundReport.Field.itemID, itemIDs.map(\.uuidString))
+        let query = CKQuery(recordType: RecordSchema.FoundReport.recordType, predicate: predicate)
+        query.sortDescriptors = [NSSortDescriptor(key: RecordSchema.FoundReport.Field.reportedAt, ascending: false)]
+
+        do {
+            var reports: [FoundReport] = []
+            var cursor: CKQueryOperation.Cursor?
+            repeat {
+                let matchResults: [(CKRecord.ID, Result<CKRecord, Error>)]
+                let nextCursor: CKQueryOperation.Cursor?
+                if let cursor {
+                    (matchResults, nextCursor) = try await database.records(continuingMatchFrom: cursor)
+                }
+                else {
+                    (matchResults, nextCursor) = try await database.records(matching: query)
+                }
+
+                for (_, result) in matchResults {
+                    if case .success(let record) = result {
+                        reports.append(try FoundReportMapper.toFoundReport(record: record))
+                    }
+                }
+                cursor = nextCursor
+            } while cursor != nil
+
+            return reports
         } catch let error as CKError {
             throw Self.map(error)
         }
     }
-    
+
+    func updateFoundReport(_ report: FoundReport) async throws -> FoundReport {
+        do {
+            let recordID = CKRecord.ID(recordName: report.id.uuidString)
+            let existingRecord = try await database.record(for: recordID)
+            let updatedRecord = FoundReportMapper.toRecord(report: report, existingRecord: existingRecord)
+            let savedRecord = try await database.save(updatedRecord)
+            return try FoundReportMapper.toFoundReport(record: savedRecord)
+        } catch let error as CKError {
+            throw Self.map(error)
+        }
+    }
+
     private static func map(_ error: CKError) -> TaggoError {
         switch error.code {
         case .networkUnavailable, .networkFailure:

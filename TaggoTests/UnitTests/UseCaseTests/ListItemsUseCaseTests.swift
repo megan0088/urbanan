@@ -30,7 +30,7 @@ final class ListItemsUseCaseTests: XCTestCase {
         let items = try await sut.execute()
 
         XCTAssertEqual(items, expectedItems)
-        XCTAssertEqual(cloudKitManager.fetchItemsCount, 1)
+        XCTAssertEqual(cloudKitManager.fetchItemsCallCount, 1)
         XCTAssertEqual(cloudKitManager.lastFetchItemsOwnerID, currentUserProvider.currentUserID)
     }
 
