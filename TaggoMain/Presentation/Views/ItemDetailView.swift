@@ -5,58 +5,65 @@
 
 import Foundation
 import SwiftUI
+import Photos
 
 struct ItemDetailView: View {
     @State private var viewModel: ItemDetailViewModel
     @State private var isPresentingEdit = false
     @State private var isPresentingDeleteConfirmation = false
-    @State private var showQR = false
+    @State private var showQRSuccess = false
+    @State private var qrSaveError = false
+    @State private var qrCopied = false
     @Environment(\.dismiss) private var dismiss
 
     let dependencies: AppDependencies
+    var onItemModified: (() -> Void)?
 
-    init(viewModel: ItemDetailViewModel, dependencies: AppDependencies) {
+    init(viewModel: ItemDetailViewModel, dependencies: AppDependencies, onItemModified: (() -> Void)? = nil) {
         _viewModel = State(initialValue: viewModel)
         self.dependencies = dependencies
+        self.onItemModified = onItemModified
     }
 
     var body: some View {
         NavigationStack {
-            ZStack(alignment: .bottom) {
-                ScrollView {
-                    VStack(alignment: .leading, spacing: 20) {
-                        itemPhoto
-                            .padding(.top, 16)
+            ScrollView {
+                VStack(alignment: .leading, spacing: 20) {
+                    itemPhoto
+                        .padding(.top, 16)
 
+                    VStack(alignment: .leading, spacing: 4) {
                         Text(viewModel.item.name)
                             .font(.title2).fontWeight(.bold)
-                            .padding(.horizontal, TaggoSpacing.horizontalPadding)
-
-                        TipCardView()
-
-                        if case .failure(let message) = viewModel.state {
-                            Text(message)
-                                .foregroundStyle(.red)
-                                .padding(.horizontal, TaggoSpacing.horizontalPadding)
+                        if let desc = viewModel.item.description, !desc.isEmpty {
+                            Text(desc)
+                                .font(.subheadline).foregroundStyle(.secondary)
                         }
-
-                        Spacer(minLength: 100)
                     }
-                }
-                .scrollIndicators(.hidden)
-                .background(Color.taggoBackground)
+                    .padding(.horizontal, TaggoSpacing.horizontalPadding)
 
-                generateQRButton
+                    qrCodeCard
+
+                    if case .failure(let message) = viewModel.state {
+                        Text(message)
+                            .foregroundStyle(.red)
+                            .padding(.horizontal, TaggoSpacing.horizontalPadding)
+                    }
+
+                    Spacer(minLength: 40)
+                }
+            }
+            .scrollIndicators(.hidden)
+            .background(Color.taggoBackground)
+            .navigationDestination(isPresented: $showQRSuccess) {
+                QRDownloadSuccessView()
             }
             .navigationTitle("Items Details")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) {
-                    Button {
-                        dismiss()
-                    } label: {
-                        Image(systemName: "chevron.left")
-                            .fontWeight(.medium)
+                    Button { dismiss() } label: {
+                        Image(systemName: "chevron.left").fontWeight(.medium)
                     }
                 }
                 ToolbarItem(placement: .primaryAction) {
@@ -79,7 +86,10 @@ struct ItemDetailView: View {
                 Button("Delete", role: .destructive) {
                     Task {
                         await viewModel.delete()
-                        if viewModel.state == .deleted { dismiss() }
+                        if viewModel.state == .deleted {
+                            onItemModified?()
+                            dismiss()
+                        }
                     }
                 }
                 Button("Cancel", role: .cancel) {}
@@ -89,24 +99,20 @@ struct ItemDetailView: View {
                     viewModel: dependencies.makeEditItemViewModel(item: viewModel.item),
                     onSaved: { updated in
                         viewModel.applyEdit(updated)
+                        onItemModified?()
                         isPresentingEdit = false
                     }
-                )
-            }
-            .sheet(isPresented: $showQR) {
-                QRCodeSheetView(
-                    qrData: viewModel.qrCodeImageData,
-                    itemName: viewModel.item.name
                 )
             }
         }
     }
 
-    // MARK: Photo with blue border
+    // MARK: - Item Photo
+
     private var itemPhoto: some View {
         Group {
             if let data = viewModel.item.imageData, let img = UIImage(data: data) {
-                Image(uiImage: img).resizable().scaledToFill()
+                Image(uiImage: img).resizable().scaledToFit()
             } else {
                 Color.taggoBlueLight
                     .overlay {
@@ -126,108 +132,107 @@ struct ItemDetailView: View {
         .padding(.horizontal, TaggoSpacing.horizontalPadding)
     }
 
-    // MARK: Generate QR button pinned to bottom
-    private var generateQRButton: some View {
-        VStack(spacing: 0) {
-            Divider()
-            Button {
-                showQR = true
-            } label: {
-                Text("Generate QR Code")
-                    .font(.headline).foregroundStyle(.white)
-                    .frame(maxWidth: .infinity)
-                    .padding(.vertical, 16)
-                    .background(Color.taggoBlue)
-                    .clipShape(Capsule())
-            }
-            .disabled(viewModel.qrCodeImageData == nil)
-            .padding(.horizontal, TaggoSpacing.horizontalPadding)
-            .padding(.vertical, 16)
-            .background(Color(.systemBackground))
-        }
-    }
-}
+    // MARK: - QR Code Card (inline)
 
-// MARK: - Tip Card
+    private var qrCodeCard: some View {
+        VStack(alignment: .leading, spacing: 14) {
+            Text("Your QR Code")
+                .font(.headline)
 
-private struct TipCardView: View {
-    var body: some View {
-        HStack(alignment: .top, spacing: 12) {
-            Image(systemName: "info.circle.fill")
-                .foregroundStyle(Color.taggoBlue)
-                .font(.title2)
-
-            VStack(alignment: .leading, spacing: 4) {
-                Text("Tip").font(.headline)
-                Text("Keep your barcode safe. It helps people quickly if they find your belongings.")
-                    .font(.subheadline).foregroundStyle(.secondary)
-            }
-
-            Spacer(minLength: 0)
-
-            Image(systemName: "person.fill.questionmark")
-                .font(.system(size: 36))
-                .foregroundStyle(Color.yellow.opacity(0.9))
-                .frame(width: 56)
-        }
-        .padding(16)
-        .background(Color(.systemBackground))
-        .clipShape(RoundedRectangle(cornerRadius: TaggoSpacing.cardCornerRadius))
-        .shadow(color: .black.opacity(0.06), radius: 8)
-        .padding(.horizontal, TaggoSpacing.horizontalPadding)
-    }
-}
-
-// MARK: - QR Code Sheet
-
-private struct QRCodeSheetView: View {
-    @Environment(\.dismiss) private var dismiss
-    let qrData: Data?
-    let itemName: String
-
-    var body: some View {
-        NavigationStack {
-            VStack(spacing: 24) {
-                Spacer()
-
-                if let data = qrData, let img = UIImage(data: data) {
+            if let data = viewModel.qrCodeImageData, let img = UIImage(data: data) {
+                HStack(alignment: .top, spacing: 14) {
                     Image(uiImage: img)
                         .resizable()
                         .interpolation(.none)
                         .scaledToFit()
-                        .frame(width: 240, height: 240)
-                        .clipShape(RoundedRectangle(cornerRadius: 12))
-                        .shadow(color: .black.opacity(0.1), radius: 12)
-                } else {
-                    Image(systemName: "qrcode")
-                        .font(.system(size: 120))
-                        .foregroundStyle(Color.taggoBlue.opacity(0.4))
+                        .frame(width: 96, height: 96)
+                        .clipShape(RoundedRectangle(cornerRadius: 8))
+
+                    Text("Anyone who finds your item can scan this QR code to notify you through the app.")
+                        .font(.caption)
+                        .foregroundStyle(.secondary)
+                        .fixedSize(horizontal: false, vertical: true)
                 }
 
-                Text(itemName)
-                    .font(.title3).fontWeight(.semibold)
-
-                Text("Scan this QR code to report finding this item.")
-                    .font(.caption).foregroundStyle(.secondary)
-                    .multilineTextAlignment(.center)
-                    .padding(.horizontal, 40)
-
-                Spacer()
-            }
-            .navigationTitle("QR Code")
-            .navigationBarTitleDisplayMode(.inline)
-            .toolbar {
-                ToolbarItem(placement: .cancellationAction) {
-                    Button("Close") { dismiss() }
+                // Download (Save to Photos → success screen)
+                Button {
+                    Task { await saveQRToPhotos(img) }
+                } label: {
+                    Label("Download QR Code", systemImage: "arrow.down.to.line")
+                        .font(.subheadline).fontWeight(.semibold)
+                        .foregroundStyle(.black)
+                        .frame(maxWidth: .infinity)
+                        .padding(.vertical, 13)
+                        .background(Color(red: 0.996, green: 0.788, blue: 0.122))
+                        .clipShape(RoundedRectangle(cornerRadius: 10))
                 }
+
+                // Copy to clipboard
+                Button {
+                    UIPasteboard.general.image = img
+                    qrCopied = true
+                } label: {
+                    Label(qrCopied ? "Copied!" : "Copy QR Code", systemImage: qrCopied ? "checkmark" : "doc.on.doc")
+                        .font(.subheadline).fontWeight(.semibold)
+                        .foregroundStyle(Color.taggoBlue)
+                        .frame(maxWidth: .infinity)
+                        .padding(.vertical, 13)
+                        .background(Color.taggoBlueLight.opacity(0.5) as Color)
+                        .clipShape(RoundedRectangle(cornerRadius: 10))
+                }
+                .onChange(of: qrCopied) { _, copied in
+                    if copied {
+                        Task {
+                            try? await Task.sleep(for: .seconds(2))
+                            qrCopied = false
+                        }
+                    }
+                }
+
+            } else {
+                HStack {
+                    Spacer()
+                    ProgressView()
+                    Spacer()
+                }
+                .frame(minHeight: 80)
             }
+        }
+        .padding(16)
+        .background(Color(.systemBackground))
+        .clipShape(RoundedRectangle(cornerRadius: TaggoSpacing.cardCornerRadius))
+        .overlay(
+            RoundedRectangle(cornerRadius: TaggoSpacing.cardCornerRadius)
+                .strokeBorder(Color.taggoBlue, style: StrokeStyle(lineWidth: 1.5, dash: [6]))
+        )
+        .padding(.horizontal, TaggoSpacing.horizontalPadding)
+        .alert("Permission Required", isPresented: $qrSaveError) {
+            Button("OK") {}
+        } message: {
+            Text("Please allow Photos access in Settings to save the QR code.")
+        }
+    }
+
+    // MARK: - Save QR to Photos
+
+    private func saveQRToPhotos(_ image: UIImage) async {
+        let status = await withCheckedContinuation { continuation in
+            PHPhotoLibrary.requestAuthorization(for: .addOnly) { status in
+                continuation.resume(returning: status)
+            }
+        }
+        if status == .authorized || status == .limited {
+            UIImageWriteToSavedPhotosAlbum(image, nil, nil, nil)
+            showQRSuccess = true
+        } else {
+            qrSaveError = true
         }
     }
 }
 
 #Preview {
-    let item = Item(id: UUID(), ownerID: UUID(), name: "Blue Backpack", category: "Bag",
-                    color: "Navy Blue", description: "A worn navy blue backpack",
+    let item = Item(id: UUID(), ownerID: UUID(), name: "Tas Mania Mantap", category: "Bag",
+                    color: "Black", description: "Tas jinjing warna hitam sudah agak pudar dengan gantungan kunci karakter favorit",
                     imageData: nil, createdAt: Date(), updatedAt: Date())
     let deps = AppDependencies.live
     NavigationStack {

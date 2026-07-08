@@ -12,6 +12,7 @@ struct ItemListView: View {
     @State private var selectedItem: Item?
     @State private var searchText = ""
     @State private var showInbox = false
+    @State private var itemWasModified = false
     var onAddTapped: () -> Void
 
     init(dependencies: AppDependencies, viewModel: ItemListViewModel, onAddTapped: @escaping () -> Void) {
@@ -70,11 +71,15 @@ struct ItemListView: View {
             await viewModel.load()
         }
         .sheet(item: $selectedItem, onDismiss: {
-            Task { await viewModel.load() }
+            if itemWasModified {
+                itemWasModified = false
+                Task { await viewModel.load() }
+            }
         }) { item in
             ItemDetailView(
                 viewModel: dependencies.makeItemDetailViewModel(item: item),
-                dependencies: dependencies
+                dependencies: dependencies,
+                onItemModified: { itemWasModified = true }
             )
         }
         .sheet(isPresented: $showInbox) {
@@ -129,13 +134,14 @@ private struct HomeHeaderView: View {
     var onBellTapped: () -> Void
 
     var body: some View {
-        VStack(alignment: .leading, spacing: 6) {
+        VStack(alignment: .leading, spacing: 20) {
             HStack {
                 Spacer()
                 Button(action: onBellTapped) {
                     ZStack(alignment: .topTrailing) {
                         Image(systemName: "bell")
                             .font(.system(size: 20, weight: .medium))
+                            .padding(20)
                             .foregroundStyle(.white)
                             .frame(width: 40, height: 40)
                             .background(.white.opacity(0.2))
@@ -164,7 +170,7 @@ private struct HomeHeaderView: View {
         .padding(.horizontal, TaggoSpacing.horizontalPadding)
         .padding(.bottom, 24)
         .safeAreaPadding(.top)
-        .padding(.top, 8)
+        .padding(.top, 20)
         .background(
             UnevenRoundedRectangle(bottomTrailingRadius: 75)
                 .fill(Color.taggoBlue)
