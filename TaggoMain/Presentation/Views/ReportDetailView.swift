@@ -277,3 +277,10 @@ private struct DetailRow: View {
         }
     }
 }
+
+#Preview {
+    let report = FoundReport(id: UUID(), itemID: UUID(), station: "Stasiun Gambir",
+                             note: "Ditemukan di lantai 2", photoData: nil,
+                             status: .pending, isRead: false, reportedAt: Date(), claimedAt: nil)
+    ReportDetailView(report: report, viewModel: AppDependencies.live.makeInboxViewModel())
+}

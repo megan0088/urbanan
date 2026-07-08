@@ -224,3 +224,13 @@ private struct QRCodeSheetView: View {
         }
     }
 }
+
+#Preview {
+    let item = Item(id: UUID(), ownerID: UUID(), name: "Blue Backpack", category: "Bag",
+                    color: "Navy Blue", description: "A worn navy blue backpack",
+                    imageData: nil, createdAt: Date(), updatedAt: Date())
+    let deps = AppDependencies.live
+    NavigationStack {
+        ItemDetailView(viewModel: deps.makeItemDetailViewModel(item: item), dependencies: deps)
+    }
+}

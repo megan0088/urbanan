@@ -219,3 +219,8 @@ private struct NotificationCardView: View {
             .clipShape(Capsule())
     }
 }
+
+#Preview {
+    let deps = AppDependencies.live
+    InboxView(viewModel: deps.makeInboxViewModel(), dependencies: deps)
+}

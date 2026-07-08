@@ -75,3 +75,7 @@ struct ItemFoundSuccessView: View {
         }
     }
 }
+
+#Preview {
+    ItemFoundSuccessView()
+}

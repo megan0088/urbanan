@@ -159,3 +159,8 @@ struct ScannerView: View {
     }
     #endif
 }
+
+#Preview {
+    let deps = AppDependencies.live
+    ScannerView(viewModel: deps.makeScanViewModel(), dependencies: deps)
+}

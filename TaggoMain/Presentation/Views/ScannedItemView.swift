@@ -132,6 +132,14 @@ struct ScannedItemView: View {
 
 // MARK: - Detail row
 
+private extension Item {
+    static var preview: Item {
+        Item(id: UUID(), ownerID: UUID(), name: "Blue Backpack", category: "Bag",
+             color: "Navy Blue", description: "A worn navy blue backpack",
+             imageData: nil, createdAt: Date(), updatedAt: Date())
+    }
+}
+
 private struct ItemDetailRow: View {
     let icon: String
     let label: String
@@ -152,4 +160,8 @@ private struct ItemDetailRow: View {
         .padding(.horizontal, TaggoSpacing.horizontalPadding)
         .padding(.vertical, 12)
     }
+}
+
+#Preview {
+    ScannedItemView(item: .preview, onReportTapped: {})
 }

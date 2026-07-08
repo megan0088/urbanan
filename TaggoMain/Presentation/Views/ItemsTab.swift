@@ -41,3 +41,7 @@ struct ItemsTab: View {
         }
     }
 }
+
+#Preview {
+    ItemsTab(dependencies: .live)
+}

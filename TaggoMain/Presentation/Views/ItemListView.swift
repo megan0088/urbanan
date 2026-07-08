@@ -273,3 +273,8 @@ private struct HomeBottomBar: View {
     }
 }
 
+#Preview {
+    let deps = AppDependencies.live
+    ItemListView(dependencies: deps, viewModel: deps.makeItemListViewModel(), onAddTapped: {})
+}
+

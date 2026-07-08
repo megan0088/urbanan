@@ -57,32 +57,35 @@ struct RegisterView: View {
     // MARK: Photo picker
 
     private var photoSection: some View {
-        PhotosPicker(selection: $photosPickerItem, matching: .images) {
+        let imageData = viewModel.selectedImageData
+        let blue = Color("TaggoBlue")
+        let blueLight = Color("TaggoBlueLight")
+        return PhotosPicker(selection: $photosPickerItem, matching: .images) {
             Group {
-                if let data = viewModel.selectedImageData, let img = UIImage(data: data) {
+                if let data = imageData, let img = UIImage(data: data) {
                     Image(uiImage: img)
                         .resizable()
                         .scaledToFill()
                 } else {
-                    Color.taggoBlueLight
+                    blueLight
                         .overlay {
                             VStack(spacing: 10) {
                                 Image(systemName: "photo.badge.plus")
                                     .font(.system(size: 44))
-                                    .foregroundStyle(Color.taggoBlue.opacity(0.6) as Color)
+                                    .foregroundStyle(blue.opacity(0.6))
                                 Text("Add Photo")
                                     .font(.subheadline)
-                                    .foregroundStyle(Color.taggoBlue)
+                                    .foregroundStyle(blue)
                             }
                         }
                 }
             }
             .frame(maxWidth: .infinity)
             .frame(height: 220)
-            .clipShape(RoundedRectangle(cornerRadius: TaggoSpacing.cardCornerRadius))
+            .clipShape(RoundedRectangle(cornerRadius: 16))
             .overlay(
-                RoundedRectangle(cornerRadius: TaggoSpacing.cardCornerRadius)
-                    .stroke(Color.taggoBlue.opacity(0.3) as Color, lineWidth: 1.5)
+                RoundedRectangle(cornerRadius: 16)
+                    .stroke(blue.opacity(0.3), lineWidth: 1.5)
             )
         }
         .padding(.horizontal, TaggoSpacing.horizontalPadding)
@@ -196,6 +199,12 @@ struct RegisterView: View {
 }
 
 // MARK: - Reusable form field row
+
+#Preview {
+    NavigationStack {
+        RegisterView(viewModel: AppDependencies.live.makeRegisterViewModel())
+    }
+}
 
 struct FormFieldRow: View {
     let label: String

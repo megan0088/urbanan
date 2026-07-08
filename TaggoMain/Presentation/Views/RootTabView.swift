@@ -98,6 +98,10 @@ struct RootTabView: View {
 // MARK: - Taggo Design Tokens
 
 enum TaggoSpacing {
-    static let cardCornerRadius: CGFloat = 16
-    static let horizontalPadding: CGFloat = 20
+    static var cardCornerRadius: CGFloat { 16 }
+    static var horizontalPadding: CGFloat { 20 }
+}
+
+#Preview {
+    RootTabView(dependencies: .live)
 }

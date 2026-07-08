@@ -23,3 +23,7 @@ struct ScanTab: View {
         }
     }
 }
+
+#Preview {
+    ScanTab(dependencies: .live)
+}

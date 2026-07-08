@@ -18,3 +18,7 @@ struct InboxTab: View {
         InboxView(viewModel: viewModel, dependencies: dependencies)
     }
 }
+
+#Preview {
+    InboxTab(dependencies: .live)
+}

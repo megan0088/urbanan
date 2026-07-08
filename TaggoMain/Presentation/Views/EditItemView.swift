@@ -51,32 +51,35 @@ struct EditItemView: View {
     // MARK: Photo
 
     private var photoSection: some View {
-        PhotosPicker(selection: $photosPickerItem, matching: .images) {
+        let imageData = viewModel.selectedImageData
+        let blue = Color("TaggoBlue")
+        let blueLight = Color("TaggoBlueLight")
+        return PhotosPicker(selection: $photosPickerItem, matching: .images) {
             Group {
-                if let data = viewModel.selectedImageData, let img = UIImage(data: data) {
+                if let data = imageData, let img = UIImage(data: data) {
                     Image(uiImage: img)
                         .resizable()
                         .scaledToFill()
                 } else {
-                    Color.taggoBlueLight
+                    blueLight
                         .overlay {
                             VStack(spacing: 10) {
                                 Image(systemName: "photo.badge.plus")
                                     .font(.system(size: 44))
-                                    .foregroundStyle(Color.taggoBlue.opacity(0.6) as Color)
+                                    .foregroundStyle(blue.opacity(0.6))
                                 Text("Change Photo")
                                     .font(.subheadline)
-                                    .foregroundStyle(Color.taggoBlue)
+                                    .foregroundStyle(blue)
                             }
                         }
                 }
             }
             .frame(maxWidth: .infinity)
             .frame(height: 220)
-            .clipShape(RoundedRectangle(cornerRadius: TaggoSpacing.cardCornerRadius))
+            .clipShape(RoundedRectangle(cornerRadius: 16))
             .overlay(
-                RoundedRectangle(cornerRadius: TaggoSpacing.cardCornerRadius)
-                    .stroke(Color.taggoBlue.opacity(0.3) as Color, lineWidth: 1.5)
+                RoundedRectangle(cornerRadius: 16)
+                    .stroke(blue.opacity(0.3), lineWidth: 1.5)
             )
         }
         .padding(.horizontal, TaggoSpacing.horizontalPadding)
@@ -109,6 +112,7 @@ struct EditItemView: View {
     // MARK: Save bar
 
     private var saveBar: some View {
+
         VStack(spacing: 0) {
             Divider()
             Button {
@@ -137,4 +141,11 @@ struct EditItemView: View {
             .background(Color(.systemBackground))
         }
     }
+}
+
+#Preview {
+    let item = Item(id: UUID(), ownerID: UUID(), name: "Blue Backpack", category: "Bag",
+                    color: "Navy Blue", description: nil, imageData: nil,
+                    createdAt: Date(), updatedAt: Date())
+    EditItemView(viewModel: AppDependencies.live.makeEditItemViewModel(item: item), onSaved: { _ in })
 }

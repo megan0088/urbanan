@@ -88,9 +88,11 @@ struct ReportFormView: View {
                 .font(.caption).foregroundStyle(.secondary)
                 .padding(.horizontal, TaggoSpacing.horizontalPadding)
 
+            let photoData = viewModel.selectedPhotoData
+            let blue = Color("TaggoBlue")
             PhotosPicker(selection: $photosPickerItem, matching: .images) {
                 Group {
-                    if let data = viewModel.selectedPhotoData, let img = UIImage(data: data) {
+                    if let data = photoData, let img = UIImage(data: data) {
                         Image(uiImage: img).resizable().scaledToFill()
                     } else {
                         Color(.systemGray5)
@@ -98,16 +100,16 @@ struct ReportFormView: View {
                                 VStack(spacing: 8) {
                                     Image(systemName: "camera.fill")
                                         .font(.title2)
-                                        .foregroundStyle(Color.taggoBlue.opacity(0.6) as Color)
+                                        .foregroundStyle(blue.opacity(0.6))
                                     Text("Add Photo").font(.caption)
-                                        .foregroundStyle(Color.taggoBlue)
+                                        .foregroundStyle(blue)
                                 }
                             }
                     }
                 }
                 .frame(maxWidth: .infinity)
                 .frame(height: 160)
-                .clipShape(RoundedRectangle(cornerRadius: TaggoSpacing.cardCornerRadius))
+                .clipShape(RoundedRectangle(cornerRadius: 16))
             }
             .padding(.horizontal, TaggoSpacing.horizontalPadding)
             .onChange(of: photosPickerItem) { _, newItem in
@@ -218,4 +220,12 @@ struct ReportFormView: View {
         }
         .background(Color.taggoBackground.ignoresSafeArea())
     }
+}
+
+#Preview {
+    let vm = ReportFormViewModel(
+        itemID: UUID(),
+        reportFoundItemUseCase: AppDependencies.live.makeReportFoundItemUseCase()
+    )
+    ReportFormView(viewModel: vm)
 }
