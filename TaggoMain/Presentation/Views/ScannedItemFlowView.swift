@@ -8,6 +8,14 @@
 import Foundation
 import SwiftUI
 
+private extension Item {
+    static var previewScanned: Item {
+        Item(id: UUID(), ownerID: UUID(), name: "Blue Backpack", category: "Bag",
+             color: "Navy Blue", description: "A worn navy blue backpack with laptop compartment",
+             imageData: nil, createdAt: Date(), updatedAt: Date())
+    }
+}
+
 struct ScannedItemFlowView: View {
     let item: Item
     let reportFoundItemUseCase: ReportFoundItemUseCase
@@ -29,4 +37,20 @@ struct ScannedItemFlowView: View {
             )
         }
     }
+}
+
+#Preview("Step 1 — Found Item") {
+    ScannedItemFlowView(
+        item: .previewScanned,
+        reportFoundItemUseCase: AppDependencies.live.makeReportFoundItemUseCase()
+    )
+}
+
+#Preview("Step 2 — Report Form") {
+    ReportFormView(
+        viewModel: ReportFormViewModel(
+            itemID: UUID(),
+            reportFoundItemUseCase: AppDependencies.live.makeReportFoundItemUseCase()
+        )
+    )
 }

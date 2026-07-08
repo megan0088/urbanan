@@ -220,7 +220,41 @@ private struct NotificationCardView: View {
     }
 }
 
-#Preview {
+#Preview("Full View") {
     let deps = AppDependencies.live
     InboxView(viewModel: deps.makeInboxViewModel(), dependencies: deps)
+}
+
+#Preview("Notification Cards") {
+    let reports: [(String, String, ReportStatus)] = [
+        ("Stasiun Gambir", "Hi, I found it on overhead rack", .pending),
+        ("Stasiun Sudirman", "Handed it to the officer", .pending),
+        ("Stasiun MRT Lebak Bulus", "Left at lost & found counter", .claimed),
+    ]
+    ScrollView {
+        VStack(spacing: 12) {
+            ForEach(Array(reports.enumerated()), id: \.offset) { i, data in
+                NotificationCardView(
+                    report: FoundReport(
+                        id: UUID(), itemID: UUID(),
+                        station: data.0, note: data.1, photoData: nil,
+                        status: data.2, isRead: i > 0,
+                        reportedAt: Calendar.current.date(byAdding: .hour, value: -i * 5, to: Date())!,
+                        claimedAt: data.2 == .claimed ? Date() : nil
+                    ),
+                    itemName: ["Blue Backpack", "AirPods Pro", "Dompet Kulit"][i]
+                )
+            }
+        }
+        .padding(.vertical, 16)
+    }
+    .background(Color(.systemGroupedBackground))
+}
+
+#Preview("Empty Inbox") {
+    InboxEmptyView(message: "You got no notification yet", isError: false)
+}
+
+#Preview("Error State") {
+    InboxEmptyView(message: "Failed to load. Check your connection.", isError: true)
 }
