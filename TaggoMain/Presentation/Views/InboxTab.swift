@@ -6,16 +6,15 @@
 import SwiftUI
 
 struct InboxTab: View {
+    let dependencies: AppDependencies
     @State private var viewModel: InboxViewModel
 
     init(dependencies: AppDependencies) {
+        self.dependencies = dependencies
         _viewModel = State(initialValue: dependencies.makeInboxViewModel())
     }
 
     var body: some View {
-        NavigationStack {
-            InboxView(viewModel: viewModel)
-                .navigationTitle("Inbox")
-        }
+        InboxView(viewModel: viewModel, dependencies: dependencies)
     }
 }

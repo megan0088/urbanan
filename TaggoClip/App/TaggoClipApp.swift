@@ -30,7 +30,7 @@ struct TaggoClipApp: App {
                 if invocationURL == nil {
                     try? await Task.sleep(for: .seconds(1))
                     if invocationURL == nil {
-                        invocationURL = URL(string: "https://urbanantaggo.netlify.app/item/F4138F1B-7087-4628-99F0-20D467CF0B24")
+                        invocationURL = URL(string: "https://urbananTaggo.netlify.app/item/11AA848B-2CF5-4B97-BD90-58673DD46350")
                     }
                 }
             }

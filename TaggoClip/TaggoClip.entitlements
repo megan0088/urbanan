@@ -8,7 +8,7 @@
 	</array>
 	<key>com.apple.developer.icloud-container-identifiers</key>
 	<array>
-		<string>iCloud.com.urbananTaggo.app</string>
+		<string>iCloud.com.eganugraha.Taggo.app</string>
 	</array>
 	<key>com.apple.developer.icloud-services</key>
 	<array>
