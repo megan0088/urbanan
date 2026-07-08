@@ -28,11 +28,16 @@ struct ItemListView: View {
         return false
     }
 
+    private var hasItems: Bool {
+        if case .loaded(let items) = viewModel.state { return !items.isEmpty }
+        return false
+    }
+
     var body: some View {
         ZStack(alignment: .bottom) {
             ScrollView {
                 VStack(spacing: 0) {
-                    HomeHeaderView(hasUnread: hasUnread, onBellTapped: { showInbox = true })
+                    HomeHeaderView(hasUnread: hasUnread, hasItems: hasItems, onBellTapped: { showInbox = true })
 
                     VStack(alignment: .leading, spacing: 0) {
                         Text("Your Items")
@@ -120,48 +125,51 @@ struct ItemListView: View {
 
 private struct HomeHeaderView: View {
     var hasUnread: Bool
+    var hasItems: Bool
     var onBellTapped: () -> Void
 
     var body: some View {
-        ZStack(alignment: .bottom) {
-            Color.taggoBlue
-                .clipShape(UnevenRoundedRectangle(
-                    bottomLeadingRadius: 0,
-                    bottomTrailingRadius: 30
-                ))
-
-            VStack(spacing: 0) {
-                HStack {
-                    Spacer()
-                    Button(action: onBellTapped) {
-                        Image(systemName: hasUnread ? "bell.fill" : "bell")
-                            .foregroundStyle(Color.taggoBlue)
-                            .font(.system(size: 18, weight: .medium))
-                            .padding(20)
-                            .background(.white)
+        VStack(alignment: .leading, spacing: 6) {
+            HStack {
+                Spacer()
+                Button(action: onBellTapped) {
+                    ZStack(alignment: .topTrailing) {
+                        Image(systemName: "bell")
+                            .font(.system(size: 20, weight: .medium))
+                            .foregroundStyle(.white)
+                            .frame(width: 40, height: 40)
+                            .background(.white.opacity(0.2))
                             .clipShape(Circle())
+
+                        if hasUnread {
+                            Circle()
+                                .fill(Color(red: 1, green: 0.4, blue: 0.35))
+                                .frame(width: 12, height: 12)
+                                .offset(x: 2, y: -2)
+                        }
                     }
                 }
-                .padding(.horizontal, TaggoSpacing.horizontalPadding)
-                .padding(.top, 8)
-                .safeAreaPadding(.top)
-
-                Spacer()
-
-                VStack(alignment: .leading, spacing: 6) {
-                    Text("Hi, Commuters!")
-                        .font(.largeTitle).fontWeight(.bold)
-                        .foregroundStyle(.white)
-                    Text("Track all the items you've saved.")
-                        .font(.subheadline)
-                        .foregroundStyle(.white.opacity(0.85))
-                }
-                .frame(maxWidth: .infinity, alignment: .leading)
-                .padding(.horizontal, TaggoSpacing.horizontalPadding)
-                .padding(.bottom, 28)
             }
+
+            Text("Hi, Commuters!")
+                .font(.largeTitle).fontWeight(.bold)
+                .foregroundStyle(.white)
+
+            Text(hasItems
+                 ? "Keep track of everything you carry."
+                 : "Track all the items you've saved.")
+                .font(.subheadline)
+                .foregroundStyle(.white.opacity(0.85))
         }
-        .frame(height: 200)
+        .padding(.horizontal, TaggoSpacing.horizontalPadding)
+        .padding(.bottom, 24)
+        .safeAreaPadding(.top)
+        .padding(.top, 8)
+        .background(
+            UnevenRoundedRectangle(bottomTrailingRadius: 75)
+                .fill(Color.taggoBlue)
+                .ignoresSafeArea(edges: .top)
+        )
     }
 }
 
@@ -302,8 +310,7 @@ private struct HomeBottomBar: View {
 }
 
 #Preview("Header — unread") {
-    HomeHeaderView(hasUnread: true, onBellTapped: {})
-        .frame(height: 200)
+    HomeHeaderView(hasUnread: true, hasItems: true, onBellTapped: {})
 }
 
 #Preview("Empty State") {
