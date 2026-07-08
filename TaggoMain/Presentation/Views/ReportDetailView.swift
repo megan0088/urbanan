@@ -278,9 +278,22 @@ private struct DetailRow: View {
     }
 }
 
-#Preview {
+#Preview("Pending — with note") {
     let report = FoundReport(id: UUID(), itemID: UUID(), station: "Stasiun Gambir",
-                             note: "Ditemukan di lantai 2", photoData: nil,
-                             status: .pending, isRead: false, reportedAt: Date(), claimedAt: nil)
+                             note: "Hi, I found this item on the overhead rack and handed it to the station officer.",
+                             photoData: nil, status: .pending, isRead: false,
+                             reportedAt: Date(), claimedAt: nil)
+    let item = Item(id: UUID(), ownerID: UUID(), name: "Blue Backpack", category: "Bag",
+                    color: "Navy Blue", description: nil, imageData: nil,
+                    createdAt: Date(), updatedAt: Date())
+    ReportDetailView(report: report, viewModel: AppDependencies.live.makeInboxViewModel(), item: item)
+}
+
+#Preview("Claimed") {
+    let report = FoundReport(id: UUID(), itemID: UUID(), station: "Stasiun Sudirman",
+                             note: nil, photoData: nil,
+                             status: .claimed, isRead: true,
+                             reportedAt: Calendar.current.date(byAdding: .day, value: -1, to: Date())!,
+                             claimedAt: Date())
     ReportDetailView(report: report, viewModel: AppDependencies.live.makeInboxViewModel())
 }

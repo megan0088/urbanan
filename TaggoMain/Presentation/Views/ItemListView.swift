@@ -143,7 +143,8 @@ private struct HomeHeaderView: View {
                     }
                 }
                 .padding(.horizontal, TaggoSpacing.horizontalPadding)
-                .padding(.top, 24)
+                .padding(.top, 8)
+                .safeAreaPadding(.top)
 
                 Spacer()
 
@@ -273,8 +274,39 @@ private struct HomeBottomBar: View {
     }
 }
 
-#Preview {
+#Preview("Full View") {
     let deps = AppDependencies.live
     ItemListView(dependencies: deps, viewModel: deps.makeItemListViewModel(), onAddTapped: {})
+}
+
+#Preview("Item Row") {
+    let items: [(String, String, String)] = [
+        ("Blue Backpack", "Bag", "Navy Blue"),
+        ("AirPods Pro", "Electronics", "White"),
+        ("KTP / ID Card", "Document", "Blue"),
+        ("Dompet Kulit", "Wallet", "Brown"),
+    ]
+    VStack(spacing: 0) {
+        ForEach(items, id: \.0) { name, category, color in
+            ItemListRowView(item: Item(
+                id: UUID(), ownerID: UUID(), name: name, category: category,
+                color: color, description: nil, imageData: nil,
+                createdAt: Date(), updatedAt: Date()
+            ))
+        }
+    }
+    .background(Color(.systemBackground))
+    .clipShape(RoundedRectangle(cornerRadius: 16))
+    .padding()
+    .background(Color(.systemGroupedBackground))
+}
+
+#Preview("Header — unread") {
+    HomeHeaderView(hasUnread: true, onBellTapped: {})
+        .frame(height: 200)
+}
+
+#Preview("Empty State") {
+    EmptyItemsView()
 }
 
