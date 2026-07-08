@@ -13,16 +13,23 @@ final class ScanViewModel {
     enum State: Equatable {
         case scanning
         case loading
+        case owned(Item)
         case found(Item)
         case failure(message: String)
     }
 
     private(set) var state: State = .scanning
     private let resolveScannedItemUC: ResolveScannedItemUseCase
+    private let currentUserProvider: CurrentUserProviding
     let reportFoundItemUseCase: ReportFoundItemUseCase
 
-    init(resolveScannedItemUC: ResolveScannedItemUseCase, reportFoundItemUseCase: ReportFoundItemUseCase) {
+    init(
+        resolveScannedItemUC: ResolveScannedItemUseCase,
+        currentUserProvider: CurrentUserProviding,
+        reportFoundItemUseCase: ReportFoundItemUseCase
+    ) {
         self.resolveScannedItemUC = resolveScannedItemUC
+        self.currentUserProvider = currentUserProvider
         self.reportFoundItemUseCase = reportFoundItemUseCase
     }
 
@@ -31,7 +38,11 @@ final class ScanViewModel {
         state = .loading
         do {
             let item = try await resolveScannedItemUC.execute(scannedString: code)
-            state = .found(item)
+            if item.ownerID == currentUserProvider.currentUserID {
+                state = .owned(item)
+            } else {
+                state = .found(item)
+            }
         } catch let error as TaggoError {
             state = .failure(message: userMessage(for: error))
         } catch {

@@ -6,13 +6,15 @@
 import SwiftUI
 
 struct ScannerView: View {
+    let dependencies: AppDependencies
     @State private var viewModel: ScanViewModel
     #if targetEnvironment(simulator)
     @State private var debugLinkText = ""
     #endif
 
-    init(viewModel: ScanViewModel) {
+    init(viewModel: ScanViewModel, dependencies: AppDependencies) {
         _viewModel = State(initialValue: viewModel)
+        self.dependencies = dependencies
     }
 
     var body: some View {
@@ -35,12 +37,10 @@ struct ScannerView: View {
                 #endif
 
             case .loading:
-                Color.black.opacity(0.6).ignoresSafeArea()
-                VStack(spacing: 16) {
-                    ProgressView().tint(.white).scaleEffect(1.4)
-                    Text("Looking up item…")
-                        .font(.subheadline).foregroundStyle(.white)
-                }
+                ProgressView("Looking up item…")
+
+            case .owned:
+                EmptyView()
 
             case .found(let item):
                 ScannedItemFlowView(
@@ -54,6 +54,24 @@ struct ScannerView: View {
                 failureView(message: message)
             }
         }
+        .sheet(item: ownedItemBinding) { item in
+            ItemDetailView(
+                viewModel: dependencies.makeItemDetailViewModel(item: item),
+                dependencies: dependencies
+            )
+        }
+    }
+
+    private var ownedItemBinding: Binding<Item?> {
+        Binding(
+            get: {
+                if case .owned(let item) = viewModel.state { return item }
+                return nil
+            },
+            set: { newValue in
+                if newValue == nil { viewModel.reset() }
+            }
+        )
     }
 
     // MARK: Scan frame overlay (real device)
@@ -81,7 +99,7 @@ struct ScannerView: View {
                 .resizable()
                 .scaledToFit()
                 .frame(width: 72, height: 72)
-                .foregroundStyle(Color.taggoBlue.opacity(0.4) as Color)
+                .foregroundStyle(Color.taggoBlue.opacity(0.4))
 
             Text(message)
                 .font(.subheadline).foregroundStyle(.secondary)
