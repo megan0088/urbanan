@@ -13,5 +13,7 @@
 	</array>
 	<key>UIUserInterfaceStyle</key>
 	<string>Light</string>
+	<key>TaggoCloudKitContainerIdentifier</key>
+	<string>iCloud.$(TAGGO_BUNDLE_ID_BASE)</string>
 </dict>
 </plist>

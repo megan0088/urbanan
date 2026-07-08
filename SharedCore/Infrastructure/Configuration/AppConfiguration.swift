@@ -6,7 +6,12 @@
 import Foundation
 
 enum AppConfiguration {
-    static let cloudKitContainerIdentifier = "iCloud.com.urbananTaggo.app"
+    /// Read from Info.plist rather than hardcoded so it tracks whatever
+    /// TAGGO_BUNDLE_ID_BASE the target was built with — the main app and the
+    /// App Clip each embed their own value at build time, and a developer
+    /// signing under their own team (see Config.xcconfig.example) gets their
+    /// own container automatically instead of pointing at the shared one.
+    static let cloudKitContainerIdentifier = Bundle.main.object(forInfoDictionaryKey: "TaggoCloudKitContainerIdentifier") as! String
     static let universalLinkHost = URL(string: "https://urbanantaggo.netlify.app")!
     static let universalLinkItemPath = "/item"
 
