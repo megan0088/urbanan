@@ -15,7 +15,9 @@ struct InboxTab: View {
     }
 
     var body: some View {
-        InboxView(viewModel: viewModel, dependencies: dependencies)
+        NavigationStack {
+            InboxView(viewModel: viewModel, dependencies: dependencies)
+        }
     }
 }
 

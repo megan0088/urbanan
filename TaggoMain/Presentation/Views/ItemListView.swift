@@ -8,23 +8,23 @@ import SwiftUI
 struct ItemListView: View {
     let dependencies: AppDependencies
     @State private var viewModel: ItemListViewModel
-    @State private var inboxViewModel: InboxViewModel
     @State private var selectedItem: Item?
     @State private var searchText = ""
-    @State private var showInbox = false
+    @State private var itemWasModified = false
+    var hasUnread: Bool
     var onAddTapped: () -> Void
+    var onBellTapped: () -> Void
 
-    init(dependencies: AppDependencies, viewModel: ItemListViewModel, onAddTapped: @escaping () -> Void) {
+    init(dependencies: AppDependencies, viewModel: ItemListViewModel, hasUnread: Bool, onAddTapped: @escaping () -> Void, onBellTapped: @escaping () -> Void) {
         self.dependencies = dependencies
         _viewModel = State(initialValue: viewModel)
-        _inboxViewModel = State(initialValue: dependencies.makeInboxViewModel())
+        self.hasUnread = hasUnread
         self.onAddTapped = onAddTapped
+        self.onBellTapped = onBellTapped
     }
 
-    private var hasUnread: Bool {
-        if case .loaded(let reports) = inboxViewModel.state {
-            return reports.contains { !$0.isRead }
-        }
+    private var hasItems: Bool {
+        if case .loaded(let items) = viewModel.state { return !items.isEmpty }
         return false
     }
 
@@ -32,7 +32,7 @@ struct ItemListView: View {
         ZStack(alignment: .bottom) {
             ScrollView {
                 VStack(spacing: 0) {
-                    HomeHeaderView(hasUnread: hasUnread, onBellTapped: { showInbox = true })
+                    HomeHeaderView(hasUnread: hasUnread, hasItems: hasItems, onBellTapped: onBellTapped)
 
                     VStack(alignment: .leading, spacing: 0) {
                         Text("Your Items")
@@ -55,25 +55,20 @@ struct ItemListView: View {
         .task {
             await viewModel.load()
         }
-        .task {
-            await inboxViewModel.load()
-        }
-        .task {
-            await inboxViewModel.observeFoundReportEvents()
-        }
         .refreshable {
             await viewModel.load()
         }
         .sheet(item: $selectedItem, onDismiss: {
-            Task { await viewModel.load() }
+            if itemWasModified {
+                itemWasModified = false
+                Task { await viewModel.load() }
+            }
         }) { item in
             ItemDetailView(
                 viewModel: dependencies.makeItemDetailViewModel(item: item),
-                dependencies: dependencies
+                dependencies: dependencies,
+                onItemModified: { itemWasModified = true }
             )
-        }
-        .sheet(isPresented: $showInbox) {
-            InboxView(viewModel: inboxViewModel, dependencies: dependencies)
         }
     }
 
@@ -120,47 +115,52 @@ struct ItemListView: View {
 
 private struct HomeHeaderView: View {
     var hasUnread: Bool
+    var hasItems: Bool
     var onBellTapped: () -> Void
 
     var body: some View {
-        ZStack(alignment: .bottom) {
-            Color.taggoBlue
-                .clipShape(UnevenRoundedRectangle(
-                    bottomLeadingRadius: 0,
-                    bottomTrailingRadius: 30
-                ))
-
-            VStack(spacing: 0) {
-                HStack {
-                    Spacer()
-                    Button(action: onBellTapped) {
-                        Image(systemName: hasUnread ? "bell.fill" : "bell")
-                            .foregroundStyle(Color.taggoBlue)
-                            .font(.system(size: 18, weight: .medium))
+        VStack(alignment: .leading, spacing: 20) {
+            HStack {
+                Spacer()
+                Button(action: onBellTapped) {
+                    ZStack(alignment: .topTrailing) {
+                        Image(systemName: "bell")
+                            .font(.system(size: 20, weight: .medium))
                             .padding(20)
-                            .background(.white)
+                            .foregroundStyle(.white)
+                            .frame(width: 40, height: 40)
+                            .background(.white.opacity(0.2))
                             .clipShape(Circle())
+
+                        if hasUnread {
+                            Circle()
+                                .fill(Color(red: 1, green: 0.4, blue: 0.35))
+                                .frame(width: 12, height: 12)
+                                .offset(x: 2, y: -2)
+                        }
                     }
                 }
-                .padding(.horizontal, TaggoSpacing.horizontalPadding)
-                .padding(.top, 24)
-
-                Spacer()
-
-                VStack(alignment: .leading, spacing: 6) {
-                    Text("Hi, Commuters!")
-                        .font(.largeTitle).fontWeight(.bold)
-                        .foregroundStyle(.white)
-                    Text("Track all the items you've saved.")
-                        .font(.subheadline)
-                        .foregroundStyle(.white.opacity(0.85))
-                }
-                .frame(maxWidth: .infinity, alignment: .leading)
-                .padding(.horizontal, TaggoSpacing.horizontalPadding)
-                .padding(.bottom, 28)
             }
+
+            Text("Hi, Commuters!")
+                .font(.largeTitle).fontWeight(.bold)
+                .foregroundStyle(.white)
+
+            Text(hasItems
+                 ? "Keep track of everything you carry."
+                 : "Track all the items you've saved.")
+                .font(.subheadline)
+                .foregroundStyle(.white.opacity(0.85))
         }
-        .frame(height: 200)
+        .padding(.horizontal, TaggoSpacing.horizontalPadding)
+        .padding(.bottom, 24)
+        .safeAreaPadding(.top)
+        .padding(.top, 20)
+        .background(
+            UnevenRoundedRectangle(bottomTrailingRadius: 75)
+                .fill(Color.taggoBlue)
+                .ignoresSafeArea(edges: .top)
+        )
     }
 }
 
@@ -273,8 +273,38 @@ private struct HomeBottomBar: View {
     }
 }
 
-#Preview {
+#Preview("Full View") {
     let deps = AppDependencies.live
-    ItemListView(dependencies: deps, viewModel: deps.makeItemListViewModel(), onAddTapped: {})
+    ItemListView(dependencies: deps, viewModel: deps.makeItemListViewModel(), hasUnread: false, onAddTapped: {}, onBellTapped: {})
+}
+
+#Preview("Item Row") {
+    let items: [(String, String, String)] = [
+        ("Blue Backpack", "Bag", "Navy Blue"),
+        ("AirPods Pro", "Electronics", "White"),
+        ("KTP / ID Card", "Document", "Blue"),
+        ("Dompet Kulit", "Wallet", "Brown"),
+    ]
+    VStack(spacing: 0) {
+        ForEach(items, id: \.0) { name, category, color in
+            ItemListRowView(item: Item(
+                id: UUID(), ownerID: UUID(), name: name, category: category,
+                color: color, description: nil, imageData: nil,
+                createdAt: Date(), updatedAt: Date()
+            ))
+        }
+    }
+    .background(Color(.systemBackground))
+    .clipShape(RoundedRectangle(cornerRadius: 16))
+    .padding()
+    .background(Color(.systemGroupedBackground))
+}
+
+#Preview("Header — unread") {
+    HomeHeaderView(hasUnread: true, hasItems: true, onBellTapped: {})
+}
+
+#Preview("Empty State") {
+    EmptyItemsView()
 }
 

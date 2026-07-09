@@ -15,5 +15,7 @@
 	<string>Light</string>
 	<key>TaggoCloudKitContainerIdentifier</key>
 	<string>iCloud.$(TAGGO_BUNDLE_ID_BASE)</string>
+	<key>NSPhotoLibraryAddUsageDescription</key>
+	<string>Taggo needs access to save your QR code to Photos.</string>
 </dict>
 </plist>

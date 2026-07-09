@@ -25,40 +25,45 @@ struct ReportDetailView: View {
                 ScrollView {
                     VStack(alignment: .leading, spacing: 0) {
                         goodNewsHeader
-                        photoGallery
+
+                        itemPhoto
                             .padding(.top, 16)
 
-                        Text(item?.name ?? "Your item")
-                            .font(.title2).fontWeight(.bold)
-                            .padding(.horizontal, TaggoSpacing.horizontalPadding)
-                            .padding(.top, 16)
+                        VStack(alignment: .leading, spacing: 4) {
+                            Text(item?.name ?? "Your item")
+                                .font(.title2).fontWeight(.bold)
+                                .foregroundStyle(Color(.label))
 
-                        detailsSection
-                            .padding(.top, 16)
+                            if let desc = item?.description, !desc.isEmpty {
+                                Text(desc)
+                                    .font(.subheadline)
+                                    .foregroundStyle(Color(.secondaryLabel))
+                            }
+                        }
+                        .padding(.horizontal, TaggoSpacing.horizontalPadding)
+                        .padding(.top, 16)
 
-                        openMapButton
-                            .padding(.top, 12)
+                        detailsCard
+                            .padding(.top, 16)
 
                         importantCard
                             .padding(.top, 12)
 
                         needHelpRow
-                            .padding(.top, 12)
+                            .padding(.top, 16)
 
                         Spacer(minLength: 120)
                     }
                 }
                 .scrollIndicators(.hidden)
-                .background(Color(.systemBackground))
+                .background(Color.taggoBackground)
 
                 bottomBar
             }
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) {
-                    Button {
-                        dismiss()
-                    } label: {
+                    Button { dismiss() } label: {
                         Image(systemName: "chevron.left").fontWeight(.medium)
                     }
                 }
@@ -72,107 +77,108 @@ struct ReportDetailView: View {
         }
     }
 
-    // MARK: "Good News!" header
+    // MARK: - Good News header
+
     private var goodNewsHeader: some View {
         VStack(spacing: 6) {
             Text("Good News!")
                 .font(.largeTitle).fontWeight(.bold)
+                .foregroundStyle(Color(.label))
             Text("Someone found your item")
-                .font(.subheadline).foregroundStyle(Color.taggoBlue)
+                .font(.subheadline)
+                .foregroundStyle(Color.taggoBlue)
         }
         .frame(maxWidth: .infinity)
-        .padding(.top, 16)
-        .padding(.bottom, 8)
+        .padding(.vertical, 20)
     }
 
-    // MARK: Photo gallery — large left, 2 thumbnails right
-    private var photoGallery: some View {
-        HStack(spacing: 8) {
-            photoView(item?.imageData ?? report.photoData)
-                .frame(maxWidth: .infinity)
-                .frame(height: 220)
-                .clipShape(RoundedRectangle(cornerRadius: 14))
+    // MARK: - Item Photo
 
-            VStack(spacing: 8) {
-                photoView(item?.imageData)
-                    .frame(width: 90, height: 106)
-                    .clipShape(RoundedRectangle(cornerRadius: 10))
-
-                photoView(report.photoData)
-                    .frame(width: 90, height: 106)
-                    .clipShape(RoundedRectangle(cornerRadius: 10))
+    private var itemPhoto: some View {
+        Group {
+            let photoData = item?.imageData ?? report.photoData
+            if let data = photoData, let img = UIImage(data: data) {
+                Image(uiImage: img)
+                    .resizable()
+                    .scaledToFill()
+            } else {
+                Color.taggoBlueLight
+                    .overlay {
+                        Image(systemName: "photo")
+                            .font(.system(size: 48))
+                            .foregroundStyle(Color.taggoBlue.opacity(0.4))
+                    }
             }
         }
+        .frame(maxWidth: .infinity)
+        .frame(height: 240)
+        .clipShape(RoundedRectangle(cornerRadius: TaggoSpacing.cardCornerRadius))
+        .overlay(
+            RoundedRectangle(cornerRadius: TaggoSpacing.cardCornerRadius)
+                .stroke(Color.taggoBlue.opacity(0.2), lineWidth: 1)
+        )
         .padding(.horizontal, TaggoSpacing.horizontalPadding)
     }
 
-    @ViewBuilder
-    private func photoView(_ data: Data?) -> some View {
-        if let data, let img = UIImage(data: data) {
-            Image(uiImage: img).resizable().scaledToFill()
-        } else {
-            Color.taggoBlueLight.overlay {
-                Image(systemName: "photo")
-                    .foregroundStyle(Color.taggoBlue.opacity(0.4))
-                    .font(.title2)
-            }
-        }
-    }
+    // MARK: - Details card
 
-    // MARK: Details rows
-    private var detailsSection: some View {
-        VStack(alignment: .leading, spacing: 16) {
-            Text("Details").font(.headline)
+    private var detailsCard: some View {
+        VStack(alignment: .leading, spacing: 0) {
+            Text("Details")
+                .font(.headline)
+                .padding(.horizontal, 16)
+                .padding(.top, 16)
+                .padding(.bottom, 12)
+
+            Divider()
+                .padding(.horizontal, 16)
 
             DetailRow(icon: "mappin.circle.fill", iconColor: .taggoBlue,
                       label: "Found at", value: report.station)
+                .padding(.horizontal, 16)
+                .padding(.vertical, 14)
+
+            Divider()
+                .padding(.horizontal, 16)
 
             DetailRow(icon: "calendar", iconColor: .taggoBlue,
-                      label: "Date and Time",
+                      label: "Date",
                       value: report.reportedAt.formatted(date: .long, time: .omitted))
+                .padding(.horizontal, 16)
+                .padding(.vertical, 14)
 
             if let note = report.note, !note.isEmpty {
+                Divider()
+                    .padding(.horizontal, 16)
+
                 DetailRow(icon: "pencil.circle.fill", iconColor: .taggoBlue,
-                          label: "Notes from finder",
+                          label: "Note from finder",
                           value: "\"\(note)\"")
+                    .padding(.horizontal, 16)
+                    .padding(.vertical, 14)
             }
         }
+        .background(Color(.systemBackground))
+        .clipShape(RoundedRectangle(cornerRadius: TaggoSpacing.cardCornerRadius))
         .padding(.horizontal, TaggoSpacing.horizontalPadding)
     }
 
-    // MARK: Open Maps button
-    private var openMapButton: some View {
-        Button {
-            let query = report.station
-                .addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? ""
-            if let url = URL(string: "maps://?q=\(query)") {
-                UIApplication.shared.open(url)
-            }
-        } label: {
-            HStack {
-                Image(systemName: "mappin.circle").font(.title3)
-                Text("Open location on map").font(.subheadline).fontWeight(.medium)
-                Spacer()
-                Image(systemName: "chevron.right").font(.caption)
-            }
-            .padding(14)
-            .background(Color.taggoBlue.opacity(0.08))
-            .foregroundStyle(Color.taggoBlue)
-            .clipShape(RoundedRectangle(cornerRadius: 12))
-        }
-        .padding(.horizontal, TaggoSpacing.horizontalPadding)
-    }
+    // MARK: - Important card
 
-    // MARK: Important card
     private var importantCard: some View {
-        HStack(alignment: .top, spacing: 10) {
+        HStack(alignment: .top, spacing: 12) {
             Image(systemName: "exclamationmark.circle.fill")
-                .foregroundStyle(.orange).font(.title3)
+                .foregroundStyle(.orange)
+                .font(.title3)
+                .padding(.top, 1)
 
             VStack(alignment: .leading, spacing: 4) {
-                Text("Important").font(.subheadline).fontWeight(.semibold)
+                Text("Important")
+                    .font(.subheadline).fontWeight(.semibold)
                 Text("Please contact the station officer for verification and instructions on how to claim your item.")
-                    .font(.caption).foregroundStyle(.secondary)
+                    .font(.caption)
+                    .foregroundStyle(Color(.secondaryLabel))
+                    .fixedSize(horizontal: false, vertical: true)
             }
         }
         .padding(14)
@@ -181,17 +187,20 @@ struct ReportDetailView: View {
         .padding(.horizontal, TaggoSpacing.horizontalPadding)
     }
 
-    // MARK: Need help row
+    // MARK: - Need help row
+
     private var needHelpRow: some View {
         HStack {
-            Text("Need help?").font(.subheadline).foregroundStyle(.secondary)
+            Text("Need help?")
+                .font(.subheadline)
+                .foregroundStyle(Color(.secondaryLabel))
             Spacer()
             Button {
-                // Contact support action
+                // Contact support
             } label: {
                 Label("Contact Support", systemImage: "headphones")
                     .font(.caption).fontWeight(.semibold)
-                    .padding(.horizontal, 10).padding(.vertical, 6)
+                    .padding(.horizontal, 12).padding(.vertical, 6)
                     .background(Color(.systemGray5))
                     .clipShape(Capsule())
             }
@@ -200,10 +209,12 @@ struct ReportDetailView: View {
         .padding(.horizontal, TaggoSpacing.horizontalPadding)
     }
 
-    // MARK: Bottom bar — claim button + disclaimer
+    // MARK: - Bottom bar
+
     private var bottomBar: some View {
-        VStack(spacing: 6) {
+        VStack(spacing: 8) {
             Divider()
+
             if report.status == .pending {
                 Button {
                     Task { await markClaimed() }
@@ -225,13 +236,19 @@ struct ReportDetailView: View {
                 .disabled(isMarkingClaimed)
                 .padding(.horizontal, TaggoSpacing.horizontalPadding)
             } else {
-                Text("You've already collected this item.")
-                    .font(.subheadline).foregroundStyle(.secondary)
-                    .padding(.vertical, 16)
+                HStack(spacing: 8) {
+                    Image(systemName: "checkmark.circle.fill")
+                        .foregroundStyle(.green)
+                    Text("You've already collected this item.")
+                        .font(.subheadline)
+                        .foregroundStyle(Color(.secondaryLabel))
+                }
+                .padding(.vertical, 16)
             }
 
             Text("Never share personal information with unknown parties.")
-                .font(.caption2).foregroundStyle(.tertiary)
+                .font(.caption2)
+                .foregroundStyle(Color(.tertiaryLabel))
                 .multilineTextAlignment(.center)
                 .padding(.horizontal, 32)
                 .padding(.bottom, 8)
@@ -253,7 +270,7 @@ struct ReportDetailView: View {
     }
 }
 
-// MARK: - Detail Row component
+// MARK: - Detail Row
 
 private struct DetailRow: View {
     let icon: String
@@ -270,17 +287,32 @@ private struct DetailRow: View {
 
             VStack(alignment: .leading, spacing: 3) {
                 Text(label)
-                    .font(.caption).foregroundStyle(.secondary)
+                    .font(.caption)
+                    .foregroundStyle(Color(.secondaryLabel))
                 Text(value)
                     .font(.subheadline).fontWeight(.semibold)
+                    .fixedSize(horizontal: false, vertical: true)
             }
         }
     }
 }
 
-#Preview {
+#Preview("Pending — with note") {
     let report = FoundReport(id: UUID(), itemID: UUID(), station: "Stasiun Gambir",
-                             note: "Ditemukan di lantai 2", photoData: nil,
-                             status: .pending, isRead: false, reportedAt: Date(), claimedAt: nil)
+                             note: "Hi, I found this item on the overhead rack and handed it to the station officer.",
+                             photoData: nil, status: .pending, isRead: false,
+                             reportedAt: Date(), claimedAt: nil)
+    let item = Item(id: UUID(), ownerID: UUID(), name: "Blue Backpack", category: "Bag",
+                    color: "Navy Blue", description: "Tas punggung warna biru navy dengan kompartemen laptop",
+                    imageData: nil, createdAt: Date(), updatedAt: Date())
+    ReportDetailView(report: report, viewModel: AppDependencies.live.makeInboxViewModel(), item: item)
+}
+
+#Preview("Claimed") {
+    let report = FoundReport(id: UUID(), itemID: UUID(), station: "Stasiun Sudirman",
+                             note: nil, photoData: nil,
+                             status: .claimed, isRead: true,
+                             reportedAt: Calendar.current.date(byAdding: .day, value: -1, to: Date())!,
+                             claimedAt: Date())
     ReportDetailView(report: report, viewModel: AppDependencies.live.makeInboxViewModel())
 }

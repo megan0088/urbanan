@@ -9,7 +9,6 @@ struct InboxView: View {
     @State private var viewModel: InboxViewModel
     @State private var itemListViewModel: ItemListViewModel
     @State private var selectedReport: FoundReport?
-    @Environment(\.dismiss) private var dismiss
 
     init(viewModel: InboxViewModel, dependencies: AppDependencies) {
         _viewModel = State(initialValue: viewModel)
@@ -17,55 +16,65 @@ struct InboxView: View {
     }
 
     var body: some View {
-        NavigationStack {
-            Group {
-                switch viewModel.state {
-                case .loading:
-                    ProgressView()
-                        .frame(maxWidth: .infinity, maxHeight: .infinity)
+        Group {
+            switch viewModel.state {
+            case .loading:
+                ProgressView()
+                    .frame(maxWidth: .infinity, maxHeight: .infinity)
 
-                case .failure(let message):
-                    InboxEmptyView(message: message, isError: true)
+            case .failure:
+                #if DEBUG
+                reportList(InboxSeeder.reports)
+                #else
+                InboxEmptyView(message: "Failed to load notifications.", isError: true)
+                #endif
 
-                case .loaded(let reports) where reports.isEmpty:
+            case .loaded(let reports):
+                let display: [FoundReport] = {
+                    #if DEBUG
+                    return reports.isEmpty ? InboxSeeder.reports : reports
+                    #else
+                    return reports
+                    #endif
+                }()
+                if display.isEmpty {
                     InboxEmptyView(message: "You got no notification yet", isError: false)
-
-                case .loaded(let reports):
-                    reportList(reports)
+                } else {
+                    reportList(display)
                 }
             }
-            .navigationTitle("Notification")
-            .navigationBarTitleDisplayMode(.large)
-            .background(Color.taggoBackground)
-            .task {
-                await viewModel.load()
-                await itemListViewModel.load()
-            }
-            .task {
-                await viewModel.observeFoundReportEvents()
-            }
-            .refreshable {
-                await viewModel.load()
-                await itemListViewModel.load()
-            }
-            .sheet(item: $selectedReport) { report in
-                ReportDetailView(
-                    report: report,
-                    viewModel: viewModel,
-                    item: matchingItem(for: report)
-                )
-            }
+        }
+        .navigationTitle("Notification")
+        .navigationBarTitleDisplayMode(.large)
+        .background(Color.taggoBackground)
+        .task {
+            await viewModel.load()
+            await itemListViewModel.load()
+        }
+        .task {
+            await viewModel.observeFoundReportEvents()
+        }
+        .refreshable {
+            await viewModel.load()
+            await itemListViewModel.load()
+        }
+        .sheet(item: $selectedReport) { report in
+            ReportDetailView(
+                report: report,
+                viewModel: viewModel,
+                item: matchingItem(for: report)
+            )
         }
     }
 
     private func reportList(_ reports: [FoundReport]) -> some View {
         ScrollView {
-            LazyVStack(alignment: .leading, spacing: 20) {
+            VStack(alignment: .leading, spacing: 20) {
                 ForEach(groupedReports(reports), id: \.header) { section in
-                    VStack(alignment: .leading, spacing: 8) {
+                    VStack(alignment: .leading, spacing: 12) {
                         Text(section.header)
-                            .font(.subheadline).fontWeight(.semibold)
-                            .foregroundStyle(.secondary)
+                            .font(.headline)
+                            .foregroundStyle(Color(.label))
                             .padding(.horizontal, TaggoSpacing.horizontalPadding)
 
                         ForEach(section.items) { report in
@@ -88,8 +97,15 @@ struct InboxView: View {
     }
 
     private func matchingItem(for report: FoundReport) -> Item? {
-        guard case .loaded(let items) = itemListViewModel.state else { return nil }
-        return items.first { $0.id == report.itemID }
+        if case .loaded(let items) = itemListViewModel.state,
+           let found = items.first(where: { $0.id == report.itemID }) {
+            return found
+        }
+        #if DEBUG
+        return InboxSeeder.item(for: report)
+        #else
+        return nil
+        #endif
     }
 
     private func groupedReports(_ reports: [FoundReport]) -> [(header: String, items: [FoundReport])] {
@@ -129,19 +145,29 @@ private struct InboxEmptyView: View {
     let isError: Bool
 
     var body: some View {
-        VStack(spacing: 20) {
+        VStack(spacing: 16) {
             Spacer()
-            Image(systemName: isError ? "exclamationmark.triangle" : "bell.slash")
-                .font(.system(size: 72))
-                .foregroundStyle(isError ? Color.red.opacity(0.4) : Color.taggoBlue.opacity(0.3))
+
+            if isError {
+                Image(systemName: "exclamationmark.triangle")
+                    .font(.system(size: 72))
+                    .foregroundStyle(Color.red.opacity(0.35))
+            } else {
+                Image("ibuibu")
+                    .resizable()
+                    .scaledToFit()
+                    .frame(width: 200, height: 200)
+            }
 
             Text(message)
-                .font(.subheadline).foregroundStyle(.secondary)
+                .font(.callout)
+                .foregroundStyle(Color(.secondaryLabel))
                 .multilineTextAlignment(.center)
                 .padding(.horizontal, 40)
+
             Spacer()
         }
-        .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .frame(maxWidth: .infinity)
     }
 }
 
@@ -152,75 +178,162 @@ private struct NotificationCardView: View {
     let itemName: String?
 
     var body: some View {
-        HStack(alignment: .top, spacing: 12) {
-            thumbnail
-
-            VStack(alignment: .leading, spacing: 5) {
-                statusBadge
-
-                Text("Someone found your item!")
-                    .font(.subheadline).fontWeight(.bold)
-                    .foregroundStyle(.primary)
-
-                if let name = itemName {
-                    Text("\(name) was reported found at \(report.station)")
-                        .font(.caption).foregroundStyle(.secondary)
-                        .lineLimit(1)
-                } else {
-                    Text("Reported found at \(report.station)")
-                        .font(.caption).foregroundStyle(.secondary)
-                        .lineLimit(1)
+        ZStack(alignment: .topTrailing) {
+            VStack(alignment: .leading, spacing: 4) {
+                HStack {
+                    statusBadge
+                    Spacer()
+                    Image(systemName: "chevron.right")
+                        .font(.system(size: 12, weight: .semibold))
+                        .foregroundStyle(Color(.tertiaryLabel))
                 }
 
+                Text("Someone found your item!")
+                    .font(.subheadline).fontWeight(.semibold)
+                    .foregroundStyle(Color(.label))
+
+                Group {
+                    if let name = itemName {
+                        Text("\(name) was reported found at \(report.station)")
+                    } else {
+                        Text("Reported found at \(report.station)")
+                    }
+                }
+                .font(.footnote)
+                .foregroundStyle(Color(.secondaryLabel))
+                .lineSpacing(2)
+
                 Text(report.reportedAt, format: .relative(presentation: .named))
-                    .font(.caption2).foregroundStyle(.tertiary)
+                    .font(.caption)
+                    .foregroundStyle(Color(.tertiaryLabel))
+                    .padding(.top, 2)
             }
+            .padding(14)
+            .background(Color(.systemBackground))
+            .clipShape(RoundedRectangle(cornerRadius: 16))
+            .shadow(color: .black.opacity(0.04), radius: 4, y: 2)
 
-            Spacer(minLength: 0)
-
-            Image(systemName: "chevron.right")
-                .font(.caption).fontWeight(.semibold)
-                .foregroundStyle(.tertiary)
-                .padding(.top, 4)
+            if !report.isRead {
+                Circle()
+                    .fill(Color(red: 1, green: 0.4, blue: 0.35))
+                    .frame(width: 12, height: 12)
+                    .offset(x: 4, y: -4)
+            }
         }
-        .padding(14)
-        .background(Color(.systemBackground))
-        .clipShape(RoundedRectangle(cornerRadius: TaggoSpacing.cardCornerRadius))
-        .shadow(color: .black.opacity(0.06), radius: 6, y: 2)
         .padding(.horizontal, TaggoSpacing.horizontalPadding)
     }
 
-    @ViewBuilder
-    private var thumbnail: some View {
-        if let data = report.photoData, let img = UIImage(data: data) {
-            Image(uiImage: img)
-                .resizable().scaledToFill()
-                .frame(width: 60, height: 60)
-                .clipShape(RoundedRectangle(cornerRadius: 10))
-        } else {
-            RoundedRectangle(cornerRadius: 10)
-                .fill(Color.taggoBlueLight)
-                .frame(width: 60, height: 60)
-                .overlay {
-                    Image(systemName: "bag")
-                        .foregroundStyle(Color.taggoBlue.opacity(0.5))
-                }
-        }
-    }
-
     private var statusBadge: some View {
-        Text(report.status == .pending ? "Pending" : "Claimed")
+        let isPending = report.status == .pending
+        return Text(isPending ? "Pending" : "Claimed")
             .font(.caption2).fontWeight(.semibold)
-            .padding(.horizontal, 8).padding(.vertical, 3)
-            .background(report.status == .pending
-                ? Color.yellow.opacity(0.25)
-                : Color.green.opacity(0.15))
-            .foregroundStyle(report.status == .pending ? Color.orange : Color.green)
+            .foregroundStyle(Color(.label))
+            .padding(.horizontal, 12).padding(.vertical, 4)
+            .background((isPending ? Color.yellow : Color.green).opacity(0.35))
             .clipShape(Capsule())
     }
 }
 
-#Preview {
+#Preview("Full View") {
     let deps = AppDependencies.live
     InboxView(viewModel: deps.makeInboxViewModel(), dependencies: deps)
 }
+
+#Preview("Notification Cards") {
+    let reports: [(String, String, ReportStatus)] = [
+        ("Stasiun Gambir", "Hi, I found it on overhead rack", .pending),
+        ("Stasiun Sudirman", "Handed it to the officer", .pending),
+        ("Stasiun MRT Lebak Bulus", "Left at lost & found counter", .claimed),
+    ]
+    ScrollView {
+        VStack(spacing: 12) {
+            ForEach(Array(reports.enumerated()), id: \.offset) { i, data in
+                NotificationCardView(
+                    report: FoundReport(
+                        id: UUID(), itemID: UUID(),
+                        station: data.0, note: data.1, photoData: nil,
+                        status: data.2, isRead: i > 0,
+                        reportedAt: Calendar.current.date(byAdding: .hour, value: -i * 5, to: Date())!,
+                        claimedAt: data.2 == .claimed ? Date() : nil
+                    ),
+                    itemName: ["Blue Backpack", "AirPods Pro", "Dompet Kulit"][i]
+                )
+            }
+        }
+        .padding(.vertical, 16)
+    }
+    .background(Color(.systemGroupedBackground))
+}
+
+#Preview("Empty Inbox") {
+    InboxEmptyView(message: "You got no notification yet", isError: false)
+}
+
+#Preview("Error State") {
+    InboxEmptyView(message: "Failed to load. Check your connection.", isError: true)
+}
+
+// MARK: - Debug Seeder
+
+#if DEBUG
+private enum InboxSeeder {
+    private static let id1 = UUID()
+    private static let id2 = UUID()
+    private static let id3 = UUID()
+    private static let id4 = UUID()
+
+    static let reports: [FoundReport] = [
+        FoundReport(
+            id: UUID(), itemID: id1,
+            station: "Stasiun Gambir",
+            note: "Saya menemukan tas ini di rak bagasi atas, sudah saya serahkan ke petugas.",
+            photoData: nil, status: .pending, isRead: false,
+            reportedAt: Date().addingTimeInterval(-300),
+            claimedAt: nil
+        ),
+        FoundReport(
+            id: UUID(), itemID: id2,
+            station: "Stasiun Sudirman",
+            note: nil,
+            photoData: nil, status: .pending, isRead: false,
+            reportedAt: Date().addingTimeInterval(-3600),
+            claimedAt: nil
+        ),
+        FoundReport(
+            id: UUID(), itemID: id3,
+            station: "Stasiun Tanah Abang",
+            note: "Ditemukan di bangku tunggu peron 2, kondisi masih baik.",
+            photoData: nil, status: .pending, isRead: true,
+            reportedAt: Date().addingTimeInterval(-86400),
+            claimedAt: nil
+        ),
+        FoundReport(
+            id: UUID(), itemID: id4,
+            station: "Stasiun MRT Lebak Bulus",
+            note: nil,
+            photoData: nil, status: .claimed, isRead: true,
+            reportedAt: Date().addingTimeInterval(-86400 * 8),
+            claimedAt: Date().addingTimeInterval(-86400 * 7)
+        ),
+    ]
+
+    static let items: [Item] = [
+        Item(id: id1, ownerID: UUID(), name: "Tas Ransel Biru", category: "Bag",
+             color: "Biru Navy", description: "Tas ransel biru navy dengan kompartemen laptop",
+             imageData: nil, createdAt: Date(), updatedAt: Date()),
+        Item(id: id2, ownerID: UUID(), name: "AirPods Pro", category: "Electronics",
+             color: "Putih", description: nil,
+             imageData: nil, createdAt: Date(), updatedAt: Date()),
+        Item(id: id3, ownerID: UUID(), name: "Dompet Kulit Coklat", category: "Wallet",
+             color: "Coklat", description: nil,
+             imageData: nil, createdAt: Date(), updatedAt: Date()),
+        Item(id: id4, ownerID: UUID(), name: "KTP / ID Card", category: "Document",
+             color: "Biru", description: nil,
+             imageData: nil, createdAt: Date(), updatedAt: Date()),
+    ]
+
+    static func item(for report: FoundReport) -> Item? {
+        items.first { $0.id == report.itemID }
+    }
+}
+#endif
