@@ -91,21 +91,25 @@ struct ReportFormView: View {
             let photoData = viewModel.selectedPhotoData
             let blue = Color("TaggoBlue")
             PhotosPicker(selection: $photosPickerItem, matching: .images) {
-                Group {
-                    if let data = photoData, let img = UIImage(data: data) {
-                        Image(uiImage: img).resizable().scaledToFill()
-                    } else {
-                        Color(.systemGray5)
-                            .overlay {
-                                VStack(spacing: 8) {
-                                    Image(systemName: "camera.fill")
-                                        .font(.title2)
-                                        .foregroundStyle(blue.opacity(0.6))
-                                    Text("Add Photo").font(.caption)
-                                        .foregroundStyle(blue)
+                GeometryReader { proxy in
+                    Group {
+                        if let data = photoData, let img = UIImage(data: data) {
+                            Image(uiImage: img).resizable().scaledToFill()
+                        } else {
+                            Color(.systemGray5)
+                                .overlay {
+                                    VStack(spacing: 8) {
+                                        Image(systemName: "camera.fill")
+                                            .font(.title2)
+                                            .foregroundStyle(blue.opacity(0.6))
+                                        Text("Add Photo").font(.caption)
+                                            .foregroundStyle(blue)
+                                    }
                                 }
-                            }
+                        }
                     }
+                    .frame(width: proxy.size.width, height: proxy.size.height)
+                    .clipped()
                 }
                 .frame(maxWidth: .infinity)
                 .frame(height: 160)

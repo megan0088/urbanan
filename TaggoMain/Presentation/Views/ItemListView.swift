@@ -22,7 +22,6 @@ struct ItemListView: View {
     @State private var inboxViewModel: InboxViewModel
     @State private var selectedItem: Item?
     @State private var selectedPendingReport: FoundReport?
-    @State private var searchText = ""
     @State private var itemWasModified = false
     var onAddTapped: () -> Void
     var onScanTapped: () -> Void
@@ -44,44 +43,21 @@ struct ItemListView: View {
         self.onBellTapped = onBellTapped
     }
 
-    private var hasItems: Bool {
-        if case .loaded(let items) = viewModel.state { return !items.isEmpty }
-        return false
-    }
-
-    private var hasUnread: Bool {
-        if case .loaded(let reports) = inboxViewModel.state {
-            return reports.contains { !$0.isRead }
-        }
-        return false
-    }
-
-    /// Sorted newest-first by `FetchInboxUseCase` already — `.first` is the latest.
-    private var pendingReports: [FoundReport] {
-        if case .loaded(let reports) = inboxViewModel.state {
-            return reports.filter { $0.status == .pending }
-        }
-        return []
-    }
-
-    private func item(for report: FoundReport) -> Item? {
-        if case .loaded(let items) = viewModel.state {
-            return items.first { $0.id == report.itemID }
-        }
-        return nil
-    }
-
     var body: some View {
         ZStack(alignment: .bottom) {
             ScrollView {
                 VStack(spacing: 0) {
-                    HomeHeaderView(hasUnread: hasUnread, hasItems: hasItems, onBellTapped: onBellTapped)
+                    HomeHeaderView(
+                        hasUnread: inboxViewModel.hasUnread,
+                        hasItems: !viewModel.items.isEmpty,
+                        onBellTapped: onBellTapped
+                    )
 
-                    if let latest = pendingReports.first {
+                    if let latest = inboxViewModel.pendingReports.first {
                         PendingReportHighlightView(
                             report: latest,
-                            item: item(for: latest),
-                            additionalCount: pendingReports.count - 1,
+                            item: viewModel.item(withID: latest.itemID),
+                            additionalCount: inboxViewModel.pendingReports.count - 1,
                             onTapped: {
                                 selectedPendingReport = latest
                                 Task { await inboxViewModel.markAsRead(latest) }
@@ -106,7 +82,7 @@ struct ItemListView: View {
             .ignoresSafeArea(edges: .top)
             .padding(.bottom, 80)
 
-            HomeBottomBar(searchText: $searchText, onAddTapped: onAddTapped, onScanTapped: onScanTapped)
+            HomeBottomBar(searchText: $viewModel.searchText, onAddTapped: onAddTapped, onScanTapped: onScanTapped)
         }
         .task {
             await viewModel.load()
@@ -127,7 +103,7 @@ struct ItemListView: View {
             )
         }
         .sheet(item: $selectedPendingReport) { report in
-            ReportDetailView(report: report, viewModel: inboxViewModel, item: item(for: report))
+            ReportDetailView(report: report, viewModel: inboxViewModel, item: viewModel.item(withID: report.itemID))
         }
     }
 
@@ -139,16 +115,12 @@ struct ItemListView: View {
                 .frame(maxWidth: .infinity)
                 .padding(.top, 80)
 
-        case .loaded(let items):
-            let filtered = searchText.isEmpty
-                ? items
-                : items.filter { $0.name.localizedCaseInsensitiveContains(searchText) }
-
-            if filtered.isEmpty {
+        case .loaded:
+            if viewModel.filteredItems.isEmpty {
                 EmptyItemsView()
             } else {
                 LazyVStack(spacing: 0) {
-                    ForEach(filtered) { item in
+                    ForEach(viewModel.filteredItems) { item in
                         Button {
                             selectedItem = item
                         } label: {

@@ -22,25 +22,14 @@ struct InboxView: View {
                 ProgressView()
                     .frame(maxWidth: .infinity, maxHeight: .infinity)
 
-            case .failure:
-                #if DEBUG
-                reportList(InboxSeeder.reports)
-                #else
+            case .failure where viewModel.displayReports.isEmpty:
                 InboxEmptyView(message: "Failed to load notifications.", isError: true)
-                #endif
 
-            case .loaded(let reports):
-                let display: [FoundReport] = {
-                    #if DEBUG
-                    return reports.isEmpty ? InboxSeeder.reports : reports
-                    #else
-                    return reports
-                    #endif
-                }()
-                if display.isEmpty {
+            default:
+                if viewModel.displayReports.isEmpty {
                     InboxEmptyView(message: "You got no notification yet", isError: false)
                 } else {
-                    reportList(display)
+                    reportList
                 }
             }
         }
@@ -62,29 +51,29 @@ struct InboxView: View {
             ReportDetailView(
                 report: report,
                 viewModel: viewModel,
-                item: matchingItem(for: report)
+                item: viewModel.item(for: report, in: itemListViewModel.items)
             )
         }
     }
 
-    private func reportList(_ reports: [FoundReport]) -> some View {
+    private var reportList: some View {
         ScrollView {
             VStack(alignment: .leading, spacing: 20) {
-                ForEach(groupedReports(reports), id: \.header) { section in
+                ForEach(viewModel.groupedSections) { section in
                     VStack(alignment: .leading, spacing: 12) {
                         Text(section.header)
                             .font(.headline)
                             .foregroundStyle(Color(.label))
                             .padding(.horizontal, TaggoSpacing.horizontalPadding)
 
-                        ForEach(section.items) { report in
+                        ForEach(section.reports) { report in
                             Button {
                                 selectedReport = report
                                 Task { await viewModel.markAsRead(report) }
                             } label: {
                                 NotificationCardView(
                                     report: report,
-                                    itemName: matchingItem(for: report)?.name
+                                    itemName: viewModel.item(for: report, in: itemListViewModel.items)?.name
                                 )
                             }
                             .buttonStyle(.plain)
@@ -95,47 +84,6 @@ struct InboxView: View {
             .padding(.vertical, 16)
         }
         .scrollIndicators(.hidden)
-    }
-
-    private func matchingItem(for report: FoundReport) -> Item? {
-        if case .loaded(let items) = itemListViewModel.state,
-           let found = items.first(where: { $0.id == report.itemID }) {
-            return found
-        }
-        #if DEBUG
-        return InboxSeeder.item(for: report)
-        #else
-        return nil
-        #endif
-    }
-
-    private func groupedReports(_ reports: [FoundReport]) -> [(header: String, items: [FoundReport])] {
-        let calendar = Calendar.current
-        let now = Date()
-        var today: [FoundReport] = []
-        var thisWeek: [FoundReport] = []
-        var lastWeek: [FoundReport] = []
-        var older: [FoundReport] = []
-
-        for report in reports {
-            if calendar.isDateInToday(report.reportedAt) {
-                today.append(report)
-            } else if calendar.isDate(report.reportedAt, equalTo: now, toGranularity: .weekOfYear) {
-                thisWeek.append(report)
-            } else if let oneWeekAgo = calendar.date(byAdding: .weekOfYear, value: -1, to: now),
-                      calendar.isDate(report.reportedAt, equalTo: oneWeekAgo, toGranularity: .weekOfYear) {
-                lastWeek.append(report)
-            } else {
-                older.append(report)
-            }
-        }
-
-        var groups: [(header: String, items: [FoundReport])] = []
-        if !today.isEmpty    { groups.append((header: "Today",     items: today)) }
-        if !thisWeek.isEmpty { groups.append((header: "This Week", items: thisWeek)) }
-        if !lastWeek.isEmpty { groups.append((header: "Last Week", items: lastWeek)) }
-        if !older.isEmpty    { groups.append((header: "Older",     items: older)) }
-        return groups
     }
 }
 
@@ -273,68 +221,3 @@ private struct NotificationCardView: View {
 #Preview("Error State") {
     InboxEmptyView(message: "Failed to load. Check your connection.", isError: true)
 }
-
-// MARK: - Debug Seeder
-
-#if DEBUG
-private enum InboxSeeder {
-    private static let id1 = UUID()
-    private static let id2 = UUID()
-    private static let id3 = UUID()
-    private static let id4 = UUID()
-
-    static let reports: [FoundReport] = [
-        FoundReport(
-            id: UUID(), itemID: id1,
-            station: "Stasiun Gambir",
-            note: "Saya menemukan tas ini di rak bagasi atas, sudah saya serahkan ke petugas.",
-            photoData: nil, status: .pending, isRead: false,
-            reportedAt: Date().addingTimeInterval(-300),
-            claimedAt: nil
-        ),
-        FoundReport(
-            id: UUID(), itemID: id2,
-            station: "Stasiun Sudirman",
-            note: nil,
-            photoData: nil, status: .pending, isRead: false,
-            reportedAt: Date().addingTimeInterval(-3600),
-            claimedAt: nil
-        ),
-        FoundReport(
-            id: UUID(), itemID: id3,
-            station: "Stasiun Tanah Abang",
-            note: "Ditemukan di bangku tunggu peron 2, kondisi masih baik.",
-            photoData: nil, status: .pending, isRead: true,
-            reportedAt: Date().addingTimeInterval(-86400),
-            claimedAt: nil
-        ),
-        FoundReport(
-            id: UUID(), itemID: id4,
-            station: "Stasiun MRT Lebak Bulus",
-            note: nil,
-            photoData: nil, status: .claimed, isRead: true,
-            reportedAt: Date().addingTimeInterval(-86400 * 8),
-            claimedAt: Date().addingTimeInterval(-86400 * 7)
-        ),
-    ]
-
-    static let items: [Item] = [
-        Item(id: id1, ownerID: UUID(), name: "Tas Ransel Biru", category: "Bag",
-             color: "Biru Navy", description: "Tas ransel biru navy dengan kompartemen laptop",
-             imageData: nil, createdAt: Date(), updatedAt: Date()),
-        Item(id: id2, ownerID: UUID(), name: "AirPods Pro", category: "Electronics",
-             color: "Putih", description: nil,
-             imageData: nil, createdAt: Date(), updatedAt: Date()),
-        Item(id: id3, ownerID: UUID(), name: "Dompet Kulit Coklat", category: "Wallet",
-             color: "Coklat", description: nil,
-             imageData: nil, createdAt: Date(), updatedAt: Date()),
-        Item(id: id4, ownerID: UUID(), name: "KTP / ID Card", category: "Document",
-             color: "Biru", description: nil,
-             imageData: nil, createdAt: Date(), updatedAt: Date()),
-    ]
-
-    static func item(for report: FoundReport) -> Item? {
-        items.first { $0.id == report.itemID }
-    }
-}
-#endif

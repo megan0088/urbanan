@@ -51,19 +51,23 @@ struct ScannedItemView: View {
     // MARK: Photo
 
     private var itemPhoto: some View {
-        Group {
-            if let data = item.imageData, let img = UIImage(data: data) {
-                Image(uiImage: img).resizable().scaledToFill()
-            } else {
-                Color.taggoBlueLight
-                    .overlay {
-                        Image(systemName: "bag")
-                            .resizable()
-                            .scaledToFit()
-                            .frame(width: 56, height: 56)
-                            .foregroundStyle(Color.taggoBlue.opacity(0.4) as Color)
-                    }
+        GeometryReader { proxy in
+            Group {
+                if let data = item.imageData, let img = UIImage(data: data) {
+                    Image(uiImage: img).resizable().scaledToFill()
+                } else {
+                    Color.taggoBlueLight
+                        .overlay {
+                            Image(systemName: "bag")
+                                .resizable()
+                                .scaledToFit()
+                                .frame(width: 56, height: 56)
+                                .foregroundStyle(Color.taggoBlue.opacity(0.4) as Color)
+                        }
+                }
             }
+            .frame(width: proxy.size.width, height: proxy.size.height)
+            .clipped()
         }
         .frame(maxWidth: .infinity)
         .frame(height: 260)

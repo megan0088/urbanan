@@ -14,12 +14,29 @@ final class ItemListViewModel {
     }
     
     private(set) var state: State = .idle
+    var searchText = ""
     private let listItemsUseCase: ListItemsUseCase
-    
+
     init(listItemsUseCase: ListItemsUseCase) {
         self.listItemsUseCase = listItemsUseCase
     }
-    
+
+    /// Flattened view of `state` — `[]` unless items have actually loaded, so
+    /// callers don't need to pattern-match the state enum themselves.
+    var items: [Item] {
+        if case .loaded(let items) = state { return items }
+        return []
+    }
+
+    var filteredItems: [Item] {
+        guard !searchText.isEmpty else { return items }
+        return items.filter { $0.name.localizedCaseInsensitiveContains(searchText) }
+    }
+
+    func item(withID id: UUID) -> Item? {
+        items.first { $0.id == id }
+    }
+
     func load() async {
         state = .loading
         do  {
@@ -31,7 +48,7 @@ final class ItemListViewModel {
             state = .failure(message: "Something went wrong. Please try again.")
         }
     }
-    
+
     private func userMessage(for error: TaggoError) -> String {
         switch error {
         case .networkUnavailable:
