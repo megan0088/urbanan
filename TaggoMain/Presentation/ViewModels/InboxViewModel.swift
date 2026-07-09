@@ -18,15 +18,18 @@ final class InboxViewModel {
 
     private let fetchInboxUseCase: FetchInboxUseCase
     private let markReportClaimedUseCase: MarkReportClaimedUseCase
+    private let markReportReadUseCase: MarkReportReadUseCase
     private let foundReportEvents: AsyncStream<Void>
 
     init(
         fetchInboxUseCase: FetchInboxUseCase,
         markReportClaimedUseCase: MarkReportClaimedUseCase,
+        markReportReadUseCase: MarkReportReadUseCase,
         foundReportEvents: AsyncStream<Void>
     ) {
         self.fetchInboxUseCase = fetchInboxUseCase
         self.markReportClaimedUseCase = markReportClaimedUseCase
+        self.markReportReadUseCase = markReportReadUseCase
         self.foundReportEvents = foundReportEvents
     }
 
@@ -62,6 +65,17 @@ final class InboxViewModel {
             state = .failure(message: userMessage(for: error))
         } catch {
             state = .failure(message: "Something went wrong. Please try again.")
+        }
+    }
+
+    /// Best-effort — failing to flip the read flag shouldn't block or error out
+    /// the user just for opening a report they already found in their inbox.
+    func markAsRead(_ report: FoundReport) async {
+        guard case .loaded(var reports) = state, !report.isRead else { return }
+        guard let updated = try? await markReportReadUseCase.execute(report) else { return }
+        if let index = reports.firstIndex(where: { $0.id == updated.id }) {
+            reports[index] = updated
+            state = .loaded(reports)
         }
     }
 

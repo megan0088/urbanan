@@ -80,6 +80,7 @@ struct InboxView: View {
                         ForEach(section.items) { report in
                             Button {
                                 selectedReport = report
+                                Task { await viewModel.markAsRead(report) }
                             } label: {
                                 NotificationCardView(
                                     report: report,

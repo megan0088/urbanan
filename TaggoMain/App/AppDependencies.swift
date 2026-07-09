@@ -39,6 +39,7 @@ struct AppDependencies {
         InboxViewModel(
             fetchInboxUseCase: FetchInboxUseCase(cloudKitManager: cloudKitManager, currentUserProvider: currentUserProvider),
             markReportClaimedUseCase: MarkReportClaimedUseCase(cloudKitManager: cloudKitManager),
+            markReportReadUseCase: MarkReportReadUseCase(cloudKitManager: cloudKitManager),
             foundReportEvents: notificationManaging.foundReportEvents
         )
     }
