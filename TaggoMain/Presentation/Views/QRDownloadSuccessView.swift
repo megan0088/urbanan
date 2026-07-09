@@ -38,7 +38,7 @@ struct QRDownloadSuccessView: View {
                         .font(.system(size: 16, weight: .semibold))
                         .foregroundStyle(Color(.label))
                         .frame(width: 40, height: 40)
-                        .background(Color(.secondarySystemFill))
+                        .background(Color(.systemBackground))
                         .clipShape(Circle())
                 }
             }
