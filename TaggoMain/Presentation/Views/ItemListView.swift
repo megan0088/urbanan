@@ -8,25 +8,19 @@ import SwiftUI
 struct ItemListView: View {
     let dependencies: AppDependencies
     @State private var viewModel: ItemListViewModel
-    @State private var inboxViewModel: InboxViewModel
     @State private var selectedItem: Item?
     @State private var searchText = ""
-    @State private var showInbox = false
     @State private var itemWasModified = false
+    var hasUnread: Bool
     var onAddTapped: () -> Void
+    var onBellTapped: () -> Void
 
-    init(dependencies: AppDependencies, viewModel: ItemListViewModel, onAddTapped: @escaping () -> Void) {
+    init(dependencies: AppDependencies, viewModel: ItemListViewModel, hasUnread: Bool, onAddTapped: @escaping () -> Void, onBellTapped: @escaping () -> Void) {
         self.dependencies = dependencies
         _viewModel = State(initialValue: viewModel)
-        _inboxViewModel = State(initialValue: dependencies.makeInboxViewModel())
+        self.hasUnread = hasUnread
         self.onAddTapped = onAddTapped
-    }
-
-    private var hasUnread: Bool {
-        if case .loaded(let reports) = inboxViewModel.state {
-            return reports.contains { !$0.isRead }
-        }
-        return false
+        self.onBellTapped = onBellTapped
     }
 
     private var hasItems: Bool {
@@ -38,7 +32,7 @@ struct ItemListView: View {
         ZStack(alignment: .bottom) {
             ScrollView {
                 VStack(spacing: 0) {
-                    HomeHeaderView(hasUnread: hasUnread, hasItems: hasItems, onBellTapped: { showInbox = true })
+                    HomeHeaderView(hasUnread: hasUnread, hasItems: hasItems, onBellTapped: onBellTapped)
 
                     VStack(alignment: .leading, spacing: 0) {
                         Text("Your Items")
@@ -61,12 +55,6 @@ struct ItemListView: View {
         .task {
             await viewModel.load()
         }
-        .task {
-            await inboxViewModel.load()
-        }
-        .task {
-            await inboxViewModel.observeFoundReportEvents()
-        }
         .refreshable {
             await viewModel.load()
         }
@@ -81,9 +69,6 @@ struct ItemListView: View {
                 dependencies: dependencies,
                 onItemModified: { itemWasModified = true }
             )
-        }
-        .sheet(isPresented: $showInbox) {
-            InboxView(viewModel: inboxViewModel, dependencies: dependencies)
         }
     }
 
@@ -290,7 +275,7 @@ private struct HomeBottomBar: View {
 
 #Preview("Full View") {
     let deps = AppDependencies.live
-    ItemListView(dependencies: deps, viewModel: deps.makeItemListViewModel(), onAddTapped: {})
+    ItemListView(dependencies: deps, viewModel: deps.makeItemListViewModel(), hasUnread: false, onAddTapped: {}, onBellTapped: {})
 }
 
 #Preview("Item Row") {

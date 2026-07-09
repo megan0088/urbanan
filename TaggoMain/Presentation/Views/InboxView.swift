@@ -9,7 +9,6 @@ struct InboxView: View {
     @State private var viewModel: InboxViewModel
     @State private var itemListViewModel: ItemListViewModel
     @State private var selectedReport: FoundReport?
-    @Environment(\.dismiss) private var dismiss
 
     init(viewModel: InboxViewModel, dependencies: AppDependencies) {
         _viewModel = State(initialValue: viewModel)
@@ -17,56 +16,54 @@ struct InboxView: View {
     }
 
     var body: some View {
-        NavigationStack {
-            Group {
-                switch viewModel.state {
-                case .loading:
-                    ProgressView()
-                        .frame(maxWidth: .infinity, maxHeight: .infinity)
+        Group {
+            switch viewModel.state {
+            case .loading:
+                ProgressView()
+                    .frame(maxWidth: .infinity, maxHeight: .infinity)
 
-                case .failure:
+            case .failure:
+                #if DEBUG
+                reportList(InboxSeeder.reports)
+                #else
+                InboxEmptyView(message: "Failed to load notifications.", isError: true)
+                #endif
+
+            case .loaded(let reports):
+                let display: [FoundReport] = {
                     #if DEBUG
-                    reportList(InboxSeeder.reports)
+                    return reports.isEmpty ? InboxSeeder.reports : reports
                     #else
-                    InboxEmptyView(message: "Failed to load notifications.", isError: true)
+                    return reports
                     #endif
-
-                case .loaded(let reports):
-                    let display: [FoundReport] = {
-                        #if DEBUG
-                        return reports.isEmpty ? InboxSeeder.reports : reports
-                        #else
-                        return reports
-                        #endif
-                    }()
-                    if display.isEmpty {
-                        InboxEmptyView(message: "You got no notification yet", isError: false)
-                    } else {
-                        reportList(display)
-                    }
+                }()
+                if display.isEmpty {
+                    InboxEmptyView(message: "You got no notification yet", isError: false)
+                } else {
+                    reportList(display)
                 }
             }
-            .navigationTitle("Notification")
-            .navigationBarTitleDisplayMode(.large)
-            .background(Color.taggoBackground)
-            .task {
-                await viewModel.load()
-                await itemListViewModel.load()
-            }
-            .task {
-                await viewModel.observeFoundReportEvents()
-            }
-            .refreshable {
-                await viewModel.load()
-                await itemListViewModel.load()
-            }
-            .sheet(item: $selectedReport) { report in
-                ReportDetailView(
-                    report: report,
-                    viewModel: viewModel,
-                    item: matchingItem(for: report)
-                )
-            }
+        }
+        .navigationTitle("Notification")
+        .navigationBarTitleDisplayMode(.large)
+        .background(Color.taggoBackground)
+        .task {
+            await viewModel.load()
+            await itemListViewModel.load()
+        }
+        .task {
+            await viewModel.observeFoundReportEvents()
+        }
+        .refreshable {
+            await viewModel.load()
+            await itemListViewModel.load()
+        }
+        .sheet(item: $selectedReport) { report in
+            ReportDetailView(
+                report: report,
+                viewModel: viewModel,
+                item: matchingItem(for: report)
+            )
         }
     }
 

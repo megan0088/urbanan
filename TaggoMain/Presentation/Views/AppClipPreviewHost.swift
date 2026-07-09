@@ -12,8 +12,8 @@ import SwiftUI
 import PhotosUI
 
 private enum ClipPreviewSpacing {
-    static let horizontal: CGFloat = 24
-    static let cardCorner: CGFloat = 16
+    nonisolated static let horizontal: CGFloat = 24
+    nonisolated static let cardCorner: CGFloat = 16
 }
 
 // MARK: - Welcome Screen
@@ -69,7 +69,8 @@ private struct AppClipFormPreview: View {
     @State private var photosPickerItem: PhotosPickerItem?
 
     var body: some View {
-        ZStack(alignment: .bottom) {
+        let taggoBlue = Color.taggoBlue
+        return ZStack(alignment: .bottom) {
             ScrollView {
                 VStack(alignment: .leading, spacing: 0) {
                     Text("A few details, please.")
@@ -137,20 +138,20 @@ private struct AppClipFormPreview: View {
                                     VStack(spacing: 8) {
                                         Image(systemName: "camera.fill")
                                             .font(.title2)
-                                            .foregroundStyle(Color.taggoBlue.opacity(0.5))
+                                            .foregroundStyle(taggoBlue.opacity(0.5))
                                         Text("Add photo")
                                             .font(.subheadline).fontWeight(.medium)
-                                            .foregroundStyle(Color.taggoBlue)
+                                            .foregroundStyle(taggoBlue)
                                         Text("Please take a photo of the item")
                                             .font(.caption)
-                                            .foregroundStyle(Color.taggoBlue.opacity(0.7))
+                                            .foregroundStyle(taggoBlue.opacity(0.7))
                                     }
                                 }
                                 .frame(maxWidth: .infinity).frame(height: 160)
                                 .clipShape(RoundedRectangle(cornerRadius: ClipPreviewSpacing.cardCorner))
                                 .overlay(
                                     RoundedRectangle(cornerRadius: ClipPreviewSpacing.cardCorner)
-                                        .strokeBorder(Color.taggoBlue.opacity(0.5),
+                                        .strokeBorder(taggoBlue.opacity(0.5),
                                                       style: StrokeStyle(lineWidth: 1.5, dash: [6]))
                                 )
                         }
