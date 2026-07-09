@@ -185,6 +185,40 @@ struct RegisterView: View {
                 .padding(.top, 12)
                 .textSelection(.enabled)
 
+            if let img = UIImage(data: qrData) {
+                HStack(spacing: 12) {
+                    Button {
+                        Task { await viewModel.saveQRCodeToPhotos() }
+                    } label: {
+                        Label(
+                            viewModel.qrSaved ? "Saved!" : "Download",
+                            systemImage: viewModel.qrSaved ? "checkmark" : "arrow.down.to.line"
+                        )
+                            .font(.subheadline).fontWeight(.semibold)
+                            .foregroundStyle(.black)
+                            .frame(maxWidth: .infinity)
+                            .padding(.vertical, 13)
+                            .background(Color(red: 0.996, green: 0.788, blue: 0.122))
+                            .clipShape(RoundedRectangle(cornerRadius: 10))
+                    }
+
+                    ShareLink(
+                        item: Image(uiImage: img),
+                        preview: SharePreview("Taggo QR Code", image: Image(uiImage: img))
+                    ) {
+                        Label("Share", systemImage: "square.and.arrow.up")
+                            .font(.subheadline).fontWeight(.semibold)
+                            .foregroundStyle(Color.taggoBlue)
+                            .frame(maxWidth: .infinity)
+                            .padding(.vertical, 13)
+                            .background(Color.taggoBlueLight.opacity(0.5) as Color)
+                            .clipShape(RoundedRectangle(cornerRadius: 10))
+                    }
+                }
+                .padding(.horizontal, TaggoSpacing.horizontalPadding)
+                .padding(.top, 20)
+            }
+
             Spacer()
 
             Button(action: { onFinished?() }) {
@@ -199,6 +233,14 @@ struct RegisterView: View {
             .padding(.bottom, 40)
         }
         .background(Color.taggoBackground.ignoresSafeArea())
+        .alert("Permission Required", isPresented: Binding(
+            get: { viewModel.qrSaveError },
+            set: { if !$0 { viewModel.dismissQRSaveError() } }
+        )) {
+            Button("OK") {}
+        } message: {
+            Text("Please allow Photos access in Settings to save the QR code.")
+        }
     }
 }
 

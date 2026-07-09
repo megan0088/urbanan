@@ -21,13 +21,32 @@ final class RegisterViewModel {
     var description = ""
     var selectedImageData: Data?
     private(set) var state: State = .idle
- 
+    private(set) var qrSaveError = false
+    private(set) var qrSaved = false
+
     private let registerItemUseCase: RegisterItemUseCase
- 
-    init(registerItemUseCase: RegisterItemUseCase) {
+    private let photoLibrarySaving: PhotoLibrarySaving
+
+    init(registerItemUseCase: RegisterItemUseCase, photoLibrarySaving: PhotoLibrarySaving) {
         self.registerItemUseCase = registerItemUseCase
+        self.photoLibrarySaving = photoLibrarySaving
     }
- 
+
+    func saveQRCodeToPhotos() async {
+        guard case .success(let qrCodeImageData, _) = state else { return }
+        if await photoLibrarySaving.saveImage(qrCodeImageData) {
+            qrSaved = true
+            try? await Task.sleep(for: .seconds(2))
+            qrSaved = false
+        } else {
+            qrSaveError = true
+        }
+    }
+
+    func dismissQRSaveError() {
+        qrSaveError = false
+    }
+
     func submit() async {
         state = .loading
         let input = RegisterItemUseCase.Input(

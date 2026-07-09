@@ -59,6 +59,8 @@ final class ItemDetailViewModel {
         guard let qrCodeImageData else { return }
         if await photoLibrarySaving.saveImage(qrCodeImageData) {
             qrSaved = true
+            try? await Task.sleep(for: .seconds(2))
+            qrSaved = false
         } else {
             qrSaveError = true
         }
@@ -66,10 +68,6 @@ final class ItemDetailViewModel {
 
     func dismissQRSaveError() {
         qrSaveError = false
-    }
-
-    func dismissQRSavedConfirmation() {
-        qrSaved = false
     }
 
     func copyQRCodeToClipboard() {

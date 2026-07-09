@@ -21,59 +21,66 @@ struct ReportDetailView: View {
 
     var body: some View {
         NavigationStack {
-            ZStack(alignment: .bottom) {
-                ScrollView {
-                    VStack(alignment: .leading, spacing: 0) {
-                        goodNewsHeader
+            Group {
+                if showSuccess {
+                    ItemFoundSuccessView(onDismiss: { dismiss() })
+                } else {
+                    ZStack(alignment: .bottom) {
+                        ScrollView {
+                            VStack(alignment: .leading, spacing: 0) {
+                                goodNewsHeader
 
-                        itemPhoto
-                            .padding(.top, 16)
+                                itemPhoto
+                                    .padding(.top, 16)
 
-                        VStack(alignment: .leading, spacing: 4) {
-                            Text(item?.name ?? "Your item")
-                                .font(.title2).fontWeight(.bold)
-                                .foregroundStyle(Color(.label))
+                                VStack(alignment: .leading, spacing: 4) {
+                                    Text(item?.name ?? "Your item")
+                                        .font(.title2).fontWeight(.bold)
+                                        .foregroundStyle(Color(.label))
 
-                            if let desc = item?.description, !desc.isEmpty {
-                                Text(desc)
-                                    .font(.subheadline)
-                                    .foregroundStyle(Color(.secondaryLabel))
+                                    if let desc = item?.description, !desc.isEmpty {
+                                        Text(desc)
+                                            .font(.subheadline)
+                                            .foregroundStyle(Color(.secondaryLabel))
+                                    }
+                                }
+                                .padding(.horizontal, TaggoSpacing.horizontalPadding)
+                                .padding(.top, 16)
+
+                                detailsCard
+                                    .padding(.top, 16)
+
+                                importantCard
+                                    .padding(.top, 12)
+
+                                needHelpRow
+                                    .padding(.top, 16)
+
+                                Spacer(minLength: 120)
                             }
                         }
-                        .padding(.horizontal, TaggoSpacing.horizontalPadding)
-                        .padding(.top, 16)
+                        .scrollIndicators(.hidden)
+                        .background(Color.taggoBackground)
 
-                        detailsCard
-                            .padding(.top, 16)
-
-                        importantCard
-                            .padding(.top, 12)
-
-                        needHelpRow
-                            .padding(.top, 16)
-
-                        Spacer(minLength: 120)
+                        bottomBar
                     }
                 }
-                .scrollIndicators(.hidden)
-                .background(Color.taggoBackground)
-
-                bottomBar
             }
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
-                ToolbarItem(placement: .cancellationAction) {
-                    Button { dismiss() } label: {
-                        Image(systemName: "chevron.left").fontWeight(.medium)
+                if !showSuccess {
+                    ToolbarItem(placement: .cancellationAction) {
+                        Button { dismiss() } label: {
+                            Image(systemName: "chevron.left").fontWeight(.medium)
+                        }
                     }
                 }
             }
-            .fullScreenCover(isPresented: $showSuccess) {
-                ItemFoundSuccessView {
-                    showSuccess = false
-                    dismiss()
-                }
-            }
+        }
+        .task(id: showSuccess) {
+            guard showSuccess else { return }
+            try? await Task.sleep(for: .seconds(1.5))
+            dismiss()
         }
     }
 

@@ -28,10 +28,17 @@ struct ReportFormView: View {
             .navigationTitle("Report Found Item")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
-                ToolbarItem(placement: .cancellationAction) {
-                    Button("Cancel") { onFinished?() }
+                if viewModel.state != .success {
+                    ToolbarItem(placement: .cancellationAction) {
+                        Button("Cancel") { onFinished?() }
+                    }
                 }
             }
+        }
+        .task(id: viewModel.state == .success) {
+            guard viewModel.state == .success else { return }
+            try? await Task.sleep(for: .seconds(1.5))
+            onFinished?()
         }
     }
 
