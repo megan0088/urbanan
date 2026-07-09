@@ -139,24 +139,28 @@ struct ReportView: View {
                 .padding(.horizontal, ClipSpacing.horizontal)
 
             PhotosPicker(selection: $photosPickerItem, matching: .images) {
-                Group {
-                    if let data = photoData, let img = UIImage(data: data) {
-                        Image(uiImage: img).resizable().scaledToFill()
-                    } else {
-                        Color(.systemBackground)
-                            .overlay {
-                                VStack(spacing: 8) {
-                                    Image(systemName: "camera.fill")
-                                        .font(.title2)
-                                        .foregroundStyle(blue.opacity(0.5))
-                                    Text("Add photo")
-                                        .font(.subheadline).fontWeight(.medium)
-                                        .foregroundStyle(blue)
-                                    Text("Please take a photo of the item")
-                                        .font(.caption).foregroundStyle(blue.opacity(0.7))
+                GeometryReader { proxy in
+                    Group {
+                        if let data = photoData, let img = UIImage(data: data) {
+                            Image(uiImage: img).resizable().scaledToFill()
+                        } else {
+                            Color(.systemBackground)
+                                .overlay {
+                                    VStack(spacing: 8) {
+                                        Image(systemName: "camera.fill")
+                                            .font(.title2)
+                                            .foregroundStyle(blue.opacity(0.5))
+                                        Text("Add photo")
+                                            .font(.subheadline).fontWeight(.medium)
+                                            .foregroundStyle(blue)
+                                        Text("Please take a photo of the item")
+                                            .font(.caption).foregroundStyle(blue.opacity(0.7))
+                                    }
                                 }
-                            }
+                        }
                     }
+                    .frame(width: proxy.size.width, height: proxy.size.height)
+                    .clipped()
                 }
                 .frame(maxWidth: .infinity)
                 .frame(height: 160)

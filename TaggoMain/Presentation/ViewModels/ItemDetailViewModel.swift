@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import UIKit
 
 @Observable
 final class ItemDetailViewModel {
@@ -19,15 +20,20 @@ final class ItemDetailViewModel {
 
     private(set) var item: Item
     private(set) var state: State = .idle
+    private(set) var qrSaveError = false
+    private(set) var qrSaved = false
+    private(set) var qrCopied = false
 
     let qrCodeImageData: Data?
 
     private let deleteItemUseCase: DeleteItemUseCase
+    private let photoLibrarySaving: PhotoLibrarySaving
 
-    init(item: Item, deleteItemUseCase: DeleteItemUseCase, qrManager: QRManaging) {
+    init(item: Item, deleteItemUseCase: DeleteItemUseCase, qrManager: QRManaging, photoLibrarySaving: PhotoLibrarySaving) {
         self.item = item
         self.deleteItemUseCase = deleteItemUseCase
         self.qrCodeImageData = try? qrManager.generateQRCode(for: item.id)
+        self.photoLibrarySaving = photoLibrarySaving
     }
 
     func delete() async {
@@ -47,6 +53,33 @@ final class ItemDetailViewModel {
     func applyEdit(_ updated: Item) {
         item = updated
         state = .idle
+    }
+
+    func saveQRCodeToPhotos() async {
+        guard let qrCodeImageData else { return }
+        if await photoLibrarySaving.saveImage(qrCodeImageData) {
+            qrSaved = true
+        } else {
+            qrSaveError = true
+        }
+    }
+
+    func dismissQRSaveError() {
+        qrSaveError = false
+    }
+
+    func dismissQRSavedConfirmation() {
+        qrSaved = false
+    }
+
+    func copyQRCodeToClipboard() {
+        guard let qrCodeImageData, let image = UIImage(data: qrCodeImageData) else { return }
+        UIPasteboard.general.image = image
+        qrCopied = true
+        Task {
+            try? await Task.sleep(for: .seconds(2))
+            qrCopied = false
+        }
     }
 
     private func userMessage(for error: TaggoError) -> String {

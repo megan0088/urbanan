@@ -5,34 +5,66 @@
 
 import SwiftUI
 
+/// Reads the true device safe area directly from the key window rather than
+/// SwiftUI's ambient safe-area environment — `.safeAreaPadding`/`GeometryReader`
+/// both read a value that gets skewed by ancestors already ignoring/reserving
+/// safe area (e.g. a hidden-background nav bar still reserving its own height),
+/// which made the header's top clearance unreliable.
+private var keyWindowTopSafeAreaInset: CGFloat {
+    UIApplication.shared.connectedScenes
+        .compactMap { ($0 as? UIWindowScene)?.keyWindow }
+        .first?.safeAreaInsets.top ?? 0
+}
+
 struct ItemListView: View {
     let dependencies: AppDependencies
     @State private var viewModel: ItemListViewModel
+    @State private var inboxViewModel: InboxViewModel
     @State private var selectedItem: Item?
-    @State private var searchText = ""
+    @State private var selectedPendingReport: FoundReport?
     @State private var itemWasModified = false
-    var hasUnread: Bool
     var onAddTapped: () -> Void
+    var onScanTapped: () -> Void
     var onBellTapped: () -> Void
 
-    init(dependencies: AppDependencies, viewModel: ItemListViewModel, hasUnread: Bool, onAddTapped: @escaping () -> Void, onBellTapped: @escaping () -> Void) {
+    init(
+        dependencies: AppDependencies,
+        viewModel: ItemListViewModel,
+        inboxViewModel: InboxViewModel,
+        onAddTapped: @escaping () -> Void,
+        onScanTapped: @escaping () -> Void,
+        onBellTapped: @escaping () -> Void
+    ) {
         self.dependencies = dependencies
         _viewModel = State(initialValue: viewModel)
-        self.hasUnread = hasUnread
+        _inboxViewModel = State(initialValue: inboxViewModel)
         self.onAddTapped = onAddTapped
+        self.onScanTapped = onScanTapped
         self.onBellTapped = onBellTapped
-    }
-
-    private var hasItems: Bool {
-        if case .loaded(let items) = viewModel.state { return !items.isEmpty }
-        return false
     }
 
     var body: some View {
         ZStack(alignment: .bottom) {
             ScrollView {
                 VStack(spacing: 0) {
-                    HomeHeaderView(hasUnread: hasUnread, hasItems: hasItems, onBellTapped: onBellTapped)
+                    HomeHeaderView(
+                        hasUnread: inboxViewModel.hasUnread,
+                        hasItems: !viewModel.items.isEmpty,
+                        onBellTapped: onBellTapped
+                    )
+
+                    if let latest = inboxViewModel.pendingReports.first {
+                        PendingReportHighlightView(
+                            report: latest,
+                            item: viewModel.item(withID: latest.itemID),
+                            additionalCount: inboxViewModel.pendingReports.count - 1,
+                            onTapped: {
+                                selectedPendingReport = latest
+                                Task { await inboxViewModel.markAsRead(latest) }
+                            },
+                            onMoreTapped: onBellTapped
+                        )
+                    }
 
                     VStack(alignment: .leading, spacing: 0) {
                         Text("Your Items")
@@ -50,7 +82,7 @@ struct ItemListView: View {
             .ignoresSafeArea(edges: .top)
             .padding(.bottom, 80)
 
-            HomeBottomBar(searchText: $searchText, onAddTapped: onAddTapped)
+            HomeBottomBar(searchText: $viewModel.searchText, onAddTapped: onAddTapped, onScanTapped: onScanTapped)
         }
         .task {
             await viewModel.load()
@@ -70,6 +102,9 @@ struct ItemListView: View {
                 onItemModified: { itemWasModified = true }
             )
         }
+        .sheet(item: $selectedPendingReport) { report in
+            ReportDetailView(report: report, viewModel: inboxViewModel, item: viewModel.item(withID: report.itemID))
+        }
     }
 
     @ViewBuilder
@@ -80,16 +115,12 @@ struct ItemListView: View {
                 .frame(maxWidth: .infinity)
                 .padding(.top, 80)
 
-        case .loaded(let items):
-            let filtered = searchText.isEmpty
-                ? items
-                : items.filter { $0.name.localizedCaseInsensitiveContains(searchText) }
-
-            if filtered.isEmpty {
+        case .loaded:
+            if viewModel.filteredItems.isEmpty {
                 EmptyItemsView()
             } else {
                 LazyVStack(spacing: 0) {
-                    ForEach(filtered) { item in
+                    ForEach(viewModel.filteredItems) { item in
                         Button {
                             selectedItem = item
                         } label: {
@@ -154,13 +185,107 @@ private struct HomeHeaderView: View {
         }
         .padding(.horizontal, TaggoSpacing.horizontalPadding)
         .padding(.bottom, 24)
-        .safeAreaPadding(.top)
-        .padding(.top, 20)
+        .padding(.top, keyWindowTopSafeAreaInset + 20)
         .background(
             UnevenRoundedRectangle(bottomTrailingRadius: 75)
                 .fill(Color.taggoBlue)
                 .ignoresSafeArea(edges: .top)
         )
+    }
+}
+
+// MARK: - Pending Report Highlight
+
+private struct PendingReportHighlightView: View {
+    let report: FoundReport
+    let item: Item?
+    let additionalCount: Int
+    var onTapped: () -> Void
+    var onMoreTapped: () -> Void
+
+    var body: some View {
+        ZStack(alignment: .bottomTrailing) {
+            if additionalCount > 0 {
+                RoundedRectangle(cornerRadius: TaggoSpacing.cardCornerRadius)
+                    .fill(Color.orange.opacity(0.15))
+                    .padding(.horizontal, TaggoSpacing.horizontalPadding + 10)
+                    .offset(y: 10)
+            }
+
+            Button(action: onTapped) {
+                HStack(spacing: 12) {
+                    photoThumbnail
+
+                    VStack(alignment: .leading, spacing: 3) {
+                        HStack(spacing: 6) {
+                            Image(systemName: "checkmark.seal.fill")
+                                .font(.caption2)
+                                .foregroundStyle(.orange)
+                            Text("Item Found!")
+                                .font(.subheadline).fontWeight(.bold)
+                                .foregroundStyle(Color(.label))
+                        }
+
+                        Text(item.map { "\($0.name) reported at \(report.station)" }
+                             ?? "Reported found at \(report.station)")
+                            .font(.caption)
+                            .foregroundStyle(Color(.secondaryLabel))
+                            .lineLimit(1)
+
+                        Text(report.reportedAt, format: .relative(presentation: .named))
+                            .font(.caption2)
+                            .foregroundStyle(Color(.tertiaryLabel))
+                    }
+
+                    Spacer(minLength: 8)
+
+                    Image(systemName: "chevron.right")
+                        .font(.caption).fontWeight(.semibold)
+                        .foregroundStyle(.tertiary)
+                }
+                .padding(12)
+                .background(Color(.systemBackground))
+                .clipShape(RoundedRectangle(cornerRadius: TaggoSpacing.cardCornerRadius))
+                .overlay(
+                    RoundedRectangle(cornerRadius: TaggoSpacing.cardCornerRadius)
+                        .stroke(Color.orange.opacity(0.35), lineWidth: 1)
+                )
+                .shadow(color: .black.opacity(0.05), radius: 6, y: 3)
+            }
+            .buttonStyle(.plain)
+
+            if additionalCount > 0 {
+                Button(action: onMoreTapped) {
+                    Text("+\(additionalCount)")
+                        .font(.caption2).fontWeight(.bold)
+                        .foregroundStyle(.white)
+                        .padding(.horizontal, 9).padding(.vertical, 4)
+                        .background(Color.taggoBlue)
+                        .clipShape(Capsule())
+                        .overlay(Capsule().stroke(Color(.systemBackground), lineWidth: 2))
+                }
+                .offset(x: -10, y: 10)
+            }
+        }
+        .padding(.horizontal, TaggoSpacing.horizontalPadding)
+        .padding(.top, 16)
+    }
+
+    @ViewBuilder
+    private var photoThumbnail: some View {
+        Group {
+            if let data = item?.imageData, let img = UIImage(data: data) {
+                Image(uiImage: img).resizable().scaledToFill()
+            } else {
+                Color.orange.opacity(0.15)
+                    .overlay {
+                        Image(systemName: "shippingbox.fill")
+                            .foregroundStyle(.orange)
+                    }
+            }
+        }
+        .frame(width: 44, height: 44)
+        .clipShape(RoundedRectangle(cornerRadius: 10))
     }
 }
 
@@ -237,6 +362,7 @@ private struct ItemListRowView: View {
 private struct HomeBottomBar: View {
     @Binding var searchText: String
     var onAddTapped: () -> Void
+    var onScanTapped: () -> Void
 
     var body: some View {
         HStack(spacing: 12) {
@@ -255,6 +381,17 @@ private struct HomeBottomBar: View {
             .background(Color(.systemBackground))
             .clipShape(Capsule())
             .shadow(color: .black.opacity(0.1), radius: 8, y: 2)
+
+            Button(action: onScanTapped) {
+                Image(systemName: "qrcode.viewfinder")
+                    .font(.title2).fontWeight(.semibold)
+                    .foregroundStyle(Color.taggoBlue)
+                    .frame(width: 52, height: 52)
+                    .background(Color(.systemBackground))
+                    .clipShape(Circle())
+                    .overlay(Circle().stroke(Color.taggoBlue.opacity(0.3), lineWidth: 1.5))
+                    .shadow(color: .black.opacity(0.1), radius: 8, y: 2)
+            }
 
             Button(action: onAddTapped) {
                 Image(systemName: "plus")
@@ -275,7 +412,14 @@ private struct HomeBottomBar: View {
 
 #Preview("Full View") {
     let deps = AppDependencies.live
-    ItemListView(dependencies: deps, viewModel: deps.makeItemListViewModel(), hasUnread: false, onAddTapped: {}, onBellTapped: {})
+    ItemListView(
+        dependencies: deps,
+        viewModel: deps.makeItemListViewModel(),
+        inboxViewModel: deps.makeInboxViewModel(),
+        onAddTapped: {},
+        onScanTapped: {},
+        onBellTapped: {}
+    )
 }
 
 #Preview("Item Row") {
@@ -306,5 +450,39 @@ private struct HomeBottomBar: View {
 
 #Preview("Empty State") {
     EmptyItemsView()
+}
+
+#Preview("Pending Highlight — single") {
+    PendingReportHighlightView(
+        report: FoundReport(
+            id: UUID(), itemID: UUID(), station: "Stasiun Gambir", note: nil, photoData: nil,
+            status: .pending, isRead: false, reportedAt: Date().addingTimeInterval(-300), claimedAt: nil
+        ),
+        item: Item(id: UUID(), ownerID: UUID(), name: "Blue Backpack", category: "Bag",
+                   color: "Navy Blue", description: nil, imageData: nil,
+                   createdAt: Date(), updatedAt: Date()),
+        additionalCount: 0,
+        onTapped: {},
+        onMoreTapped: {}
+    )
+    .padding(.top, 16)
+    .background(Color.taggoBackground)
+}
+
+#Preview("Pending Highlight — stacked") {
+    PendingReportHighlightView(
+        report: FoundReport(
+            id: UUID(), itemID: UUID(), station: "Stasiun Gambir", note: nil, photoData: nil,
+            status: .pending, isRead: false, reportedAt: Date().addingTimeInterval(-300), claimedAt: nil
+        ),
+        item: Item(id: UUID(), ownerID: UUID(), name: "Blue Backpack", category: "Bag",
+                   color: "Navy Blue", description: nil, imageData: nil,
+                   createdAt: Date(), updatedAt: Date()),
+        additionalCount: 2,
+        onTapped: {},
+        onMoreTapped: {}
+    )
+    .padding(.top, 16)
+    .background(Color.taggoBackground)
 }
 

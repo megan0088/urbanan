@@ -14,13 +14,15 @@ struct AppDependencies {
     let currentUserProvider: CurrentUserProviding
     let imageCompressor: ImageCompressing
     let notificationManaging: NotificationManaging
+    let photoLibrarySaving: PhotoLibrarySaving
 
     static let live = AppDependencies(
         cloudKitManager: CloudKitManager(),
         qrManager: QRManager(),
         currentUserProvider: CurrentUserProvider(),
         imageCompressor: ImageCompressor(),
-        notificationManaging: NotificationManager()
+        notificationManaging: NotificationManager(),
+        photoLibrarySaving: PhotoLibrarySaver()
     )
 
     func makeRegisterViewModel() -> RegisterViewModel {
@@ -39,6 +41,7 @@ struct AppDependencies {
         InboxViewModel(
             fetchInboxUseCase: FetchInboxUseCase(cloudKitManager: cloudKitManager, currentUserProvider: currentUserProvider),
             markReportClaimedUseCase: MarkReportClaimedUseCase(cloudKitManager: cloudKitManager),
+            markReportReadUseCase: MarkReportReadUseCase(cloudKitManager: cloudKitManager),
             foundReportEvents: notificationManaging.foundReportEvents
         )
     }
@@ -72,7 +75,12 @@ struct AppDependencies {
     }
     
     func makeItemDetailViewModel(item: Item) -> ItemDetailViewModel {
-        ItemDetailViewModel(item: item, deleteItemUseCase: makeDeleteItemUseCase(), qrManager: qrManager)
+        ItemDetailViewModel(
+            item: item,
+            deleteItemUseCase: makeDeleteItemUseCase(),
+            qrManager: qrManager,
+            photoLibrarySaving: photoLibrarySaving
+        )
     }
     
     func makeEditItemViewModel(item: Item) -> EditItemViewModel {

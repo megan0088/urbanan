@@ -95,20 +95,24 @@ struct ReportDetailView: View {
     // MARK: - Item Photo
 
     private var itemPhoto: some View {
-        Group {
-            let photoData = item?.imageData ?? report.photoData
-            if let data = photoData, let img = UIImage(data: data) {
-                Image(uiImage: img)
-                    .resizable()
-                    .scaledToFill()
-            } else {
-                Color.taggoBlueLight
-                    .overlay {
-                        Image(systemName: "photo")
-                            .font(.system(size: 48))
-                            .foregroundStyle(Color.taggoBlue.opacity(0.4))
-                    }
+        GeometryReader { proxy in
+            Group {
+                let photoData = item?.imageData ?? report.photoData
+                if let data = photoData, let img = UIImage(data: data) {
+                    Image(uiImage: img)
+                        .resizable()
+                        .scaledToFill()
+                } else {
+                    Color.taggoBlueLight
+                        .overlay {
+                            Image(systemName: "photo")
+                                .font(.system(size: 48))
+                                .foregroundStyle(Color.taggoBlue.opacity(0.4))
+                        }
+                }
             }
+            .frame(width: proxy.size.width, height: proxy.size.height)
+            .clipped()
         }
         .frame(maxWidth: .infinity)
         .frame(height: 240)
@@ -259,8 +263,7 @@ struct ReportDetailView: View {
     private func markClaimed() async {
         isMarkingClaimed = true
         await viewModel.markClaimed(report)
-        if case .loaded(let reports) = viewModel.state,
-           let updated = reports.first(where: { $0.id == report.id }) {
+        if let updated = viewModel.reports.first(where: { $0.id == report.id }) {
             report = updated
             if updated.status == .claimed {
                 showSuccess = true

@@ -57,24 +57,28 @@ struct EditItemView: View {
         let blue = Color("TaggoBlue")
         let blueLight = Color("TaggoBlueLight")
         return PhotosPicker(selection: $photosPickerItem, matching: .images) {
-            Group {
-                if let data = imageData, let img = UIImage(data: data) {
-                    Image(uiImage: img)
-                        .resizable()
-                        .scaledToFill()
-                } else {
-                    blueLight
-                        .overlay {
-                            VStack(spacing: 10) {
-                                Image(systemName: "photo.badge.plus")
-                                    .font(.system(size: 44))
-                                    .foregroundStyle(blue.opacity(0.6))
-                                Text("Change Photo")
-                                    .font(.subheadline)
-                                    .foregroundStyle(blue)
+            GeometryReader { proxy in
+                Group {
+                    if let data = imageData, let img = UIImage(data: data) {
+                        Image(uiImage: img)
+                            .resizable()
+                            .scaledToFill()
+                    } else {
+                        blueLight
+                            .overlay {
+                                VStack(spacing: 10) {
+                                    Image(systemName: "photo.badge.plus")
+                                        .font(.system(size: 44))
+                                        .foregroundStyle(blue.opacity(0.6))
+                                    Text("Change Photo")
+                                        .font(.subheadline)
+                                        .foregroundStyle(blue)
+                                }
                             }
-                        }
+                    }
                 }
+                .frame(width: proxy.size.width, height: proxy.size.height)
+                .clipped()
             }
             .frame(maxWidth: .infinity)
             .frame(height: 220)
