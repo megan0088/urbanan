@@ -67,7 +67,7 @@ struct QRDownloadSuccessView: View {
 
     private var bottomSection: some View {
         ZStack(alignment: .bottomTrailing) {
-            Image("QRDownloadedIllustration")
+            Image("bapabapa")
                 .resizable()
                 .scaledToFit()
                 .frame(width: 200, height: 200)

@@ -24,14 +24,26 @@ struct InboxView: View {
                     ProgressView()
                         .frame(maxWidth: .infinity, maxHeight: .infinity)
 
-                case .failure(let message):
-                    InboxEmptyView(message: message, isError: true)
-
-                case .loaded(let reports) where reports.isEmpty:
-                    InboxEmptyView(message: "You got no notification yet", isError: false)
+                case .failure:
+                    #if DEBUG
+                    reportList(InboxSeeder.reports)
+                    #else
+                    InboxEmptyView(message: "Failed to load notifications.", isError: true)
+                    #endif
 
                 case .loaded(let reports):
-                    reportList(reports)
+                    let display: [FoundReport] = {
+                        #if DEBUG
+                        return reports.isEmpty ? InboxSeeder.reports : reports
+                        #else
+                        return reports
+                        #endif
+                    }()
+                    if display.isEmpty {
+                        InboxEmptyView(message: "You got no notification yet", isError: false)
+                    } else {
+                        reportList(display)
+                    }
                 }
             }
             .navigationTitle("Notification")
@@ -88,8 +100,15 @@ struct InboxView: View {
     }
 
     private func matchingItem(for report: FoundReport) -> Item? {
-        guard case .loaded(let items) = itemListViewModel.state else { return nil }
-        return items.first { $0.id == report.itemID }
+        if case .loaded(let items) = itemListViewModel.state,
+           let found = items.first(where: { $0.id == report.itemID }) {
+            return found
+        }
+        #if DEBUG
+        return InboxSeeder.item(for: report)
+        #else
+        return nil
+        #endif
     }
 
     private func groupedReports(_ reports: [FoundReport]) -> [(header: String, items: [FoundReport])] {
@@ -129,7 +148,7 @@ private struct InboxEmptyView: View {
     let isError: Bool
 
     var body: some View {
-        VStack(spacing: 24) {
+        VStack(spacing: 16) {
             Spacer()
 
             if isError {
@@ -137,10 +156,10 @@ private struct InboxEmptyView: View {
                     .font(.system(size: 72))
                     .foregroundStyle(Color.red.opacity(0.35))
             } else {
-                Image("notification")
+                Image("ibuibu")
                     .resizable()
                     .scaledToFit()
-                    .frame(width: 220, height: 220)
+                    .frame(width: 200, height: 200)
             }
 
             Text(message)
@@ -256,3 +275,68 @@ private struct NotificationCardView: View {
 #Preview("Error State") {
     InboxEmptyView(message: "Failed to load. Check your connection.", isError: true)
 }
+
+// MARK: - Debug Seeder
+
+#if DEBUG
+private enum InboxSeeder {
+    private static let id1 = UUID()
+    private static let id2 = UUID()
+    private static let id3 = UUID()
+    private static let id4 = UUID()
+
+    static let reports: [FoundReport] = [
+        FoundReport(
+            id: UUID(), itemID: id1,
+            station: "Stasiun Gambir",
+            note: "Saya menemukan tas ini di rak bagasi atas, sudah saya serahkan ke petugas.",
+            photoData: nil, status: .pending, isRead: false,
+            reportedAt: Date().addingTimeInterval(-300),
+            claimedAt: nil
+        ),
+        FoundReport(
+            id: UUID(), itemID: id2,
+            station: "Stasiun Sudirman",
+            note: nil,
+            photoData: nil, status: .pending, isRead: false,
+            reportedAt: Date().addingTimeInterval(-3600),
+            claimedAt: nil
+        ),
+        FoundReport(
+            id: UUID(), itemID: id3,
+            station: "Stasiun Tanah Abang",
+            note: "Ditemukan di bangku tunggu peron 2, kondisi masih baik.",
+            photoData: nil, status: .pending, isRead: true,
+            reportedAt: Date().addingTimeInterval(-86400),
+            claimedAt: nil
+        ),
+        FoundReport(
+            id: UUID(), itemID: id4,
+            station: "Stasiun MRT Lebak Bulus",
+            note: nil,
+            photoData: nil, status: .claimed, isRead: true,
+            reportedAt: Date().addingTimeInterval(-86400 * 8),
+            claimedAt: Date().addingTimeInterval(-86400 * 7)
+        ),
+    ]
+
+    static let items: [Item] = [
+        Item(id: id1, ownerID: UUID(), name: "Tas Ransel Biru", category: "Bag",
+             color: "Biru Navy", description: "Tas ransel biru navy dengan kompartemen laptop",
+             imageData: nil, createdAt: Date(), updatedAt: Date()),
+        Item(id: id2, ownerID: UUID(), name: "AirPods Pro", category: "Electronics",
+             color: "Putih", description: nil,
+             imageData: nil, createdAt: Date(), updatedAt: Date()),
+        Item(id: id3, ownerID: UUID(), name: "Dompet Kulit Coklat", category: "Wallet",
+             color: "Coklat", description: nil,
+             imageData: nil, createdAt: Date(), updatedAt: Date()),
+        Item(id: id4, ownerID: UUID(), name: "KTP / ID Card", category: "Document",
+             color: "Biru", description: nil,
+             imageData: nil, createdAt: Date(), updatedAt: Date()),
+    ]
+
+    static func item(for report: FoundReport) -> Item? {
+        items.first { $0.id == report.itemID }
+    }
+}
+#endif
