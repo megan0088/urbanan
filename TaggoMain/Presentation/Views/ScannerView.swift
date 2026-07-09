@@ -39,16 +39,8 @@ struct ScannerView: View {
             case .loading:
                 ProgressView("Looking up item…")
 
-            case .owned:
+            case .owned, .found:
                 EmptyView()
-
-            case .found(let item):
-                ScannedItemFlowView(
-                    item: item,
-                    reportFoundItemUseCase: viewModel.reportFoundItemUseCase,
-                    onDismiss: { viewModel.reset() }
-                )
-                .toolbar(.hidden, for: .tabBar)
 
             case .failure(let message):
                 failureView(message: message)
@@ -60,12 +52,31 @@ struct ScannerView: View {
                 dependencies: dependencies
             )
         }
+        .sheet(item: foundItemBinding) { item in
+            ScannedItemFlowView(
+                item: item,
+                reportFoundItemUseCase: viewModel.reportFoundItemUseCase,
+                onDismiss: { viewModel.reset() }
+            )
+        }
     }
 
     private var ownedItemBinding: Binding<Item?> {
         Binding(
             get: {
                 if case .owned(let item) = viewModel.state { return item }
+                return nil
+            },
+            set: { newValue in
+                if newValue == nil { viewModel.reset() }
+            }
+        )
+    }
+
+    private var foundItemBinding: Binding<Item?> {
+        Binding(
+            get: {
+                if case .found(let item) = viewModel.state { return item }
                 return nil
             },
             set: { newValue in
