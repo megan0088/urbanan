@@ -187,9 +187,19 @@ private struct HomeHeaderView: View {
         .padding(.bottom, 24)
         .padding(.top, keyWindowTopSafeAreaInset + 20)
         .background(
-            UnevenRoundedRectangle(bottomTrailingRadius: 75)
-                .fill(Color.taggoBlue)
-                .ignoresSafeArea(edges: .top)
+            // Stretchy header: when the ScrollView is overscrolled (pulled down past
+            // the top), this view's global minY goes positive. Growing the fill by
+            // that amount and shifting it up by the same amount keeps its top edge
+            // pinned to the true screen top, so the pull-to-refresh gap reveals more
+            // blue instead of whatever's behind the ScrollView.
+            GeometryReader { proxy in
+                let overscroll = max(0, proxy.frame(in: .global).minY)
+                UnevenRoundedRectangle(bottomTrailingRadius: 75)
+                    .fill(Color.taggoBlue)
+                    .frame(height: proxy.size.height + overscroll)
+                    .offset(y: -overscroll)
+            }
+            .ignoresSafeArea(edges: .top)
         )
     }
 }

@@ -102,7 +102,7 @@ struct EditItemView: View {
 
     private var fieldsCard: some View {
         VStack(spacing: 0) {
-            FormFieldRow(label: "Name", placeholder: "Item name", text: $viewModel.name)
+            FormFieldRow(label: "Name*", placeholder: "Item name", text: $viewModel.name)
             Divider().padding(.leading, TaggoSpacing.horizontalPadding)
             FormFieldRow(label: "Category", placeholder: "e.g. Bag, Electronics", text: $viewModel.category)
             Divider().padding(.leading, TaggoSpacing.horizontalPadding)
@@ -138,10 +138,10 @@ struct EditItemView: View {
                 .foregroundStyle(Color.white)
                 .frame(maxWidth: .infinity)
                 .padding(.vertical, 16)
-                .background(Color.taggoBlue)
+                .background(viewModel.isNameValid ? Color.taggoBlue : Color.secondary)
                 .clipShape(Capsule())
             }
-            .disabled(viewModel.state == .saving || viewModel.name.isEmpty)
+            .disabled(viewModel.state == .saving || !viewModel.isNameValid)
             .padding(.horizontal, TaggoSpacing.horizontalPadding)
             .padding(.vertical, 16)
             .background(Color(.systemBackground))

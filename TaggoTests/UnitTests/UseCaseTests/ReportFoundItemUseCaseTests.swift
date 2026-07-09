@@ -108,4 +108,18 @@ final class ReportFoundItemUseCaseTests: XCTestCase {
 
         XCTAssertEqual(mockSubmitter.lastSubmittedReport?.note, "By the ticket gate")
     }
+
+    func test_execute_trimsStationAndWhitespaceOnlyNoteBecomesNil() async throws {
+        let mockSubmitter = MockFoundReportSubmitting()
+        let useCase = ReportFoundItemUseCase(foundReportSubmitting: mockSubmitter, imageCompressor: MockImageCompressor())
+
+        let input = ReportFoundItemUseCase.Input(
+            itemID: UUID(), station: "  Central Station  ", note: "   ", photoData: nil
+        )
+
+        try await useCase.execute(input)
+
+        XCTAssertEqual(mockSubmitter.lastSubmittedReport?.station, "Central Station")
+        XCTAssertNil(mockSubmitter.lastSubmittedReport?.note)
+    }
 }

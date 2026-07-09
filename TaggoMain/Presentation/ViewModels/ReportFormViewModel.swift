@@ -29,7 +29,12 @@ final class ReportFormViewModel {
         self.reportFoundItemUseCase = reportFoundItemUseCase
     }
     
+    var isStationValid: Bool {
+        !station.trimmed.isEmpty
+    }
+
     func submit() async {
+        guard isStationValid else { return }
         state = .submitting
         let input = ReportFoundItemUseCase.Input(itemID: itemID, station: station, note: note, photoData: selectedPhotoData)
         do {

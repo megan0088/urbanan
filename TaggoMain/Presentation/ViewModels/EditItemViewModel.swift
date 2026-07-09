@@ -36,14 +36,19 @@ final class EditItemViewModel {
         self.editItemUseCase = editItemUseCase
     }
 
+    var isNameValid: Bool {
+        !name.trimmed.isEmpty
+    }
+
     func save() async -> Item? {
+        guard isNameValid else { return nil }
         state = .saving
         let input = EditItemUseCase.Input(
             itemID: itemID,
-            name: name,
-            category: category,
-            color: color,
-            description: description,
+            name: name.trimmed,
+            category: category.trimmed,
+            color: color.trimmed,
+            description: description.trimmed,
             imageData: selectedImageData
         )
         do {

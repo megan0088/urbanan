@@ -50,8 +50,12 @@ final class ReportViewModel {
         }
     }
 
+    var isStationValid: Bool {
+        !station.trimmed.isEmpty
+    }
+
     func submitReport() async {
-        guard let resolvedItem else { return }
+        guard let resolvedItem, isStationValid else { return }
         state = .submitting
         let input = ReportFoundItemUseCase.Input(
             itemID: resolvedItem.id,

@@ -53,9 +53,6 @@ struct ReportDetailView: View {
                                 importantCard
                                     .padding(.top, 12)
 
-                                needHelpRow
-                                    .padding(.top, 16)
-
                                 Spacer(minLength: 120)
                             }
                         }
@@ -93,7 +90,7 @@ struct ReportDetailView: View {
                 .foregroundStyle(Color(.label))
             Text("Someone found your item")
                 .font(.subheadline)
-                .foregroundStyle(Color.taggoBlue)
+                .foregroundStyle(Color(.secondaryLabel))
         }
         .frame(maxWidth: .infinity)
         .padding(.vertical, 20)
@@ -195,28 +192,6 @@ struct ReportDetailView: View {
         .padding(14)
         .background(Color.orange.opacity(0.08))
         .clipShape(RoundedRectangle(cornerRadius: 12))
-        .padding(.horizontal, TaggoSpacing.horizontalPadding)
-    }
-
-    // MARK: - Need help row
-
-    private var needHelpRow: some View {
-        HStack {
-            Text("Need help?")
-                .font(.subheadline)
-                .foregroundStyle(Color(.secondaryLabel))
-            Spacer()
-            Button {
-                // Contact support
-            } label: {
-                Label("Contact Support", systemImage: "headphones")
-                    .font(.caption).fontWeight(.semibold)
-                    .padding(.horizontal, 12).padding(.vertical, 6)
-                    .background(Color(.systemGray5))
-                    .clipShape(Capsule())
-            }
-            .foregroundStyle(.primary)
-        }
         .padding(.horizontal, TaggoSpacing.horizontalPadding)
     }
 

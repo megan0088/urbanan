@@ -9,11 +9,9 @@ import PhotosUI
 struct RegisterView: View {
     @State private var viewModel: RegisterViewModel
     @State private var photosPickerItem: PhotosPickerItem?
-    var onFinished: (() -> Void)?
 
-    init(viewModel: RegisterViewModel, onFinished: (() -> Void)? = nil) {
+    init(viewModel: RegisterViewModel) {
         _viewModel = State(initialValue: viewModel)
-        self.onFinished = onFinished
     }
 
     var body: some View {
@@ -106,7 +104,7 @@ struct RegisterView: View {
 
     private var fieldsCard: some View {
         VStack(spacing: 0) {
-            FormFieldRow(label: "Name", placeholder: "e.g. Blue Backpack", text: $viewModel.name)
+            FormFieldRow(label: "Name*", placeholder: "e.g. Blue Backpack", text: $viewModel.name)
             Divider().padding(.leading, TaggoSpacing.horizontalPadding)
             FormFieldRow(label: "Category", placeholder: "e.g. Bag, Electronics", text: $viewModel.category)
             Divider().padding(.leading, TaggoSpacing.horizontalPadding)
@@ -137,10 +135,10 @@ struct RegisterView: View {
                 .foregroundStyle(Color.white)
                 .frame(maxWidth: .infinity)
                 .padding(.vertical, 16)
-                .background(Color.taggoBlue)
+                .background(viewModel.isNameValid ? Color.taggoBlue : Color.secondary)
                 .clipShape(Capsule())
             }
-            .disabled(viewModel.state == .loading || viewModel.name.isEmpty)
+            .disabled(viewModel.state == .loading || !viewModel.isNameValid)
             .padding(.horizontal, TaggoSpacing.horizontalPadding)
             .padding(.vertical, 16)
             .background(Color(.systemBackground))
@@ -220,17 +218,6 @@ struct RegisterView: View {
             }
 
             Spacer()
-
-            Button(action: { onFinished?() }) {
-                Text("Done")
-                    .font(Font.headline).foregroundStyle(Color.white)
-                    .frame(maxWidth: .infinity)
-                    .padding(.vertical, 16)
-                    .background(Color.taggoBlue)
-                    .clipShape(Capsule())
-            }
-            .padding(.horizontal, TaggoSpacing.horizontalPadding)
-            .padding(.bottom, 40)
         }
         .background(Color.taggoBackground.ignoresSafeArea())
         .alert("Permission Required", isPresented: Binding(

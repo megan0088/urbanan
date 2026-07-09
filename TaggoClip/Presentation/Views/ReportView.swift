@@ -36,11 +36,11 @@ struct ReportView: View {
         switch viewModel.state {
         case .resolving:
             ClipLoadingView()
-        case .found:
+        case .found(let item):
             if showForm {
                 formView
             } else {
-                ClipWelcomeView(onContinue: { showForm = true })
+                ClipWelcomeView(item: item, onContinue: { showForm = true })
             }
         case .submitting:
             ClipSubmittingView()
@@ -91,7 +91,7 @@ struct ReportView: View {
             HStack(spacing: 10) {
                 Image(systemName: "mappin.circle")
                     .font(.title3).foregroundStyle(Color.taggoBlue).frame(width: 28)
-                Text("Location").font(.subheadline).fontWeight(.semibold)
+                Text("Location*").font(.subheadline).fontWeight(.semibold)
             }
             .padding(.horizontal, ClipSpacing.horizontal)
 
@@ -115,7 +115,7 @@ struct ReportView: View {
             HStack(spacing: 10) {
                 Image(systemName: "pencil.circle")
                     .font(.title3).foregroundStyle(Color.taggoBlue).frame(width: 28)
-                Text("Notes").font(.subheadline).fontWeight(.semibold)
+                Text("Notes (optional)").font(.subheadline).fontWeight(.semibold)
             }
             .padding(.horizontal, ClipSpacing.horizontal)
 
@@ -134,7 +134,7 @@ struct ReportView: View {
         let photoData = viewModel.selectedPhotoData
         let blue = Color.taggoBlue
         return VStack(alignment: .leading, spacing: 8) {
-            Text("Your Photo")
+            Text("Your Photo (optional)")
                 .font(.subheadline).fontWeight(.semibold)
                 .padding(.horizontal, ClipSpacing.horizontal)
 
@@ -191,10 +191,10 @@ struct ReportView: View {
                     .font(.headline).foregroundStyle(.white)
                     .frame(maxWidth: .infinity)
                     .padding(.vertical, 16)
-                    .background(viewModel.station.isEmpty ? Color.secondary : Color.taggoBlue)
+                    .background(viewModel.isStationValid ? Color.taggoBlue : Color.secondary)
                     .clipShape(Capsule())
             }
-            .disabled(viewModel.station.isEmpty)
+            .disabled(!viewModel.isStationValid)
             .padding(.horizontal, ClipSpacing.horizontal)
             .padding(.top, 12)
             .padding(.bottom, 4)
@@ -226,6 +226,7 @@ private struct ClipLoadingView: View {
 // MARK: - Screen: Welcome
 
 private struct ClipWelcomeView: View {
+    let item: Item
     var onContinue: () -> Void
 
     var body: some View {
@@ -248,6 +249,33 @@ private struct ClipWelcomeView: View {
                     .multilineTextAlignment(.center)
                     .padding(.horizontal, ClipSpacing.horizontal)
                     .padding(.top, 12)
+
+                // Identity confirmation — reassures the finder this actually
+                // resolved to a real item, without listing category/color,
+                // which mean nothing to someone holding the physical object.
+                HStack(spacing: 10) {
+                    Group {
+                        if let data = item.imageData, let img = UIImage(data: data) {
+                            Image(uiImage: img).resizable().scaledToFill()
+                        } else {
+                            Color.taggoBlueLight
+                                .overlay {
+                                    Image(systemName: "shippingbox.fill")
+                                        .foregroundStyle(Color.taggoBlue)
+                                }
+                        }
+                    }
+                    .frame(width: 40, height: 40)
+                    .clipShape(RoundedRectangle(cornerRadius: 8))
+
+                    Text(item.name)
+                        .font(.subheadline).fontWeight(.semibold)
+                        .foregroundStyle(Color(.label))
+                }
+                .padding(10)
+                .background(Color(.systemGray6))
+                .clipShape(RoundedRectangle(cornerRadius: 12))
+                .padding(.top, 20)
 
                 Spacer()
             }
@@ -342,7 +370,12 @@ private struct ClipFailureView: View {
 // MARK: - Previews
 
 #Preview("Welcome") {
-    ClipWelcomeView(onContinue: {})
+    ClipWelcomeView(
+        item: Item(id: UUID(), ownerID: UUID(), name: "Blue Backpack", category: "Bag",
+                   color: "Navy Blue", description: nil, imageData: nil,
+                   createdAt: Date(), updatedAt: Date()),
+        onContinue: {}
+    )
 }
 
 #Preview("Form") {
@@ -369,7 +402,7 @@ private struct ClipFailureView: View {
                             HStack(spacing: 10) {
                                 Image(systemName: "mappin.circle")
                                     .font(.title3).foregroundStyle(Color.taggoBlue).frame(width: 28)
-                                Text("Location").font(.subheadline).fontWeight(.semibold)
+                                Text("Location*").font(.subheadline).fontWeight(.semibold)
                             }
                             .padding(.horizontal, ClipSpacing.horizontal)
                             HStack {
@@ -390,7 +423,7 @@ private struct ClipFailureView: View {
                             HStack(spacing: 10) {
                                 Image(systemName: "pencil.circle")
                                     .font(.title3).foregroundStyle(Color.taggoBlue).frame(width: 28)
-                                Text("Notes").font(.subheadline).fontWeight(.semibold)
+                                Text("Notes (optional)").font(.subheadline).fontWeight(.semibold)
                             }
                             .padding(.horizontal, ClipSpacing.horizontal)
                             TextField("Leave some notes for owner...", text: $note, axis: .vertical)
@@ -405,7 +438,7 @@ private struct ClipFailureView: View {
 
                         // Photo placeholder
                         VStack(alignment: .leading, spacing: 8) {
-                            Text("Your Photo").font(.subheadline).fontWeight(.semibold)
+                            Text("Your Photo (optional)").font(.subheadline).fontWeight(.semibold)
                                 .padding(.horizontal, ClipSpacing.horizontal)
                             PhotosPicker(selection: $photosPickerItem, matching: .images) {
                                 Color(.systemBackground)

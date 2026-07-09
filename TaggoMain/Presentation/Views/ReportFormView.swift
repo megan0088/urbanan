@@ -186,10 +186,10 @@ struct ReportFormView: View {
                 .foregroundStyle(Color.white)
                 .frame(maxWidth: .infinity)
                 .padding(.vertical, 16)
-                .background(Color.taggoBlue)
+                .background(viewModel.isStationValid ? Color.taggoBlue : Color.secondary)
                 .clipShape(Capsule())
             }
-            .disabled(viewModel.state == .submitting || viewModel.station.isEmpty)
+            .disabled(viewModel.state == .submitting || !viewModel.isStationValid)
             .padding(.horizontal, TaggoSpacing.horizontalPadding)
             .padding(.vertical, 16)
             .background(Color(.systemBackground))

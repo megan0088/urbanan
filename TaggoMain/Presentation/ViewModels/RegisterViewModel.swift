@@ -32,6 +32,10 @@ final class RegisterViewModel {
         self.photoLibrarySaving = photoLibrarySaving
     }
 
+    var isNameValid: Bool {
+        !name.trimmed.isEmpty
+    }
+
     func saveQRCodeToPhotos() async {
         guard case .success(let qrCodeImageData, _) = state else { return }
         if await photoLibrarySaving.saveImage(qrCodeImageData) {
@@ -48,12 +52,13 @@ final class RegisterViewModel {
     }
 
     func submit() async {
+        guard isNameValid else { return }
         state = .loading
         let input = RegisterItemUseCase.Input(
-            name: name,
-            category: category,
-            color: color,
-            description: description,
+            name: name.trimmed,
+            category: category.trimmed,
+            color: color.trimmed,
+            description: description.trimmed,
             imageData: selectedImageData
         )
         do {
