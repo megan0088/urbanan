@@ -28,10 +28,17 @@ struct ReportFormView: View {
             .navigationTitle("Report Found Item")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
-                ToolbarItem(placement: .cancellationAction) {
-                    Button("Cancel") { onFinished?() }
+                if viewModel.state != .success {
+                    ToolbarItem(placement: .cancellationAction) {
+                        Button("Cancel") { onFinished?() }
+                    }
                 }
             }
+        }
+        .task(id: viewModel.state == .success) {
+            guard viewModel.state == .success else { return }
+            try? await Task.sleep(for: .seconds(1.5))
+            onFinished?()
         }
     }
 
@@ -179,10 +186,10 @@ struct ReportFormView: View {
                 .foregroundStyle(Color.white)
                 .frame(maxWidth: .infinity)
                 .padding(.vertical, 16)
-                .background(Color.taggoBlue)
+                .background(viewModel.isStationValid ? Color.taggoBlue : Color.secondary)
                 .clipShape(Capsule())
             }
-            .disabled(viewModel.state == .submitting || viewModel.station.isEmpty)
+            .disabled(viewModel.state == .submitting || !viewModel.isStationValid)
             .padding(.horizontal, TaggoSpacing.horizontalPadding)
             .padding(.vertical, 16)
             .background(Color(.systemBackground))

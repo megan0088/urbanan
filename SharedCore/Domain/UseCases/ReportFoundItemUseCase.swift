@@ -33,11 +33,12 @@ struct ReportFoundItemUseCase {
             try imageCompressor.compress($0, maxDimensionPixels: 1200, jpegQUality: 0.6)
         }
 
+        let trimmedNote = input.note.trimmed
         let report = FoundReport(
             id: UUID(),
             itemID: input.itemID,
-            station: input.station,
-            note: input.note.isEmpty ? nil : input.note,
+            station: input.station.trimmed,
+            note: trimmedNote.isEmpty ? nil : trimmedNote,
             photoData: compressedPhoto,
             status: .pending,
             isRead: false,

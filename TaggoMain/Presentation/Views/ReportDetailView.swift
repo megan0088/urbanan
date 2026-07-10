@@ -11,69 +11,68 @@ struct ReportDetailView: View {
     @State private var report: FoundReport
     @State private var isMarkingClaimed = false
     @State private var showSuccess = false
+    @State private var selectedPhotoID: String?
     @Environment(\.dismiss) private var dismiss
 
     init(report: FoundReport, viewModel: InboxViewModel, item: Item? = nil) {
         _report = State(initialValue: report)
         self.viewModel = viewModel
         self.item = item
+        // Finder's photo is the default focus — it's the evidence for this
+        // specific report, whereas the item's own photo is just for reference.
+        _selectedPhotoID = State(initialValue: report.photoData != nil ? "finder" : (item?.imageData != nil ? "item" : nil))
     }
 
     var body: some View {
-        NavigationStack {
-            ZStack(alignment: .bottom) {
-                ScrollView {
-                    VStack(alignment: .leading, spacing: 0) {
-                        goodNewsHeader
+        Group {
+            if showSuccess {
+                ItemFoundSuccessView(onDismiss: { dismiss() })
+            } else {
+                ZStack(alignment: .bottom) {
+                    ScrollView {
+                        VStack(alignment: .leading, spacing: 0) {
+                            goodNewsHeader
 
-                        itemPhoto
-                            .padding(.top, 16)
+                            itemPhoto
+                                .padding(.top, 16)
 
-                        VStack(alignment: .leading, spacing: 4) {
-                            Text(item?.name ?? "Your item")
-                                .font(.title2).fontWeight(.bold)
-                                .foregroundStyle(Color(.label))
+                            VStack(alignment: .leading, spacing: 6) {
+                                statusBadge
 
-                            if let desc = item?.description, !desc.isEmpty {
-                                Text(desc)
-                                    .font(.subheadline)
-                                    .foregroundStyle(Color(.secondaryLabel))
+                                Text(item?.name ?? "Your item")
+                                    .font(.title2).fontWeight(.bold)
+                                    .foregroundStyle(Color(.label))
+
+                                if let desc = item?.description, !desc.isEmpty {
+                                    Text(desc)
+                                        .font(.subheadline)
+                                        .foregroundStyle(Color(.secondaryLabel))
+                                }
                             }
+                            .padding(.horizontal, TaggoSpacing.horizontalPadding)
+                            .padding(.top, 16)
+
+                            detailsCard
+                                .padding(.top, 16)
+
+                            importantCard
+                                .padding(.top, 12)
+
+                            Spacer(minLength: 120)
                         }
-                        .padding(.horizontal, TaggoSpacing.horizontalPadding)
-                        .padding(.top, 16)
-
-                        detailsCard
-                            .padding(.top, 16)
-
-                        importantCard
-                            .padding(.top, 12)
-
-                        needHelpRow
-                            .padding(.top, 16)
-
-                        Spacer(minLength: 120)
                     }
-                }
-                .scrollIndicators(.hidden)
-                .background(Color.taggoBackground)
+                    .scrollIndicators(.hidden)
+                    .background(Color.taggoBackground)
 
-                bottomBar
-            }
-            .navigationBarTitleDisplayMode(.inline)
-            .toolbar {
-                ToolbarItem(placement: .cancellationAction) {
-                    Button { dismiss() } label: {
-                        Image(systemName: "chevron.left").fontWeight(.medium)
-                    }
+                    bottomBar
                 }
             }
-            .fullScreenCover(isPresented: $showSuccess) {
-                ItemFoundSuccessView {
-                    showSuccess = false
-                    dismiss()
-                }
-            }
+        }
+        .navigationBarTitleDisplayMode(.inline)
+        .task(id: showSuccess) {
+            guard showSuccess else { return }
+            try? await Task.sleep(for: .seconds(1.5))
+            dismiss()
         }
     }
 
@@ -86,42 +85,97 @@ struct ReportDetailView: View {
                 .foregroundStyle(Color(.label))
             Text("Someone found your item")
                 .font(.subheadline)
-                .foregroundStyle(Color.taggoBlue)
+                .foregroundStyle(Color(.secondaryLabel))
         }
         .frame(maxWidth: .infinity)
         .padding(.vertical, 20)
     }
 
-    // MARK: - Item Photo
+    // MARK: - Item Photo Gallery
+
+    /// Up to two photos can exist for a report: the finder's attached photo
+    /// (evidence for this specific report) and the item's own registered photo.
+    /// Both are shown as distinct, labeled thumbnails rather than silently
+    /// swapping one image for another — the owner should always be able to
+    /// see plainly that there are two different photos, and which is which.
+    private struct PhotoOption: Identifiable {
+        let id: String
+        let label: String
+        let data: Data
+    }
+
+    private var photoOptions: [PhotoOption] {
+        var options: [PhotoOption] = []
+        if let finderData = report.photoData {
+            options.append(PhotoOption(id: "finder", label: "Photo from finder", data: finderData))
+        }
+        if let itemData = item?.imageData {
+            options.append(PhotoOption(id: "item", label: "Your item's photo", data: itemData))
+        }
+        return options
+    }
 
     private var itemPhoto: some View {
-        GeometryReader { proxy in
-            Group {
-                let photoData = item?.imageData ?? report.photoData
-                if let data = photoData, let img = UIImage(data: data) {
-                    Image(uiImage: img)
-                        .resizable()
-                        .scaledToFill()
-                } else {
-                    Color.taggoBlueLight
-                        .overlay {
-                            Image(systemName: "photo")
-                                .font(.system(size: 48))
-                                .foregroundStyle(Color.taggoBlue.opacity(0.4))
-                        }
+        let options = photoOptions
+        let selected = options.first(where: { $0.id == selectedPhotoID }) ?? options.first
+
+        return HStack(alignment: .top, spacing: 10) {
+            ZStack(alignment: .bottomLeading) {
+                ClippedFillImage(data: selected?.data)
+                    .clipShape(RoundedRectangle(cornerRadius: TaggoSpacing.cardCornerRadius))
+                    .overlay(
+                        RoundedRectangle(cornerRadius: TaggoSpacing.cardCornerRadius)
+                            .stroke(Color.taggoBlue.opacity(0.2), lineWidth: 1)
+                    )
+
+                if let selected {
+                    Text(selected.label)
+                        .font(.caption2).fontWeight(.semibold)
+                        .foregroundStyle(.white)
+                        .padding(.horizontal, 10)
+                        .padding(.vertical, 5)
+                        .background(.black.opacity(0.55))
+                        .clipShape(Capsule())
+                        .padding(10)
                 }
             }
-            .frame(width: proxy.size.width, height: proxy.size.height)
-            .clipped()
+            .frame(height: 220)
+
+            if options.count > 1 {
+                VStack(spacing: 8) {
+                    ForEach(options) { option in
+                        Button {
+                            selectedPhotoID = option.id
+                        } label: {
+                            ClippedFillImage(data: option.data)
+                                .frame(width: 56, height: 56)
+                                .clipShape(RoundedRectangle(cornerRadius: 10))
+                                .overlay(
+                                    RoundedRectangle(cornerRadius: 10)
+                                        .stroke(
+                                            selectedPhotoID == option.id ? Color.taggoBlue : Color.clear,
+                                            lineWidth: 2
+                                        )
+                                )
+                        }
+                        .buttonStyle(.plain)
+                    }
+                }
+            }
         }
-        .frame(maxWidth: .infinity)
-        .frame(height: 240)
-        .clipShape(RoundedRectangle(cornerRadius: TaggoSpacing.cardCornerRadius))
-        .overlay(
-            RoundedRectangle(cornerRadius: TaggoSpacing.cardCornerRadius)
-                .stroke(Color.taggoBlue.opacity(0.2), lineWidth: 1)
-        )
         .padding(.horizontal, TaggoSpacing.horizontalPadding)
+    }
+
+    // MARK: - Status badge
+
+    private var statusBadge: some View {
+        let isPending = report.status == .pending
+        return Text(isPending ? "Missing" : "Safe")
+            .font(.caption2).fontWeight(.semibold)
+            .foregroundStyle(Color(.label))
+            .padding(.horizontal, 12).padding(.vertical, 4)
+            .background((isPending ? Color.yellow : Color.green).opacity(0.35))
+            .clipShape(Capsule())
     }
 
     // MARK: - Details card
@@ -151,16 +205,14 @@ struct ReportDetailView: View {
                 .padding(.horizontal, 16)
                 .padding(.vertical, 14)
 
-            if let note = report.note, !note.isEmpty {
-                Divider()
-                    .padding(.horizontal, 16)
+            Divider()
+                .padding(.horizontal, 16)
 
-                DetailRow(icon: "pencil.circle.fill", iconColor: .taggoBlue,
-                          label: "Note from finder",
-                          value: "\"\(note)\"")
-                    .padding(.horizontal, 16)
-                    .padding(.vertical, 14)
-            }
+            DetailRow(icon: "pencil.circle.fill", iconColor: .taggoBlue,
+                      label: "Note from finder",
+                      value: report.note.flatMap { $0.isEmpty ? nil : "\"\($0)\"" } ?? "No notes provided")
+                .padding(.horizontal, 16)
+                .padding(.vertical, 14)
         }
         .background(Color(.systemBackground))
         .clipShape(RoundedRectangle(cornerRadius: TaggoSpacing.cardCornerRadius))
@@ -188,28 +240,6 @@ struct ReportDetailView: View {
         .padding(14)
         .background(Color.orange.opacity(0.08))
         .clipShape(RoundedRectangle(cornerRadius: 12))
-        .padding(.horizontal, TaggoSpacing.horizontalPadding)
-    }
-
-    // MARK: - Need help row
-
-    private var needHelpRow: some View {
-        HStack {
-            Text("Need help?")
-                .font(.subheadline)
-                .foregroundStyle(Color(.secondaryLabel))
-            Spacer()
-            Button {
-                // Contact support
-            } label: {
-                Label("Contact Support", systemImage: "headphones")
-                    .font(.caption).fontWeight(.semibold)
-                    .padding(.horizontal, 12).padding(.vertical, 6)
-                    .background(Color(.systemGray5))
-                    .clipShape(Capsule())
-            }
-            .foregroundStyle(.primary)
-        }
         .padding(.horizontal, TaggoSpacing.horizontalPadding)
     }
 
@@ -273,6 +303,36 @@ struct ReportDetailView: View {
     }
 }
 
+// MARK: - Clipped Fill Image
+
+/// Resizes+crops image data to whatever frame the caller applies, without
+/// letting a wide/tall source image stretch the container (see the frame
+/// stretching issue fixed elsewhere in the app's photo views).
+private struct ClippedFillImage: View {
+    let data: Data?
+
+    var body: some View {
+        GeometryReader { proxy in
+            Group {
+                if let data, let img = UIImage(data: data) {
+                    Image(uiImage: img)
+                        .resizable()
+                        .scaledToFill()
+                } else {
+                    Color.taggoBlueLight
+                        .overlay {
+                            Image(systemName: "photo")
+                                .font(.system(size: 32))
+                                .foregroundStyle(Color.taggoBlue.opacity(0.4))
+                        }
+                }
+            }
+            .frame(width: proxy.size.width, height: proxy.size.height)
+            .clipped()
+        }
+    }
+}
+
 // MARK: - Detail Row
 
 private struct DetailRow: View {
@@ -308,7 +368,9 @@ private struct DetailRow: View {
     let item = Item(id: UUID(), ownerID: UUID(), name: "Blue Backpack", category: "Bag",
                     color: "Navy Blue", description: "Tas punggung warna biru navy dengan kompartemen laptop",
                     imageData: nil, createdAt: Date(), updatedAt: Date())
-    ReportDetailView(report: report, viewModel: AppDependencies.live.makeInboxViewModel(), item: item)
+    NavigationStack {
+        ReportDetailView(report: report, viewModel: AppDependencies.live.makeInboxViewModel(), item: item)
+    }
 }
 
 #Preview("Claimed") {
@@ -317,5 +379,7 @@ private struct DetailRow: View {
                              status: .claimed, isRead: true,
                              reportedAt: Calendar.current.date(byAdding: .day, value: -1, to: Date())!,
                              claimedAt: Date())
-    ReportDetailView(report: report, viewModel: AppDependencies.live.makeInboxViewModel())
+    NavigationStack {
+        ReportDetailView(report: report, viewModel: AppDependencies.live.makeInboxViewModel())
+    }
 }

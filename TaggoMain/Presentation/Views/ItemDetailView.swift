@@ -51,12 +51,6 @@ struct ItemDetailView: View {
             }
             .scrollIndicators(.hidden)
             .background(Color.taggoBackground)
-            .navigationDestination(isPresented: Binding(
-                get: { viewModel.qrSaved },
-                set: { if !$0 { viewModel.dismissQRSavedConfirmation() } }
-            )) {
-                QRDownloadSuccessView()
-            }
             .navigationTitle("Items Details")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
@@ -159,7 +153,10 @@ struct ItemDetailView: View {
                 Button {
                     Task { await viewModel.saveQRCodeToPhotos() }
                 } label: {
-                    Label("Download QR Code", systemImage: "arrow.down.to.line")
+                    Label(
+                        viewModel.qrSaved ? "Saved!" : "Download QR Code",
+                        systemImage: viewModel.qrSaved ? "checkmark" : "arrow.down.to.line"
+                    )
                         .font(.subheadline).fontWeight(.semibold)
                         .foregroundStyle(.black)
                         .frame(maxWidth: .infinity)

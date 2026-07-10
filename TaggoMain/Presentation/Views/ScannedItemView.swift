@@ -18,11 +18,15 @@ struct ScannedItemView: View {
                         itemPhoto
 
                         VStack(alignment: .leading, spacing: 16) {
-                            Text(item.name)
-                                .font(.title2).fontWeight(.bold)
-                                .padding(.top, 20)
-
-                            detailsCard
+                            VStack(alignment: .leading, spacing: 4) {
+                                Text(item.name)
+                                    .font(.title2).fontWeight(.bold)
+                                if let desc = item.description, !desc.isEmpty {
+                                    Text(desc)
+                                        .font(.subheadline).foregroundStyle(.secondary)
+                                }
+                            }
+                            .padding(.top, 20)
 
                             infoCard
                         }
@@ -41,7 +45,10 @@ struct ScannedItemView: View {
             .toolbar {
                 if let onDismiss {
                     ToolbarItem(placement: .cancellationAction) {
-                        Button("Scan Again") { onDismiss() }
+                        Button(action: onDismiss) {
+                            Image(systemName: "qrcode.viewfinder")
+                        }
+                        .accessibilityLabel("Scan Again")
                     }
                 }
             }
@@ -78,22 +85,6 @@ struct ScannedItemView: View {
         )
         .padding(.horizontal, TaggoSpacing.horizontalPadding)
         .padding(.top, 16)
-    }
-
-    // MARK: Item details
-
-    private var detailsCard: some View {
-        VStack(spacing: 0) {
-            ItemDetailRow(icon: "tag.circle.fill", label: "Category", value: item.category)
-            Divider().padding(.leading, 44)
-            ItemDetailRow(icon: "paintpalette.fill", label: "Color", value: item.color)
-            if let desc = item.description, !desc.isEmpty {
-                Divider().padding(.leading, 44)
-                ItemDetailRow(icon: "text.alignleft", label: "Description", value: desc)
-            }
-        }
-        .background(Color(.systemBackground))
-        .clipShape(RoundedRectangle(cornerRadius: TaggoSpacing.cardCornerRadius))
     }
 
     // MARK: Info card
@@ -141,28 +132,6 @@ private extension Item {
         Item(id: UUID(), ownerID: UUID(), name: "Blue Backpack", category: "Bag",
              color: "Navy Blue", description: "A worn navy blue backpack",
              imageData: nil, createdAt: Date(), updatedAt: Date())
-    }
-}
-
-private struct ItemDetailRow: View {
-    let icon: String
-    let label: String
-    let value: String
-
-    var body: some View {
-        HStack(spacing: 12) {
-            Image(systemName: icon)
-                .foregroundStyle(Color.taggoBlue)
-                .font(.title3)
-                .frame(width: 28)
-            VStack(alignment: .leading, spacing: 2) {
-                Text(label).font(.caption).foregroundStyle(.secondary)
-                Text(value).font(.subheadline).fontWeight(.medium)
-            }
-            Spacer()
-        }
-        .padding(.horizontal, TaggoSpacing.horizontalPadding)
-        .padding(.vertical, 12)
     }
 }
 

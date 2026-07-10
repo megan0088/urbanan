@@ -44,10 +44,7 @@ struct ItemsTab: View {
             .navigationDestination(for: ItemsRoute.self) { route in
                 switch route {
                 case .register:
-                    RegisterView(
-                        viewModel: dependencies.makeRegisterViewModel(),
-                        onFinished: { path.removeLast() }
-                    )
+                    RegisterView(viewModel: dependencies.makeRegisterViewModel())
                 case .inbox:
                     InboxView(viewModel: inboxViewModel, dependencies: dependencies)
                 case .scan:

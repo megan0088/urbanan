@@ -33,7 +33,8 @@ struct AppDependencies {
                 currentUserProvider: currentUserProvider,
                 imageCompressor: imageCompressor,
                 notificationManaging: notificationManaging
-            )
+            ),
+            photoLibrarySaving: photoLibrarySaving
         )
     }
 
