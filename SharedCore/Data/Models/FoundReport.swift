@@ -7,7 +7,7 @@ import Foundation
 
 /// Pure domain model — no CloudKit types leak in here.
 /// `FoundReportMapper` is the only place that converts to/from `CKRecord`.
-struct FoundReport: Identifiable, Equatable {
+struct FoundReport: Identifiable, Equatable, Hashable {
     let id: UUID
     let itemID: UUID
     var station: String

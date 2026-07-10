@@ -47,7 +47,7 @@ struct InboxView: View {
             await viewModel.load()
             await itemListViewModel.load()
         }
-        .sheet(item: $selectedReport) { report in
+        .navigationDestination(item: $selectedReport) { report in
             ReportDetailView(
                 report: report,
                 viewModel: viewModel,
@@ -174,7 +174,7 @@ private struct NotificationCardView: View {
 
     private var statusBadge: some View {
         let isPending = report.status == .pending
-        return Text(isPending ? "Pending" : "Claimed")
+        return Text(isPending ? "Missing" : "Safe")
             .font(.caption2).fontWeight(.semibold)
             .foregroundStyle(Color(.label))
             .padding(.horizontal, 12).padding(.vertical, 4)

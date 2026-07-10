@@ -102,7 +102,7 @@ struct ItemListView: View {
                 onItemModified: { itemWasModified = true }
             )
         }
-        .sheet(item: $selectedPendingReport) { report in
+        .navigationDestination(item: $selectedPendingReport) { report in
             ReportDetailView(report: report, viewModel: inboxViewModel, item: viewModel.item(withID: report.itemID))
         }
     }
